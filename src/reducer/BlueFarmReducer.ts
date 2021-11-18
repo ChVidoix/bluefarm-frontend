@@ -1,7 +1,10 @@
 import { Action, BlueFarmActionType } from "../actions/BlueFarmActions.const";
 import { BlueFarmState } from "./BlueFarmReducer.const";
 
-export const reducer = (state: BlueFarmState, action: Action<any>) => {
+export const reducer = (
+  state: BlueFarmState,
+  action: Action<any>
+): BlueFarmState => {
   const { type, payload } = action;
   switch (type) {
     case BlueFarmActionType.LOAD_USER: {
@@ -17,7 +20,7 @@ export const reducer = (state: BlueFarmState, action: Action<any>) => {
       return {
         ...state,
         auth: {
-          ...state.auth.token,
+          ...state.auth,
           isAuthenticated: true,
           user: payload,
         },
@@ -32,9 +35,9 @@ export const reducer = (state: BlueFarmState, action: Action<any>) => {
       return {
         ...state,
         auth: {
-          token: undefined,
+          token: null,
           isAuthenticated: false,
-          user: undefined,
+          user: null,
         },
         appState: {
           isLoading: false,

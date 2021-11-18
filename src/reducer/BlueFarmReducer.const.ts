@@ -5,9 +5,9 @@ export interface DjangoGetUserModel {
 }
 
 export interface Auth {
-  token?: String;
+  token: string | null;
   isAuthenticated: boolean;
-  user?: DjangoGetUserModel;
+  user: DjangoGetUserModel | null;
 }
 
 export interface BlueFarmAppState {
@@ -22,9 +22,9 @@ export interface BlueFarmState {
 
 export const BlueFarmInitialState: BlueFarmState = {
   auth: {
-    token: undefined,
+    token: null,
     isAuthenticated: false,
-    user: undefined,
+    user: null,
   },
   appState: {
     isLoading: false,

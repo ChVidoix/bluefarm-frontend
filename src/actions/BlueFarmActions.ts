@@ -5,7 +5,7 @@ export const getUser = (): Action<void> => ({
   type: BlueFarmActionType.LOAD_USER,
 });
 
-export const getUserSuccess = (
+export const setUser = (
   user: DjangoGetUserModel
 ): Action<DjangoGetUserModel> => ({
   type: BlueFarmActionType.LOAD_USER_SUCCESS,
