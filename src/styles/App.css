@@ -36,3 +36,9 @@
     transform: rotate(360deg);
   }
 }
+
+.signInButton {
+  color: white;
+  background: black;
+  height: 200px;
+}
