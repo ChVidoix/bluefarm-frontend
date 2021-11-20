@@ -1,4 +1,4 @@
-export interface DjangoGetUserModel {
+export interface DjangoUserModel {
   id: number;
   username: string;
   email: string;
@@ -7,7 +7,7 @@ export interface DjangoGetUserModel {
 export interface Auth {
   token: string | null;
   isAuthenticated: boolean;
-  user: DjangoGetUserModel | null;
+  user: DjangoUserModel | null;
 }
 
 export interface BlueFarmAppState {

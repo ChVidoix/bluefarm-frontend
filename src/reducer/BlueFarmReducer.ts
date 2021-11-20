@@ -30,6 +30,8 @@ export const reducer = (
         },
       };
     }
+    case BlueFarmActionType.LOGOUT_SUCCESS:
+    case BlueFarmActionType.AUTHENTICATE_FAIL:
     case BlueFarmActionType.LOAD_USER_FAIL: {
       localStorage.removeItem("token");
       return {
@@ -40,9 +42,18 @@ export const reducer = (
           user: null,
         },
         appState: {
+          ...state.appState,
           isLoading: false,
-          isError: true,
         },
+      };
+    }
+    case BlueFarmActionType.AUTHENTICATE_SUCCESS: {
+      const { user, token } = payload;
+      localStorage.setItem("token", token);
+      return {
+        ...state,
+        auth: { user, token, isAuthenticated: true },
+        appState: { isLoading: false, isError: false },
       };
     }
     default: {

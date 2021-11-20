@@ -18,6 +18,7 @@ import {
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import { Link as RouterLink } from "react-router-dom";
+import styles from "../../styles/App.css";
 
 const Links = ["Login", "Register"];
 
@@ -40,7 +41,7 @@ const NavBar = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
-    <>
+    <div className={styles.navBar}>
       <Box bg={useColorModeValue("gray.100", "gray.900")} px={4}>
         <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
           <IconButton
@@ -96,7 +97,7 @@ const NavBar = () => {
           </Box>
         )}
       </Box>
-    </>
+    </div>
   );
 };
 export default React.memo(NavBar);

@@ -7,7 +7,7 @@ import NavBar from "./navBar/NavBar";
 import HomePage from "./homePage/HomePage";
 import {
   BlueFarmInitialState,
-  DjangoGetUserModel,
+  DjangoUserModel,
 } from "../reducer/BlueFarmReducer.const";
 import { reducer } from "../reducer/BlueFarmReducer";
 import { BlueFarmContextProvider } from "../provider/BlueFarmProvider";
@@ -25,7 +25,7 @@ const App = () => {
   useEffect(() => {
     dispatch(getUser());
     loadUser(auth.token)
-      .then((user: DjangoGetUserModel) => {
+      .then((user: DjangoUserModel) => {
         dispatch(setUser(user));
       })
       .catch((error) => {
