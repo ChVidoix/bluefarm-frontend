@@ -27,6 +27,18 @@ export const authenticateUser = ({
   payload: { token, user },
 });
 
+export const authenticateUserFail = () => ({
+  type: BlueFarmActionType.AUTHENTICATE_FAIL,
+});
+
 export const logoutUser = () => ({
   type: BlueFarmActionType.LOGOUT_SUCCESS,
+});
+
+export const logoutUserLoading = () => ({
+  type: BlueFarmActionType.LOGOUT_LOADING,
+});
+
+export const logoutFail = () => ({
+  type: BlueFarmActionType.LOGOUT_FAIL,
 });

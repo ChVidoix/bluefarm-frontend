@@ -41,7 +41,7 @@ export const loginUser = ({
     });
 };
 
-export const register = ({
+export const registerUser = ({
   username,
   password,
   email,
@@ -62,7 +62,7 @@ export const register = ({
 };
 
 export const logoutUser = (token: string): Promise<void> => {
-  return axios.post("/api/auth/logout/", tokenConfig(token));
+  return axios.post("/api/auth/logout/", null, tokenConfig(token));
 };
 
 export const tokenConfig = (token: string) => {

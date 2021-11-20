@@ -6,8 +6,8 @@ export const reducer = (
   action: Action<any>
 ): BlueFarmState => {
   const { type, payload } = action;
-  console.log(action);
   switch (type) {
+    case BlueFarmActionType.LOGOUT_LOADING:
     case BlueFarmActionType.LOAD_USER: {
       return {
         ...state,
@@ -32,7 +32,7 @@ export const reducer = (
       };
     }
     case BlueFarmActionType.LOGOUT_SUCCESS:
-    case BlueFarmActionType.AUTHENTICATE_FAIL:
+    case BlueFarmActionType.LOGOUT_FAIL:
     case BlueFarmActionType.LOAD_USER_FAIL: {
       localStorage.removeItem("token");
       return {
@@ -47,6 +47,13 @@ export const reducer = (
           ...state.appState,
           isLoading: false,
         },
+      };
+    }
+    case BlueFarmActionType.AUTHENTICATE_FAIL: {
+      return {
+        ...state,
+        auth: { ...state.auth, isLoading: false },
+        appState: { isError: true, isLoading: false },
       };
     }
     case BlueFarmActionType.AUTHENTICATE_LOADING: {

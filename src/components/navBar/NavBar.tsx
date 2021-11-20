@@ -24,7 +24,10 @@ import {
   BlueFarmContextModel,
 } from "../../provider/BlueFarmProvider";
 import { logoutUser } from "../../service/BlueFarmService";
-import { logoutUser as logoutUserAction } from "../../actions/BlueFarmActions";
+import {
+  logoutUser as logoutUserAction,
+  logoutUserLoading,
+} from "../../actions/BlueFarmActions";
 
 const notAuthenticatedLinks = ["Login", "Register"];
 
@@ -53,8 +56,9 @@ const NavBar = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const handleLogout = () => {
+    dispatch(logoutUserLoading());
     if (token) {
-      logoutUser(token).then((_) => {
+      logoutUser(token).then(() => {
         dispatch(logoutUserAction());
       });
     }
@@ -70,18 +74,7 @@ const NavBar = () => {
             aria-label={"Open Menu"}
             onClick={isOpen ? onClose : onOpen}
           />
-          <HStack spacing={8} alignItems={"center"}>
-            <HStack
-              as={"nav"}
-              spacing={4}
-              display={{ base: "none", md: "flex" }}
-            >
-              {notAuthenticatedLinks.map((link: string) => (
-                <NavLink key={link}>{link}</NavLink>
-              ))}
-            </HStack>
-          </HStack>
-          {isAuthenticated && (
+          {isAuthenticated ? (
             <Flex alignItems={"center"}>
               <Menu>
                 <MenuButton
@@ -106,6 +99,16 @@ const NavBar = () => {
                 </MenuList>
               </Menu>
             </Flex>
+          ) : (
+            <HStack
+              as={"nav"}
+              spacing={4}
+              display={{ base: "none", md: "flex" }}
+            >
+              {notAuthenticatedLinks.map((link: string) => (
+                <NavLink key={link}>{link}</NavLink>
+              ))}
+            </HStack>
           )}
         </Flex>
 

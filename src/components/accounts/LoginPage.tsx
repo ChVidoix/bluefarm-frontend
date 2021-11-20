@@ -23,14 +23,15 @@ import { loginUser } from "../../service/BlueFarmService";
 import { LoginResponseModel } from "../../service/BlueFarm.service.const";
 import {
   authenticateUser,
+  authenticateUserFail,
   authenticateUserLoading,
 } from "../../actions/BlueFarmActions";
 
 const LoginPage = () => {
   const {
     state: {
-      auth: { isAuthenticated },
-      appState: { isLoading },
+      auth: { isAuthenticated, isLoading },
+      appState: { isLoading: isAppLoading },
     },
     dispatch,
   } = useContext<Partial<BlueFarmContextModel>>(
@@ -54,8 +55,8 @@ const LoginPage = () => {
       .then((res: LoginResponseModel) => {
         dispatch(authenticateUser({ ...res }));
       })
-      .catch((res) => {
-        console.log("error", res);
+      .catch(() => {
+        dispatch(authenticateUserFail());
       });
   };
 
@@ -66,7 +67,7 @@ const LoginPage = () => {
     return <Navigate to={"/"} />;
   }
 
-  if (isLoading) {
+  if (isAppLoading) {
     return (
       <Center h="80vh">
         <Spinner
@@ -108,7 +109,6 @@ const LoginPage = () => {
                 align={"start"}
                 justify={"space-between"}
               >
-                <Checkbox>Remember me</Checkbox>
                 <Link color={"blue.400"}>Forgot password?</Link>
               </Stack>
               <Button

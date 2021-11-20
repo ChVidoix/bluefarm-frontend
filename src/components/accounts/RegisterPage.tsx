@@ -19,10 +19,16 @@ import {
   BlueFarmContext,
   BlueFarmContextModel,
 } from "../../provider/BlueFarmProvider";
+import { registerUser } from "../../service/BlueFarmService";
+import { authenticateUser } from "../../actions/BlueFarmActions";
+import { LoginResponseModel } from "../../service/BlueFarm.service.const";
 
 const RegisterPage = () => {
   const {
-    state: { auth: isAuthenticated },
+    state: {
+      auth: { isAuthenticated },
+    },
+    dispatch,
   } = useContext(BlueFarmContext) as BlueFarmContextModel;
 
   const [username, setUsername] = useState("");
@@ -30,6 +36,8 @@ const RegisterPage = () => {
   const [password, setPassword] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
   const [arePasswordsSame, setArePasswordsSame] = useState(true);
+  const [termsCheckbox, setTermsCheckbox] = useState(false);
+  const [areTermsValid, setAreTermsValid] = useState(true);
 
   const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
@@ -49,13 +57,26 @@ const RegisterPage = () => {
     setPasswordConfirmation(event.target.value);
   };
 
+  const handleTermsCheckbox = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setTermsCheckbox(event.target.checked);
+  };
+
   const validateForm = () => {
     setArePasswordsSame(password === passwordConfirmation);
+    setAreTermsValid(termsCheckbox);
   };
 
   const handleSignInButton = () => {
     validateForm();
-    console.log("sign in");
+    if (arePasswordsSame && areTermsValid) {
+      registerUser({ username, password, email })
+        .then((res: LoginResponseModel) => {
+          dispatch(authenticateUser({ ...res }));
+        })
+        .catch((res) => {
+          console.log("error", res);
+        });
+    }
   };
 
   const boxColor = useColorModeValue("white", "gray.700");
@@ -115,7 +136,13 @@ const RegisterPage = () => {
                 align={"start"}
                 justify={"space-between"}
               >
-                <Checkbox>I agree with the terms and conditions</Checkbox>
+                <Checkbox
+                  isInvalid={!areTermsValid}
+                  checked={termsCheckbox}
+                  onChange={handleTermsCheckbox}
+                >
+                  I agree with the terms and conditions
+                </Checkbox>
               </Stack>
               <Button
                 bg={"blue.400"}
@@ -128,10 +155,7 @@ const RegisterPage = () => {
                 Register
               </Button>
               <Text>
-                Already have an account?{" "}
-                <Link className={styles.signInButton} to={"/login"}>
-                  Sign in
-                </Link>
+                Already have an account? <Link to={"/login"}>Sign in</Link>
               </Text>
             </Stack>
           </Stack>
