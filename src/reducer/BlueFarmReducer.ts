@@ -6,6 +6,7 @@ export const reducer = (
   action: Action<any>
 ): BlueFarmState => {
   const { type, payload } = action;
+  console.log(action);
   switch (type) {
     case BlueFarmActionType.LOAD_USER: {
       return {
@@ -40,6 +41,7 @@ export const reducer = (
           token: null,
           isAuthenticated: false,
           user: null,
+          isLoading: false,
         },
         appState: {
           ...state.appState,
@@ -47,12 +49,15 @@ export const reducer = (
         },
       };
     }
+    case BlueFarmActionType.AUTHENTICATE_LOADING: {
+      return { ...state, auth: { ...state.auth, isLoading: true } };
+    }
     case BlueFarmActionType.AUTHENTICATE_SUCCESS: {
       const { user, token } = payload;
       localStorage.setItem("token", token);
       return {
         ...state,
-        auth: { user, token, isAuthenticated: true },
+        auth: { user, token, isAuthenticated: true, isLoading: false },
         appState: { isLoading: false, isError: false },
       };
     }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   Flex,
   Box,
@@ -13,10 +13,18 @@ import {
   useColorModeValue,
   FormErrorMessage,
 } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import styles from "../../styles/App.css";
+import {
+  BlueFarmContext,
+  BlueFarmContextModel,
+} from "../../provider/BlueFarmProvider";
 
 const RegisterPage = () => {
+  const {
+    state: { auth: isAuthenticated },
+  } = useContext(BlueFarmContext) as BlueFarmContextModel;
+
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -50,23 +58,20 @@ const RegisterPage = () => {
     console.log("sign in");
   };
 
+  const boxColor = useColorModeValue("white", "gray.700");
+  const flexColor = useColorModeValue("gray.50", "gray.800");
+
+  if (isAuthenticated) {
+    return <Navigate to={"/"} />;
+  }
+
   return (
-    <Flex
-      minH={"100vh"}
-      align={"center"}
-      justify={"center"}
-      bg={useColorModeValue("gray.50", "gray.800")}
-    >
+    <Flex minH={"100vh"} align={"center"} justify={"center"} bg={flexColor}>
       <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
         <Stack align={"center"}>
           <Heading fontSize={"4xl"}>Register to BlueFarm</Heading>
         </Stack>
-        <Box
-          rounded={"lg"}
-          bg={useColorModeValue("white", "gray.700")}
-          boxShadow={"lg"}
-          p={8}
-        >
+        <Box rounded={"lg"} bg={boxColor} boxShadow={"lg"} p={8}>
           <Stack spacing={4}>
             <FormControl id="username">
               <FormLabel>Username</FormLabel>

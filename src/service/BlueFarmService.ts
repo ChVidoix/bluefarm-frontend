@@ -61,8 +61,8 @@ export const register = ({
     });
 };
 
-export const logout = (token: string): Promise<void> => {
-  return axios.post("/api/auth/logout/", null, tokenConfig(token));
+export const logoutUser = (token: string): Promise<void> => {
+  return axios.post("/api/auth/logout/", tokenConfig(token));
 };
 
 export const tokenConfig = (token: string) => {
@@ -73,7 +73,7 @@ export const tokenConfig = (token: string) => {
   };
 
   if (token) {
-    Object(config).header["Authorization"] = `Token ${token}`;
+    Object(config.headers)["Authorization"] = `Token ${token}`;
   }
 
   return config;

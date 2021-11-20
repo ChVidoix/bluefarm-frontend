@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   Box,
   Flex,
@@ -19,8 +19,14 @@ import {
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import { Link as RouterLink } from "react-router-dom";
 import styles from "../../styles/App.css";
+import {
+  BlueFarmContext,
+  BlueFarmContextModel,
+} from "../../provider/BlueFarmProvider";
+import { logoutUser } from "../../service/BlueFarmService";
+import { logoutUser as logoutUserAction } from "../../actions/BlueFarmActions";
 
-const Links = ["Login", "Register"];
+const notAuthenticatedLinks = ["Login", "Register"];
 
 const NavLink = ({ children }: { children: string }) => (
   <Link
@@ -38,7 +44,21 @@ const NavLink = ({ children }: { children: string }) => (
 );
 
 const NavBar = () => {
+  const {
+    state: {
+      auth: { isAuthenticated, token },
+    },
+    dispatch,
+  } = useContext(BlueFarmContext) as BlueFarmContextModel;
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const handleLogout = () => {
+    if (token) {
+      logoutUser(token).then((_) => {
+        dispatch(logoutUserAction());
+      });
+    }
+  };
 
   return (
     <div className={styles.navBar}>
@@ -56,41 +76,43 @@ const NavBar = () => {
               spacing={4}
               display={{ base: "none", md: "flex" }}
             >
-              {Links.map((link: string) => (
+              {notAuthenticatedLinks.map((link: string) => (
                 <NavLink key={link}>{link}</NavLink>
               ))}
             </HStack>
           </HStack>
-          <Flex alignItems={"center"}>
-            <Menu>
-              <MenuButton
-                as={Button}
-                rounded={"full"}
-                variant={"link"}
-                cursor={"pointer"}
-                minW={0}
-              >
-                <Avatar
-                  size={"sm"}
-                  src={
-                    "https://images.unsplash.com/photo-1493666438817-866a91353ca9?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9"
-                  }
-                />
-              </MenuButton>
-              <MenuList>
-                <MenuItem>Link 1</MenuItem>
-                <MenuItem>Link 2</MenuItem>
-                <MenuDivider />
-                <MenuItem>Link 3</MenuItem>
-              </MenuList>
-            </Menu>
-          </Flex>
+          {isAuthenticated && (
+            <Flex alignItems={"center"}>
+              <Menu>
+                <MenuButton
+                  as={Button}
+                  rounded={"full"}
+                  variant={"link"}
+                  cursor={"pointer"}
+                  minW={0}
+                >
+                  <Avatar
+                    size={"sm"}
+                    src={
+                      "https://images.unsplash.com/photo-1493666438817-866a91353ca9?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9"
+                    }
+                  />
+                </MenuButton>
+                <MenuList>
+                  <MenuItem>Link 1</MenuItem>
+                  <MenuItem>Link 2</MenuItem>
+                  <MenuDivider />
+                  <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                </MenuList>
+              </Menu>
+            </Flex>
+          )}
         </Flex>
 
         {isOpen && (
-          <Box pb={4} display={{ md: "none" }}>
+          <Box pb={4}>
             <Stack as={"nav"} spacing={4}>
-              {Links.map((link) => (
+              {notAuthenticatedLinks.map((link) => (
                 <NavLink key={link}>{link}</NavLink>
               ))}
             </Stack>

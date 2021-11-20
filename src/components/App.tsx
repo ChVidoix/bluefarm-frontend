@@ -13,24 +13,33 @@ import { reducer } from "../reducer/BlueFarmReducer";
 import { BlueFarmContextProvider } from "../provider/BlueFarmProvider";
 import PrivateRoute from "./common/PrivateRoute";
 import { loadUser } from "../service/BlueFarmService";
-import { getUser, setUser } from "../actions/BlueFarmActions";
+import {
+  authenticateUser,
+  getUser,
+  getUserFail,
+  setUser,
+} from "../actions/BlueFarmActions";
 
 const App = () => {
   const [state, dispatch] = useReducer(reducer, BlueFarmInitialState);
   const {
-    auth,
     appState: { isLoading },
   } = state;
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
     dispatch(getUser());
-    loadUser(auth.token)
-      .then((user: DjangoUserModel) => {
-        dispatch(setUser(user));
-      })
-      .catch((error) => {
-        console.log(error.message);
-      });
+    if (token) {
+      loadUser(token)
+        .then((user: DjangoUserModel) => {
+          dispatch(authenticateUser({ token, user }));
+        })
+        .catch((error) => {
+          dispatch(getUserFail());
+        });
+    } else {
+      dispatch(getUserFail());
+    }
   }, []);
 
   return (
@@ -38,16 +47,7 @@ const App = () => {
       <Router>
         <NavBar />
         <Routes>
-          <Route
-            path={"/"}
-            element={
-              <PrivateRoute
-                element={<HomePage />}
-                isLoading={isLoading}
-                auth={auth}
-              />
-            }
-          />
+          <Route path={"/"} element={<PrivateRoute element={<HomePage />} />} />
           <Route path={"/login"} element={<LoginPage />} />
           <Route path={"/register"} element={<RegisterPage />} />
         </Routes>

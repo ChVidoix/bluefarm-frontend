@@ -8,6 +8,7 @@ export interface Auth {
   token: string | null;
   isAuthenticated: boolean;
   user: DjangoUserModel | null;
+  isLoading: boolean;
 }
 
 export interface BlueFarmAppState {
@@ -25,6 +26,7 @@ export const BlueFarmInitialState: BlueFarmState = {
     token: null,
     isAuthenticated: false,
     user: null,
+    isLoading: false,
   },
   appState: {
     isLoading: false,
