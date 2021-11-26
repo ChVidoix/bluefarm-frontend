@@ -17,14 +17,14 @@ import {
   authenticateUser,
   getUser,
   getUserFail,
-  setUser,
 } from "../actions/BlueFarmActions";
+import CropsPage from "./cropsPage/CropsPage";
+import EventsPage from "./eventsPage/EventsPage";
+import CashEventsPage from "./cashEventsPage/CashEventsPage";
+import WeatherPage from "./weatherPage/WeatherPage";
 
 const App = () => {
   const [state, dispatch] = useReducer(reducer, BlueFarmInitialState);
-  const {
-    appState: { isLoading },
-  } = state;
   const token = localStorage.getItem("token");
 
   useEffect(() => {
@@ -40,14 +40,33 @@ const App = () => {
     } else {
       dispatch(getUserFail());
     }
-  }, []);
+  }, [token]);
 
   return (
     <BlueFarmContextProvider value={{ state, dispatch }}>
       <Router>
         <NavBar />
         <Routes>
-          <Route path={"/"} element={<PrivateRoute element={<HomePage />} />} />
+          <Route
+            path={"/home"}
+            element={<PrivateRoute element={<HomePage />} />}
+          />
+          <Route
+            path={"/crops"}
+            element={<PrivateRoute element={<CropsPage />} />}
+          />
+          <Route
+            path={"/events"}
+            element={<PrivateRoute element={<EventsPage />} />}
+          />
+          <Route
+            path={"/cash_events"}
+            element={<PrivateRoute element={<CashEventsPage />} />}
+          />
+          <Route
+            path={"/weather"}
+            element={<PrivateRoute element={<WeatherPage />} />}
+          />
           <Route path={"/login"} element={<LoginPage />} />
           <Route path={"/register"} element={<RegisterPage />} />
         </Routes>

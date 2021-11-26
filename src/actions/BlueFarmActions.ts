@@ -31,7 +31,7 @@ export const authenticateUserFail = () => ({
   type: BlueFarmActionType.AUTHENTICATE_FAIL,
 });
 
-export const logoutUser = () => ({
+export const logoutUserAction = () => ({
   type: BlueFarmActionType.LOGOUT_SUCCESS,
 });
 
@@ -41,4 +41,11 @@ export const logoutUserLoading = () => ({
 
 export const logoutFail = () => ({
   type: BlueFarmActionType.LOGOUT_FAIL,
+});
+
+export const setAppStateLoading = (
+  value: boolean
+): Action<{ value: boolean }> => ({
+  type: BlueFarmActionType.APP_STATE_LOADING,
+  payload: { value },
 });

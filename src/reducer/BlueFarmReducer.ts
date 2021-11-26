@@ -68,6 +68,12 @@ export const reducer = (
         appState: { isLoading: false, isError: false },
       };
     }
+    case BlueFarmActionType.APP_STATE_LOADING: {
+      return {
+        ...state,
+        appState: { isLoading: payload.value, isError: false },
+      };
+    }
     default: {
       return state;
     }

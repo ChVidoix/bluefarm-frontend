@@ -14,3 +14,12 @@ export interface UserRegisterCredentialsModel
   extends UserLoginCredentialsModel {
   email: string;
 }
+
+export interface CropModel {
+  id: number;
+  name: string;
+  description: string;
+  type: string;
+  area: number;
+  farmer: number;
+}

@@ -9,6 +9,8 @@ export enum BlueFarmActionType {
   LOGOUT_LOADING = "LOGOUT_LOADING",
   LOGOUT_SUCCESS = "LOGOUT_SUCCESS",
   LOGOUT_FAIL = "LOGOUT_FAIL",
+
+  APP_STATE_LOADING = "APP_STATE_LOADING",
 }
 
 export interface Action<T> {

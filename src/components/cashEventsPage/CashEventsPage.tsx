@@ -1,11 +1,11 @@
 import { Box } from "@chakra-ui/react";
 
-const HomePage = () => {
+const CashEventsPage = () => {
   return (
     <Box bg="gray.100" h="91vh">
-      hoem page
+      crops page
     </Box>
   );
 };
 
-export default HomePage;
+export default CashEventsPage;

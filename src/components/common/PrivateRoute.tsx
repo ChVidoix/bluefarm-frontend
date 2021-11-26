@@ -1,6 +1,5 @@
 import { Navigate } from "react-router-dom";
-import { Auth } from "../../reducer/BlueFarmReducer.const";
-import { Box, Center, Spinner } from "@chakra-ui/react";
+import { Center, Spinner } from "@chakra-ui/react";
 import { useContext } from "react";
 import {
   BlueFarmContext,

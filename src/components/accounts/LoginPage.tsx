@@ -1,17 +1,15 @@
 import {
-  Flex,
   Box,
+  Button,
+  Center,
+  Flex,
   FormControl,
   FormLabel,
-  Input,
-  Checkbox,
-  Stack,
-  Link,
-  Button,
   Heading,
-  useColorModeValue,
+  Input,
+  Link,
   Spinner,
-  Center,
+  Stack,
 } from "@chakra-ui/react";
 import { useContext, useState } from "react";
 import {
@@ -60,11 +58,8 @@ const LoginPage = () => {
       });
   };
 
-  const flexColor = useColorModeValue("gray.50", "gray.800");
-  const boxColor = useColorModeValue("white", "gray.700");
-
   if (isAuthenticated) {
-    return <Navigate to={"/"} />;
+    return <Navigate to={"/home"} />;
   }
 
   if (isAppLoading) {
@@ -72,23 +67,23 @@ const LoginPage = () => {
       <Center h="80vh">
         <Spinner
           thickness="4px"
-          emptyColor="gray.200"
-          color="blue.500"
+          emptyColor="teal.50"
+          color="teal.500"
           size="xl"
         />
       </Center>
     );
   }
   return (
-    <Flex minH={"100vh"} align={"center"} justify={"center"} bg={flexColor}>
+    <Flex h="91vh" align={"center"} justify={"center"} bg="gray.200">
       <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
         <Stack align={"center"}>
           <Heading fontSize={"4xl"}>Sign in to your account</Heading>
         </Stack>
-        <Box rounded={"lg"} bg={boxColor} boxShadow={"lg"} p={8}>
+        <Box rounded={"lg"} boxShadow={"lg"} p={8} bg="white">
           <Stack spacing={4}>
             <FormControl id="username">
-              <FormLabel>username</FormLabel>
+              <FormLabel>Username</FormLabel>
               <Input
                 type="text"
                 value={username}
@@ -109,16 +104,9 @@ const LoginPage = () => {
                 align={"start"}
                 justify={"space-between"}
               >
-                <Link color={"blue.400"}>Forgot password?</Link>
+                <Link color={"teal.600"}>Forgot password?</Link>
               </Stack>
-              <Button
-                bg={"blue.400"}
-                color={"white"}
-                _hover={{
-                  bg: "blue.500",
-                }}
-                onClick={handleLoginButton}
-              >
+              <Button color={"white"} onClick={handleLoginButton}>
                 {isLoading ? <Spinner /> : <>Sign In</>}
               </Button>
             </Stack>
