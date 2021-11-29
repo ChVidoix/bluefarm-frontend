@@ -16,6 +16,9 @@ import {
   BlueFarmContextModel,
 } from "../../provider/BlueFarmProvider";
 import { CropModel } from "../../service/BlueFarm.service.const";
+import { AddCropDrawer } from "./AddCropDrawer";
+import { CropOptions } from "./CropOptions";
+import { ShowCropDescription } from "./ShowCropDescription";
 
 const CropsTable = () => {
   const {
@@ -33,48 +36,60 @@ const CropsTable = () => {
     });
   }, [token]);
 
+  const tableCaption = (): JSX.Element => {
+    if (isLoading || crops === null) {
+      return (
+        <Center>
+          <Spinner
+            thickness="4px"
+            emptyColor="teal.50"
+            color="teal.500"
+            size="xl"
+          />
+        </Center>
+      );
+    }
+    return <AddCropDrawer crops={crops} setCrops={setCrops} />;
+  };
+
+  const cropDescriptionRowContent = (cropDescription: string): JSX.Element => {
+    if (cropDescription.length > 15) {
+      return <ShowCropDescription description={cropDescription} />;
+    }
+    return <>{cropDescription}</>;
+  };
+
   const tableBodyContent = crops?.map((crop: CropModel, index: number) => (
     <Tr key={index}>
       <Td isNumeric>{index + 1}</Td>
+      <Td>{crop.name}</Td>
       <Td>{crop.type}</Td>
       <Td isNumeric>{crop.area}</Td>
-      <Td>{crop.description}</Td>
-      <Td />
+      <Td>{cropDescriptionRowContent(crop.description)}</Td>
+      <Td>
+        <CropOptions crops={crops} setCrops={setCrops} crop={crop} />
+      </Td>
     </Tr>
   ));
 
   return (
-    <Center rounded="lg" bg="gray.300" w={"100%"}>
-      <Table variant="striped" colorScheme="teal" a>
-        <TableCaption>Crops</TableCaption>
-        <Thead>
+    <Center rounded="lg" bg="gray.300" w={"80%"}>
+      <Table variant="striped">
+        <TableCaption>{tableCaption()}</TableCaption>
+        <Thead borderBottom={"2px"}>
           <Tr>
-            <Th isNumeric w={"20%"}>
-              Crop number
-            </Th>
-            <Th w={"25%"}>Variety</Th>
-            <Th isNumeric w={"25%"}>
-              Area
-            </Th>
-            <Th w={"30%"}>Description</Th>
+            <Th isNumeric>Number</Th>
+            <Th>Name</Th>
+            <Th>Variety</Th>
+            <Th isNumeric>Area</Th>
+            <Th>Description</Th>
             <Th />
           </Tr>
         </Thead>
 
-        {isLoading || crops === null ? (
-          <Center>
-            <Spinner
-              thickness="4px"
-              emptyColor="teal.50"
-              color="teal.500"
-              size="xl"
-            />
-          </Center>
-        ) : (
-          <Tbody>
-            <>{tableBodyContent}</>
-          </Tbody>
-        )}
+        <Tbody>
+          <>{tableBodyContent}</>
+        </Tbody>
       </Table>
     </Center>
   );

@@ -4,6 +4,7 @@ import {
   Center,
   Drawer,
   DrawerBody,
+  DrawerCloseButton,
   DrawerContent,
   DrawerHeader,
   DrawerOverlay,
@@ -14,16 +15,10 @@ import {
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { ArrowRightIcon } from "@chakra-ui/icons";
-import { authenticatedLinks } from "./navBar.const";
-import { useContext } from "react";
-import {
-  BlueFarmContext,
-  BlueFarmContextModel,
-} from "../../provider/BlueFarmProvider";
+import { authenticatedLinks } from "../common/components.const";
 
 const DrawerMenu = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { dispatch } = useContext(BlueFarmContext) as BlueFarmContextModel;
 
   return (
     <>
@@ -37,6 +32,7 @@ const DrawerMenu = () => {
       <Drawer onClose={onClose} isOpen={isOpen} size="xs" placement="left">
         <DrawerOverlay />
         <DrawerContent>
+          <DrawerCloseButton />
           <DrawerHeader>
             <Box rounded={"lg"}>
               <Center>

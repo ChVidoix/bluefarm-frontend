@@ -1,6 +1,6 @@
-import { notAuthenticatedLinks } from "./navBar.const";
 import { Button } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
+import { notAuthenticatedLinks } from "../common/components.const";
 
 const NotAuthenticatedLinks = () => (
   <>

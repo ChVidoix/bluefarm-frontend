@@ -23,3 +23,20 @@ export interface CropModel {
   area: number;
   farmer: number;
 }
+
+export interface CreateCropModel {
+  token: string | null;
+  name: string;
+  type: string;
+  description: string;
+  area: number;
+}
+
+export interface DeleteCropModel {
+  token: string | null;
+  id: number;
+}
+
+export interface EditCropModel extends CreateCropModel {
+  id: number;
+}

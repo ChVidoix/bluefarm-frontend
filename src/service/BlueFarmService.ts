@@ -1,7 +1,10 @@
 import axios, { AxiosResponse } from "axios";
 import { DjangoUserModel } from "../reducer/BlueFarmReducer.const";
 import {
+  CreateCropModel,
   CropModel,
+  DeleteCropModel,
+  EditCropModel,
   LoginResponseModel,
   UserLoginCredentialsModel,
   UserRegisterCredentialsModel,
@@ -84,4 +87,35 @@ export const getCrops = (token: string | null): Promise<Array<CropModel>> => {
   return axios
     .get("/api/crops/", tokenConfig(token))
     .then((res: AxiosResponse) => res.data);
+};
+
+export const createCrop = ({
+  token,
+  name,
+  type,
+  area,
+  description,
+}: CreateCropModel): Promise<CropModel> => {
+  const body = JSON.stringify({ name, description, type, area });
+  return axios
+    .post("/api/crops/", body, tokenConfig(token))
+    .then((res) => res.data);
+};
+
+export const deleteCrop = ({ token, id }: DeleteCropModel) => {
+  return axios.delete(`/api/crops/${id}/`, tokenConfig(token));
+};
+
+export const editCrop = ({
+  token,
+  id,
+  name,
+  type,
+  area,
+  description,
+}: EditCropModel): Promise<CropModel> => {
+  const body = JSON.stringify({ name, description, type, area });
+  return axios
+    .put(`/api/crops/${id}/`, body, tokenConfig(token))
+    .then((res: AxiosResponse<CropModel>) => res.data);
 };
