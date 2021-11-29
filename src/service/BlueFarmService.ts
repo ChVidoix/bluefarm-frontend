@@ -119,3 +119,18 @@ export const editCrop = ({
     .put(`/api/crops/${id}/`, body, tokenConfig(token))
     .then((res: AxiosResponse<CropModel>) => res.data);
 };
+
+export const countCropsVarietyArea = (
+  crops: Array<CropModel> | null
+): { [key: string]: number } | undefined => {
+  return crops?.reduce(
+    (acc: { [key: string]: number }, currentCrop: CropModel) => {
+      return {
+        ...acc,
+        [currentCrop.type]:
+          acc[currentCrop.type] + currentCrop.area || currentCrop.area,
+      };
+    },
+    {}
+  );
+};

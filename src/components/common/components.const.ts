@@ -1,4 +1,6 @@
 import { CropModel } from "../../service/BlueFarm.service.const";
+import { As } from "@chakra-ui/react";
+import React from "react";
 
 export const notAuthenticatedLinks: { [name: string]: string } = {
   login: "Login",
@@ -14,6 +16,7 @@ export const authenticatedLinks: { [name: string]: string } = {
 };
 
 export interface HeaderProps {
+  as?: As;
   title: string;
 }
 

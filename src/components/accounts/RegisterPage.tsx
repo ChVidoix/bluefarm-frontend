@@ -60,14 +60,13 @@ const RegisterPage = () => {
     setTermsCheckbox(event.target.checked);
   };
 
-  const validateForm = () => {
+  const validateForm = (): boolean => {
     setArePasswordsSame(password === passwordConfirmation);
     setAreTermsValid(termsCheckbox);
+    return termsCheckbox && password === passwordConfirmation;
   };
-
   const handleSignInButton = () => {
-    validateForm();
-    if (arePasswordsSame && areTermsValid) {
+    if (validateForm()) {
       registerUser({ username, password, email })
         .then((res: LoginResponseModel) => {
           dispatch(authenticateUser({ ...res }));

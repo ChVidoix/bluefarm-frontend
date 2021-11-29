@@ -1,5 +1,7 @@
 import {
   Center,
+  Heading,
+  Spacer,
   Spinner,
   Table,
   TableCaption,
@@ -9,7 +11,7 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
-import { getCrops } from "../../service/BlueFarmService";
+import { countCropsVarietyArea, getCrops } from "../../service/BlueFarmService";
 import { useContext, useEffect, useState } from "react";
 import {
   BlueFarmContext,
@@ -19,8 +21,9 @@ import { CropModel } from "../../service/BlueFarm.service.const";
 import { AddCropDrawer } from "./AddCropDrawer";
 import { CropOptions } from "./CropOptions";
 import { ShowCropDescription } from "./ShowCropDescription";
+import CropsStats from "./CropsStats";
 
-const CropsTable = () => {
+const CropsPageContent = () => {
   const {
     state: {
       auth: { token },
@@ -73,26 +76,36 @@ const CropsTable = () => {
   ));
 
   return (
-    <Center rounded="lg" bg="gray.300" w={"80%"}>
-      <Table variant="striped">
-        <TableCaption>{tableCaption()}</TableCaption>
-        <Thead borderBottom={"2px"}>
-          <Tr>
-            <Th isNumeric>Number</Th>
-            <Th>Name</Th>
-            <Th>Variety</Th>
-            <Th isNumeric>Area</Th>
-            <Th>Description</Th>
-            <Th />
-          </Tr>
-        </Thead>
+    <>
+      <Spacer />
+      <CropsStats varietyAreaData={countCropsVarietyArea(crops)} />
+      <Spacer />
+      <Center rounded={"lg"} bg={"gray.300"} w={"30vw"} h={"7vh"} mt={10}>
+        <Heading as={"h5"} color={"gray.600"}>
+          All crops
+        </Heading>
+      </Center>
+      <Center rounded={"lg"} bg={"gray.300"} w={"80%"} mt={5}>
+        <Table variant="striped">
+          <TableCaption>{tableCaption()}</TableCaption>
+          <Thead borderBottom={"2px"}>
+            <Tr>
+              <Th isNumeric>Number</Th>
+              <Th>Name</Th>
+              <Th>Variety</Th>
+              <Th isNumeric>Area</Th>
+              <Th>Description</Th>
+              <Th />
+            </Tr>
+          </Thead>
 
-        <Tbody>
-          <>{tableBodyContent}</>
-        </Tbody>
-      </Table>
-    </Center>
+          <Tbody>
+            <>{tableBodyContent}</>
+          </Tbody>
+        </Table>
+      </Center>
+    </>
   );
 };
 
-export default CropsTable;
+export default CropsPageContent;
