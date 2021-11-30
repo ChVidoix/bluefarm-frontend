@@ -7,6 +7,7 @@ import {
   Menu,
   MenuButton,
   MenuDivider,
+  MenuGroup,
   MenuItem,
   MenuList,
 } from "@chakra-ui/react";
@@ -26,7 +27,7 @@ import NotAuthenticatedLinks from "./NotAuthenticatedLinks";
 const NavBar = () => {
   const {
     state: {
-      auth: { isAuthenticated, token },
+      auth: { isAuthenticated, user, token },
     },
     dispatch,
   } = useContext(BlueFarmContext) as BlueFarmContextModel;
@@ -57,10 +58,13 @@ const NavBar = () => {
                 <Avatar size="sm" />
               </MenuButton>
               <MenuList>
-                <MenuItem>Link 1</MenuItem>
-                <MenuItem>Link 2</MenuItem>
-                <MenuDivider />
-                <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                <MenuGroup title={`Logged as ${user?.username}` || "Profile"}>
+                  <MenuDivider />
+                  <MenuItem>Link 1</MenuItem>
+                  <MenuItem>Link 2</MenuItem>
+                  <MenuDivider />
+                  <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                </MenuGroup>
               </MenuList>
             </Menu>
           </Flex>

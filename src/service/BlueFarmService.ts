@@ -1,10 +1,16 @@
 import axios, { AxiosResponse } from "axios";
 import { DjangoUserModel } from "../reducer/BlueFarmReducer.const";
 import {
+  CashEventModel,
+  CreateCashEventModel,
   CreateCropModel,
+  CreateEventModel,
   CropModel,
-  DeleteCropModel,
+  DeleteObjectModel,
+  EditCashEventModel,
   EditCropModel,
+  EditEventModel,
+  EventModel,
   LoginResponseModel,
   UserLoginCredentialsModel,
   UserRegisterCredentialsModel,
@@ -102,7 +108,7 @@ export const createCrop = ({
     .then((res) => res.data);
 };
 
-export const deleteCrop = ({ token, id }: DeleteCropModel) => {
+export const deleteCrop = ({ token, id }: DeleteObjectModel) => {
   return axios.delete(`/api/crops/${id}/`, tokenConfig(token));
 };
 
@@ -133,4 +139,72 @@ export const countCropsVarietyArea = (
     },
     {}
   );
+};
+
+export const getEvents = (token: string | null): Promise<Array<EventModel>> => {
+  return axios
+    .get("/api/events/", tokenConfig(token))
+    .then((res: AxiosResponse) => res.data);
+};
+
+export const createEvent = ({
+  token,
+  name,
+  description,
+  start_date,
+  end_date,
+}: CreateEventModel): Promise<EventModel> => {
+  const body = JSON.stringify({ name, description, start_date, end_date });
+  return axios
+    .post("/api/events/", body, tokenConfig(token))
+    .then((res: AxiosResponse<EventModel>) => res.data);
+};
+
+export const editEvent = ({
+  token,
+  id,
+  name,
+  description,
+  end_date,
+  start_date,
+}: EditEventModel): Promise<EventModel> => {
+  const body = JSON.stringify({ name, description, start_date, end_date });
+  return axios
+    .put(`/api/events/${id}/`, body, tokenConfig(token))
+    .then((res: AxiosResponse<EventModel>) => res.data);
+};
+
+export const getCashEvents = (
+  token: string | null
+): Promise<Array<CashEventModel>> => {
+  return axios
+    .get("/api/cash_events/", tokenConfig(token))
+    .then((res: AxiosResponse) => res.data);
+};
+
+export const createCashEvent = ({
+  token,
+  name,
+  description,
+  date,
+  amount,
+}: CreateCashEventModel): Promise<CashEventModel> => {
+  const body = JSON.stringify({ name, description, date, amount });
+  return axios
+    .post("/api/events/", body, tokenConfig(token))
+    .then((res: AxiosResponse<CashEventModel>) => res.data);
+};
+
+export const editCashEvent = ({
+  token,
+  id,
+  name,
+  description,
+  date,
+  amount,
+}: EditCashEventModel): Promise<CashEventModel> => {
+  const body = JSON.stringify({ name, description, date, amount });
+  return axios
+    .put(`/api/events/${id}/`, body, tokenConfig(token))
+    .then((res: AxiosResponse<CashEventModel>) => res.data);
 };

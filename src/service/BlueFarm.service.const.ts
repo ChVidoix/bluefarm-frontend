@@ -32,11 +32,52 @@ export interface CreateCropModel {
   area: number;
 }
 
-export interface DeleteCropModel {
+export interface DeleteObjectModel {
   token: string | null;
   id: number;
 }
 
 export interface EditCropModel extends CreateCropModel {
+  id: number;
+}
+
+export interface EventModel {
+  id: number;
+  name: string;
+  description: string;
+  start_date: string;
+  end_date: string;
+  farmer: number;
+}
+
+export interface CreateEventModel {
+  token: string | null;
+  name: string;
+  description: string;
+  start_date: string;
+  end_date: string;
+}
+
+export interface EditEventModel extends CreateEventModel {
+  id: number;
+}
+
+export interface CashEventModel {
+  id: number;
+  name: string;
+  description: string;
+  date: string;
+  amount: number;
+}
+
+export interface CreateCashEventModel {
+  token: string | null;
+  name: string;
+  description: string;
+  date: string;
+  amount: number;
+}
+
+export interface EditCashEventModel extends CreateCashEventModel {
   id: number;
 }
