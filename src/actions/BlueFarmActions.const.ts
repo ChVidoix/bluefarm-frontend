@@ -11,6 +11,18 @@ export enum BlueFarmActionType {
   LOGOUT_FAIL = "LOGOUT_FAIL",
 
   APP_STATE_LOADING = "APP_STATE_LOADING",
+
+  SET_ALL_EVENTS = "SET_ALL_EVENTS",
+  SET_FILTERED_EVENTS = "SET_FILTERED_EVENTS",
+  RESET_FILTERED_EVENTS = "RESET_FILTERED_EVENTS",
+
+  SET_START_FILTERS = "SET_START_FILTERS",
+  RESET_FILTERS = "RESET_FILTERS",
+}
+
+export interface DateRange {
+  start: number;
+  end: number;
 }
 
 export interface Action<T> {

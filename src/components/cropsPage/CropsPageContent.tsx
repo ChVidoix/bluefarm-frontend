@@ -55,9 +55,14 @@ const CropsPageContent = () => {
     return <AddCropDrawer crops={crops} setCrops={setCrops} />;
   };
 
-  const cropDescriptionRowContent = (cropDescription: string): JSX.Element => {
+  const cropDescriptionRowContent = (
+    cropName: string,
+    cropDescription: string
+  ): JSX.Element => {
     if (cropDescription.length > 15) {
-      return <ShowCropDescription description={cropDescription} />;
+      return (
+        <ShowCropDescription name={cropName} description={cropDescription} />
+      );
     }
     return <>{cropDescription}</>;
   };
@@ -68,7 +73,7 @@ const CropsPageContent = () => {
       <Td>{crop.name}</Td>
       <Td>{crop.type}</Td>
       <Td isNumeric>{crop.area}</Td>
-      <Td>{cropDescriptionRowContent(crop.description)}</Td>
+      <Td>{cropDescriptionRowContent(crop.name, crop.description)}</Td>
       <Td>
         <CropOptions crops={crops} setCrops={setCrops} crop={crop} />
       </Td>

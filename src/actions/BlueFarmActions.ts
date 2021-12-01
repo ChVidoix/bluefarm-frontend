@@ -1,6 +1,9 @@
-import { Action, BlueFarmActionType } from "./BlueFarmActions.const";
+import { Action, BlueFarmActionType, DateRange } from "./BlueFarmActions.const";
 import { DjangoUserModel } from "../reducer/BlueFarmReducer.const";
-import { LoginResponseModel } from "../service/BlueFarm.service.const";
+import {
+  EventModel,
+  LoginResponseModel,
+} from "../service/BlueFarm.service.const";
 
 export const getUser = (): Action<void> => ({
   type: BlueFarmActionType.LOAD_USER,
@@ -48,4 +51,31 @@ export const setAppStateLoading = (
 ): Action<{ value: boolean }> => ({
   type: BlueFarmActionType.APP_STATE_LOADING,
   payload: { value },
+});
+
+export const setAllEvents = (
+  value: Array<EventModel>
+): Action<{ value: Array<EventModel> }> => ({
+  type: BlueFarmActionType.SET_ALL_EVENTS,
+  payload: { value },
+});
+
+export const setFilteredEvents = (
+  value: Array<EventModel>
+): Action<{ value: Array<EventModel> }> => ({
+  type: BlueFarmActionType.SET_FILTERED_EVENTS,
+  payload: { value },
+});
+
+export const resetEventsFilters = () => ({
+  type: BlueFarmActionType.RESET_FILTERED_EVENTS,
+});
+
+export const setFilters = ({ start, end }: DateRange): Action<DateRange> => ({
+  type: BlueFarmActionType.SET_START_FILTERS,
+  payload: { start, end },
+});
+
+export const resetFilters = (): Action<void> => ({
+  type: BlueFarmActionType.RESET_FILTERS,
 });

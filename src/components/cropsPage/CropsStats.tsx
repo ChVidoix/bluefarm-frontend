@@ -67,7 +67,18 @@ const CropsStats = ({
   return (
     <Flex w={"80%"} mt={10} mb={10}>
       <Box w={"50%"}>
-        <Doughnut data={data} />
+        <Flex direction={"column"} h={"100%"}>
+          <Center w={"30vw"} h={"7vh"} rounded={"lg"} bg={"gray.300"} mb={5}>
+            <Heading as={"h5"} color={"gray.600"}>
+              Varieties:
+            </Heading>
+          </Center>
+          <Center mt={3}>
+            <Box w={"80%"}>
+              <Doughnut data={data} />
+            </Box>
+          </Center>
+        </Flex>
       </Box>
 
       <Box w={"50%"} pl={5}>

@@ -1,0 +1,20 @@
+.datePicker {
+  background-color: rgba(0, 0, 0, 0);
+  height: 2em;
+  width: 8.5em;
+  border: none;
+}
+
+.datePicker:focus {
+  outline: none;
+}
+
+.timePicker {
+  background-color: rgba(0, 0, 0, 0);
+  height: 2em;
+  border: none;
+}
+
+.timePicker:focus {
+  outline: none;
+}

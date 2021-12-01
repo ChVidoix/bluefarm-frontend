@@ -15,6 +15,7 @@ import {
   UserLoginCredentialsModel,
   UserRegisterCredentialsModel,
 } from "./BlueFarm.service.const";
+import { FilterEvents } from "../components/common/components.const";
 
 const tokenConfig = (token: string | null) => {
   const config = {
@@ -174,6 +175,10 @@ export const editEvent = ({
     .then((res: AxiosResponse<EventModel>) => res.data);
 };
 
+export const deleteEvent = ({ token, id }: DeleteObjectModel) => {
+  return axios.delete(`/api/events/${id}/`, tokenConfig(token));
+};
+
 export const getCashEvents = (
   token: string | null
 ): Promise<Array<CashEventModel>> => {
@@ -207,4 +212,26 @@ export const editCashEvent = ({
   return axios
     .put(`/api/events/${id}/`, body, tokenConfig(token))
     .then((res: AxiosResponse<CashEventModel>) => res.data);
+};
+
+export const parseJSDateToDjango = (date: string, time: string): string => {
+  // required date format by django is 2021-11-28T12:00:00Z
+  return `${date}T${time}:00Z`;
+};
+
+export const filterEvents = ({
+  events,
+  startTimestamp,
+  endTimestamp,
+}: FilterEvents): Array<EventModel> => {
+  const resultEvents: Array<EventModel> = [];
+  events.forEach((event: EventModel) => {
+    if (
+      Date.parse(event.start_date) > startTimestamp &&
+      Date.parse(event.start_date) < endTimestamp
+    ) {
+      resultEvents.push(event);
+    }
+  });
+  return resultEvents;
 };

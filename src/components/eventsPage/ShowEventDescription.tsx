@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { ShowDescriptionProps } from "../common/components.const";
 
-export const ShowCropDescription = ({
+export const ShowEventDescription = ({
   name,
   description,
 }: ShowDescriptionProps) => {

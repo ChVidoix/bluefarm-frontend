@@ -1,3 +1,5 @@
+import { EventModel } from "../service/BlueFarm.service.const";
+
 export interface DjangoUserModel {
   id: number;
   username: string;
@@ -18,6 +20,12 @@ export interface BlueFarmAppState {
 
 export interface BlueFarmState {
   auth: Auth;
+  events: Array<EventModel> | null;
+  filteredEvents: Array<EventModel> | null;
+  filters: {
+    startTimestamp: number;
+    endTimestamp: number;
+  };
   appState: BlueFarmAppState;
 }
 
@@ -27,6 +35,12 @@ export const BlueFarmInitialState: BlueFarmState = {
     isAuthenticated: false,
     user: null,
     isLoading: false,
+  },
+  events: null,
+  filteredEvents: null,
+  filters: {
+    startTimestamp: +new Date(),
+    endTimestamp: 2147483648000,
   },
   appState: {
     isLoading: false,

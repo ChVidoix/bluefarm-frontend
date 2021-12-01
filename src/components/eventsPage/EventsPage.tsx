@@ -1,5 +1,6 @@
 import { Box, Center, Flex, Spacer } from "@chakra-ui/react";
 import { PageHeader } from "../common/PageHeader";
+import { EventsPageContent } from "./EventsPageContent";
 
 const EventsPage = () => {
   return (
@@ -18,7 +19,7 @@ const EventsPage = () => {
           bg={"gray.200"}
         >
           <PageHeader title={"Events"} />
-
+          <EventsPageContent />
           <Spacer />
         </Flex>
       </Center>

@@ -74,6 +74,35 @@ export const reducer = (
         appState: { isLoading: payload.value, isError: false },
       };
     }
+    case BlueFarmActionType.SET_FILTERED_EVENTS: {
+      return {
+        ...state,
+        filteredEvents: payload.value,
+      };
+    }
+    case BlueFarmActionType.SET_ALL_EVENTS: {
+      return {
+        ...state,
+        events: payload.value,
+        filteredEvents: payload.value,
+        filters: {
+          startTimestamp: 0,
+          endTimestamp: 2147483648000,
+        },
+      };
+    }
+    case BlueFarmActionType.RESET_FILTERED_EVENTS: {
+      return {
+        ...state,
+        filteredEvents: state.events,
+      };
+    }
+    case BlueFarmActionType.SET_START_FILTERS: {
+      return {
+        ...state,
+        filters: { startTimestamp: payload.start, endTimestamp: payload.end },
+      };
+    }
     default: {
       return state;
     }
