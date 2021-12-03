@@ -10,6 +10,10 @@ import {
   DrawerOverlay,
   FormLabel,
   Input,
+  InputGroup,
+  InputRightAddon,
+  Radio,
+  RadioGroup,
   Stack,
   Textarea,
   useDisclosure,
@@ -17,39 +21,38 @@ import {
 import { AddIcon } from "@chakra-ui/icons";
 import { ChangeEvent, useContext, useState } from "react";
 import {
-  createEvent,
-  filterEvents,
+  createCashEvent,
   parseJSDateToDjango,
 } from "../../service/BlueFarmService";
 import {
   BlueFarmContext,
   BlueFarmContextModel,
 } from "../../provider/BlueFarmProvider";
-import { EventModel } from "../../service/BlueFarm.service.const";
+import { CashEventModel } from "../../service/BlueFarm.service.const";
 import { DatePicker } from "../common/DatePicker";
 import { format } from "date-fns";
-import { setAllEvents, setFilteredEvents } from "../../actions/BlueFarmActions";
+import { setCashEvents } from "../../actions/BlueFarmActions";
+import { CashEventType } from "../common/components.const";
 
-export const AddEventDrawer = () => {
+export const AddCashEventDrawer = () => {
   const {
     state: {
       auth: { token },
-      events,
+      cashEvents: { events },
     },
     dispatch,
   } = useContext(BlueFarmContext) as BlueFarmContextModel;
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [name, setName] = useState("");
-  const [startDate, setStartDate] = useState(format(new Date(), "yyyy-MM-dd"));
-  const [endDate, setEndDate] = useState(format(new Date(), "yyyy-MM-dd"));
-  const [startTime, setStartTime] = useState("12:00");
-  const [endTime, setEndTime] = useState("13:00");
+  const [date, setDate] = useState(format(new Date(), "yyyy-MM-dd"));
+  const [time, setTime] = useState("12:00");
+  const [amount, setAmount] = useState(0);
+  const [cashEventType, setCashEventType] = useState(CashEventType.outgoing);
   const [description, setDescription] = useState("");
   const [addButtonLoading, setAddButtonLoading] = useState(false);
 
-  const isAddButtonInvalid =
-    !name || !description || Date.parse(startDate) > Date.parse(endDate);
+  const isAddButtonInvalid = !name || !description;
 
   const handleNameChange = (event: ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
@@ -59,47 +62,33 @@ export const AddEventDrawer = () => {
     setDescription(event.target.value);
   };
 
+  const handleAmountChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setAmount(+event.target.value);
+  };
+
   const clearInputs = () => {
     onClose();
     setName("");
-    setStartDate(format(new Date(), "yyyy-MM-dd"));
-    setEndDate(format(new Date(), "yyyy-MM-dd"));
-    setEndTime("12:00");
-    setStartTime("13:00");
+    setDate(format(new Date(), "yyyy-MM-dd"));
+    setTime("12:00");
     setDescription("");
   };
 
-  const handleCreateEvent = () => {
+  const handleCreateCashEvent = () => {
     setAddButtonLoading(true);
-    createEvent({
+    const calculatedAmount =
+      cashEventType === CashEventType.outgoing ? -1 * amount : amount;
+    createCashEvent({
       token,
       name,
-      start_date: parseJSDateToDjango(startDate, startTime),
-      end_date: parseJSDateToDjango(endDate, endTime),
+      date: parseJSDateToDjango(date, time),
       description,
-    }).then((res: EventModel) => {
+      amount: calculatedAmount,
+    }).then((res: CashEventModel) => {
       if (events) {
-        dispatch(setAllEvents([...events, res]));
-        dispatch(
-          setFilteredEvents(
-            filterEvents({
-              events: [...events, res],
-              startTimestamp: +new Date(),
-              endTimestamp: 2147483648000,
-            })
-          )
-        );
+        dispatch(setCashEvents([...events, res]));
       } else {
-        dispatch(setAllEvents([res]));
-        dispatch(
-          setFilteredEvents(
-            filterEvents({
-              events: [res],
-              startTimestamp: +new Date(),
-              endTimestamp: 2147483648000,
-            })
-          )
-        );
+        dispatch(setCashEvents([res]));
       }
       clearInputs();
       setAddButtonLoading(false);
@@ -107,15 +96,15 @@ export const AddEventDrawer = () => {
   };
 
   return (
-    <>
+    <Box mt={5}>
       <Button leftIcon={<AddIcon />} onClick={onOpen}>
-        Add event
+        Add billing
       </Button>
       <Drawer placement={"right"} onClose={onClose} isOpen={isOpen}>
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton onClick={clearInputs} />
-          <DrawerHeader borderBottomWidth="2px">Add a new crop</DrawerHeader>
+          <DrawerHeader borderBottomWidth="2px">Add a new billing</DrawerHeader>
 
           <DrawerBody>
             <Stack spacing="24px">
@@ -123,7 +112,7 @@ export const AddEventDrawer = () => {
                 <FormLabel htmlFor="name">Name</FormLabel>
                 <Input
                   id="name"
-                  placeholder="Please enter your crop's name"
+                  placeholder="Please enter your billing's name"
                   maxLength={30}
                   value={name}
                   isInvalid={!name}
@@ -132,23 +121,38 @@ export const AddEventDrawer = () => {
               </Box>
 
               <Box>
-                <FormLabel htmlFor="start-date">Start date</FormLabel>
-                <DatePicker
-                  date={startDate}
-                  setDate={setStartDate}
-                  time={startTime}
-                  setTime={setStartTime}
-                />
+                <RadioGroup
+                  onChange={(value: CashEventType) => setCashEventType(value)}
+                  value={cashEventType}
+                >
+                  <Stack direction="row">
+                    <Radio value={CashEventType.outgoing}>Outgoing</Radio>
+                    <Radio value={CashEventType.income}>Income</Radio>
+                  </Stack>
+                </RadioGroup>
               </Box>
 
               <Box>
-                <FormLabel htmlFor="end-date">End date</FormLabel>
+                <FormLabel htmlFor="amount">Amount</FormLabel>
+                <InputGroup>
+                  <Input
+                    type={"number"}
+                    placeholder={"Type amount"}
+                    isInvalid={amount < 0}
+                    value={amount}
+                    onChange={handleAmountChange}
+                  />
+                  <InputRightAddon>$</InputRightAddon>
+                </InputGroup>
+              </Box>
+
+              <Box>
+                <FormLabel htmlFor="date">Select date</FormLabel>
                 <DatePicker
-                  date={endDate}
-                  time={endTime}
-                  min={startDate}
-                  setDate={setEndDate}
-                  setTime={setEndTime}
+                  date={date}
+                  setDate={setDate}
+                  time={time}
+                  setTime={setTime}
                 />
               </Box>
 
@@ -172,13 +176,13 @@ export const AddEventDrawer = () => {
             <Button
               isLoading={addButtonLoading}
               disabled={isAddButtonInvalid}
-              onClick={handleCreateEvent}
+              onClick={handleCreateCashEvent}
             >
-              Add event
+              Add billing
             </Button>
           </DrawerFooter>
         </DrawerContent>
       </Drawer>
-    </>
+    </Box>
   );
 };

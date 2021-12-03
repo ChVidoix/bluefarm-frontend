@@ -1,4 +1,4 @@
-import { EventModel } from "../service/BlueFarm.service.const";
+import { CashEventModel, EventModel } from "../service/BlueFarm.service.const";
 
 export interface DjangoUserModel {
   id: number;
@@ -18,6 +18,17 @@ export interface BlueFarmAppState {
   isError: boolean;
 }
 
+export interface CashEventsFilters {
+  startTimestamp: number;
+  endTimestamp: number;
+  minAmount: number;
+  maxAmount: number;
+}
+
+export interface FilterCashEventsParameters extends CashEventsFilters {
+  events: Array<CashEventModel> | null;
+}
+
 export interface BlueFarmState {
   auth: Auth;
   events: Array<EventModel> | null;
@@ -25,6 +36,12 @@ export interface BlueFarmState {
   filters: {
     startTimestamp: number;
     endTimestamp: number;
+  };
+  cashEvents: {
+    events: Array<CashEventModel> | null;
+    filteredOutgoings: Array<CashEventModel> | null;
+    filteredIncomes: Array<CashEventModel> | null;
+    filters: CashEventsFilters;
   };
   appState: BlueFarmAppState;
 }
@@ -41,6 +58,17 @@ export const BlueFarmInitialState: BlueFarmState = {
   filters: {
     startTimestamp: +new Date(),
     endTimestamp: 2147483648000,
+  },
+  cashEvents: {
+    events: null,
+    filteredOutgoings: null,
+    filteredIncomes: null,
+    filters: {
+      startTimestamp: 0,
+      endTimestamp: 2147483648000,
+      minAmount: 0,
+      maxAmount: 0,
+    },
   },
   appState: {
     isLoading: false,

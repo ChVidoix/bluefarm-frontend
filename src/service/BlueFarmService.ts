@@ -1,7 +1,12 @@
 import axios, { AxiosResponse } from "axios";
-import { DjangoUserModel } from "../reducer/BlueFarmReducer.const";
+import {
+  DjangoUserModel,
+  FilterCashEventsParameters,
+} from "../reducer/BlueFarmReducer.const";
 import {
   CashEventModel,
+  CashEventStats,
+  CashEventStatsParameters,
   CreateCashEventModel,
   CreateCropModel,
   CreateEventModel,
@@ -196,7 +201,7 @@ export const createCashEvent = ({
 }: CreateCashEventModel): Promise<CashEventModel> => {
   const body = JSON.stringify({ name, description, date, amount });
   return axios
-    .post("/api/events/", body, tokenConfig(token))
+    .post("/api/cash_events/", body, tokenConfig(token))
     .then((res: AxiosResponse<CashEventModel>) => res.data);
 };
 
@@ -210,7 +215,7 @@ export const editCashEvent = ({
 }: EditCashEventModel): Promise<CashEventModel> => {
   const body = JSON.stringify({ name, description, date, amount });
   return axios
-    .put(`/api/events/${id}/`, body, tokenConfig(token))
+    .put(`/api/cash_events/${id}/`, body, tokenConfig(token))
     .then((res: AxiosResponse<CashEventModel>) => res.data);
 };
 
@@ -234,4 +239,86 @@ export const filterEvents = ({
     }
   });
   return resultEvents;
+};
+
+export const divideCashEvents = (
+  cashEvents: Array<CashEventModel> | null
+): {
+  filteredIncomes: Array<CashEventModel>;
+  filteredOutgoings: Array<CashEventModel>;
+} => {
+  const resultOutgoings: Array<CashEventModel> = [];
+  const resultIncomes: Array<CashEventModel> = [];
+
+  if (cashEvents) {
+    cashEvents.forEach((event: CashEventModel) => {
+      if (event.amount > 0) {
+        resultIncomes.push(event);
+      } else {
+        resultOutgoings.push(event);
+      }
+    });
+  }
+
+  return { filteredIncomes: resultIncomes, filteredOutgoings: resultOutgoings };
+};
+
+export const deleteCashEvent = ({ token, id }: DeleteObjectModel) => {
+  return axios.delete(`/api/cash_events/${id}/`, tokenConfig(token));
+};
+
+export const getCashEventsStats = ({
+  filteredIncomes,
+  filteredOutgoings,
+}: CashEventStatsParameters): CashEventStats => {
+  const incomes =
+    filteredIncomes?.reduce(
+      (acc: number, curr: CashEventModel) => acc + curr.amount,
+      0
+    ) || 0;
+  const outgoings =
+    filteredOutgoings?.reduce(
+      (acc: number, curr: CashEventModel) => acc + curr.amount,
+      0
+    ) || 0;
+  return { detailed: { incomes, outgoings }, balance: incomes + outgoings };
+};
+
+export const filterCashEvents = ({
+  events,
+  startTimestamp,
+  endTimestamp,
+  minAmount,
+  maxAmount,
+}: FilterCashEventsParameters): Array<CashEventModel> => {
+  const resultCashEvents: Array<CashEventModel> = [];
+  if (events) {
+    events.forEach((event: CashEventModel) => {
+      if (
+        event.amount < maxAmount &&
+        event.amount > minAmount &&
+        Date.parse(event.date) > startTimestamp &&
+        Date.parse(event.date) < endTimestamp
+      ) {
+        resultCashEvents.push(event);
+      }
+    });
+  }
+
+  return resultCashEvents;
+};
+
+export const getCashEventsYears = (
+  events: Array<CashEventModel> | null
+): Array<string> => {
+  const resultYears: Array<string> = [];
+
+  events?.forEach((event: CashEventModel) => {
+    const year = event.date.slice(0, 4);
+    if (!resultYears.includes(year)) {
+      resultYears.push(year);
+    }
+  });
+
+  return resultYears;
 };

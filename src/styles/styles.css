@@ -18,3 +18,7 @@
 .timePicker:focus {
   outline: none;
 }
+
+.cashEventsTable:hover {
+  cursor: pointer;
+}

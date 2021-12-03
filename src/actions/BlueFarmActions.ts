@@ -1,6 +1,10 @@
 import { Action, BlueFarmActionType, DateRange } from "./BlueFarmActions.const";
-import { DjangoUserModel } from "../reducer/BlueFarmReducer.const";
 import {
+  CashEventsFilters,
+  DjangoUserModel,
+} from "../reducer/BlueFarmReducer.const";
+import {
+  CashEventModel,
   EventModel,
   LoginResponseModel,
 } from "../service/BlueFarm.service.const";
@@ -76,6 +80,23 @@ export const setFilters = ({ start, end }: DateRange): Action<DateRange> => ({
   payload: { start, end },
 });
 
-export const resetFilters = (): Action<void> => ({
-  type: BlueFarmActionType.RESET_FILTERS,
+export const setCashEvents = (
+  events: Array<CashEventModel>
+): Action<{ events: Array<CashEventModel> }> => ({
+  type: BlueFarmActionType.SET_CASH_EVENTS,
+  payload: { events },
+});
+
+export const setCashEventsFilters = (
+  filters: CashEventsFilters
+): Action<{ filters: CashEventsFilters }> => ({
+  type: BlueFarmActionType.SET_CASH_EVENTS_FILTERS,
+  payload: { filters },
+});
+
+export const setFilteredCashEvents = (
+  events: Array<CashEventModel> | null
+): Action<{ events: Array<CashEventModel> | null }> => ({
+  type: BlueFarmActionType.SET_DIVIDED_CASH_EVENTS,
+  payload: { events },
 });

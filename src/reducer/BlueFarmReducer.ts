@@ -1,5 +1,6 @@
 import { Action, BlueFarmActionType } from "../actions/BlueFarmActions.const";
 import { BlueFarmState } from "./BlueFarmReducer.const";
+import { divideCashEvents } from "../service/BlueFarmService";
 
 export const reducer = (
   state: BlueFarmState,
@@ -101,6 +102,31 @@ export const reducer = (
       return {
         ...state,
         filters: { startTimestamp: payload.start, endTimestamp: payload.end },
+      };
+    }
+    case BlueFarmActionType.SET_CASH_EVENTS: {
+      return {
+        ...state,
+        cashEvents: {
+          ...state.cashEvents,
+          events: payload.events,
+          ...divideCashEvents(payload.events),
+        },
+      };
+    }
+    case BlueFarmActionType.SET_CASH_EVENTS_FILTERS: {
+      return {
+        ...state,
+        cashEvents: { ...state.cashEvents, filters: payload.filters },
+      };
+    }
+    case BlueFarmActionType.SET_DIVIDED_CASH_EVENTS: {
+      return {
+        ...state,
+        cashEvents: {
+          ...state.cashEvents,
+          ...divideCashEvents(payload.events),
+        },
       };
     }
     default: {

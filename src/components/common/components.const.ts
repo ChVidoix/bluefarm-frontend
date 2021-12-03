@@ -1,4 +1,8 @@
-import { CropModel, EventModel } from "../../service/BlueFarm.service.const";
+import {
+  CashEventModel,
+  CropModel,
+  EventModel,
+} from "../../service/BlueFarm.service.const";
 import { As } from "@chakra-ui/react";
 import React, { Dispatch } from "react";
 
@@ -15,13 +19,27 @@ export const authenticatedLinks: { [name: string]: string } = {
   weather: "Weather",
 };
 
+export enum CashEventType {
+  outgoing = "outgoing",
+  income = "income",
+}
+
 export const FiltersMap: { [key: string]: string } = {
-  all: "All",
+  all: "All upcoming",
   week: "Next week",
   twoWeeks: "Next two weeks",
   month: "Next month",
   custom: "Selected date",
   previous: "Previous",
+};
+
+export const CashFiltersMap: { [key: string]: string } = {
+  all: "All upcoming",
+  week: "Next week",
+  twoWeeks: "Next two weeks",
+  month: "Next month",
+  previous: "Previous",
+  byYear: "By year",
 };
 
 export const eventsColumns = [
@@ -42,6 +60,24 @@ export const eventsColumns = [
     accessor: "description",
     disableSortBy: true,
   },
+];
+
+export const cashEventsColumns = [
+  { Header: "No.", accessor: "id", disableSortBy: true },
+  {
+    Header: "Name",
+    accessor: "name",
+    width: 100,
+  },
+  { Header: "Amount", accessor: "amount", isNumeric: true },
+];
+
+export const fullCashEventsColumns = [
+  { Header: "No.", accessor: "id", disableSortBy: true },
+  { Header: "Name", accessor: "name" },
+  { Header: "Date", accessor: "date" },
+  { Header: "Amount", accessor: "amount", isNumeric: true },
+  { Header: "Description", accessor: "description" },
 ];
 
 export interface HeaderProps {
@@ -81,13 +117,25 @@ export interface EventOptionsProps {
   event: EventModel;
 }
 
-export interface EventsFilterProps {
-  events: Array<EventModel> | null;
-  setEvents: React.Dispatch<React.SetStateAction<Array<EventModel> | null>>;
+export interface EditCashEventDrawerProps {
+  event: CashEventModel;
+}
+
+export interface CashEventOptionsProps {
+  id: number;
 }
 
 export interface FilterEvents {
   events: Array<EventModel>;
   startTimestamp: number;
   endTimestamp: number;
+}
+
+export interface CashEventsTableProps {
+  cashEvents: Array<CashEventModel> | null;
+  title: string;
+}
+
+export interface CashEventsTableContentProps extends CashEventsTableProps {
+  onModalOpen: () => void;
 }

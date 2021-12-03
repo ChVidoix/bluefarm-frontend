@@ -34,7 +34,7 @@ export interface CreateCropModel {
 
 export interface DeleteObjectModel {
   token: string | null;
-  id: number;
+  id?: number;
 }
 
 export interface EditCropModel extends CreateCropModel {
@@ -80,4 +80,17 @@ export interface CreateCashEventModel {
 
 export interface EditCashEventModel extends CreateCashEventModel {
   id: number;
+}
+
+export interface CashEventStatsParameters {
+  filteredIncomes: Array<CashEventModel> | null;
+  filteredOutgoings: Array<CashEventModel> | null;
+}
+
+export interface CashEventStats {
+  detailed: {
+    incomes: number;
+    outgoings: number;
+  };
+  balance: number;
 }
