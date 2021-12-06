@@ -11,6 +11,7 @@ import {
   MenuButton,
   MenuItem,
   MenuList,
+  Spinner,
 } from "@chakra-ui/react";
 import { useContext, useEffect, useState } from "react";
 import {
@@ -33,7 +34,11 @@ import {
   setFilteredFertilizeEvents,
 } from "../../actions/BlueFarmActions";
 
-export const FertilizeDetailsWrapper = () => {
+export const FertilizeDetailsWrapper = ({
+  isLoading,
+}: {
+  isLoading: boolean;
+}) => {
   const {
     state: {
       crops: {
@@ -134,6 +139,110 @@ export const FertilizeDetailsWrapper = () => {
     ));
   };
 
+  const renderUpcomingEventGrid = (): JSX.Element => {
+    if (isLoading) {
+      return (
+        <Center h={"100%"} w={"100%"}>
+          <Spinner
+            thickness="4px"
+            emptyColor="teal.50"
+            color="teal.500"
+            size="xl"
+          />
+        </Center>
+      );
+    } else if (nearestEvent) {
+      return (
+        <Grid
+          h="200px"
+          templateRows="repeat(3, 1fr)"
+          templateColumns="repeat(4, 1fr)"
+          gap={4}
+        >
+          <GridItem bg={"gray.300"} rounded={"lg"}>
+            <Center
+              w={"100%"}
+              h={"100%"}
+              fontWeight={"bold"}
+              color={"gray.600"}
+            >
+              Name:
+            </Center>
+          </GridItem>
+          <GridItem>
+            <Center w={"100%"} h={"100%"}>
+              {nearestEvent.name}
+            </Center>
+          </GridItem>
+          <GridItem bg={"gray.300"} rounded={"lg"}>
+            <Center
+              w={"100%"}
+              h={"100%"}
+              fontWeight={"bold"}
+              color={"gray.600"}
+            >
+              Type:
+            </Center>
+          </GridItem>
+          <GridItem>
+            <Center w={"100%"} h={"100%"}>
+              {nearestEvent.type}
+            </Center>
+          </GridItem>
+          <GridItem bg={"gray.300"} rounded={"lg"}>
+            <Center
+              w={"100%"}
+              h={"100%"}
+              fontWeight={"bold"}
+              color={"gray.600"}
+            >
+              Date:
+            </Center>
+          </GridItem>
+          <GridItem>
+            <Center w={"100%"} h={"100%"}>
+              {formatDate(nearestEvent.date)}
+            </Center>
+          </GridItem>
+          <GridItem bg={"gray.300"} rounded={"lg"}>
+            <Center
+              w={"100%"}
+              h={"100%"}
+              fontWeight={"bold"}
+              color={"gray.600"}
+            >
+              Amount:
+            </Center>
+          </GridItem>
+          <GridItem>
+            <Center w={"100%"} h={"100%"}>
+              {nearestEvent.amount}kg
+            </Center>
+          </GridItem>
+          <GridItem bg={"gray.300"} rounded={"lg"}>
+            <Center
+              w={"100%"}
+              h={"100%"}
+              fontWeight={"bold"}
+              color={"gray.600"}
+            >
+              Description:
+            </Center>
+          </GridItem>
+          <GridItem colSpan={3}>
+            <Center h={"100%"}>{nearestEvent.description}</Center>
+          </GridItem>
+        </Grid>
+      );
+    } else {
+      return (
+        <Center h={"100%"} w={"100%"} fontWeight={"bold"} color={"gray.600"}>
+          You don't have any fertilization events added yet.
+        </Center>
+      );
+    }
+  };
+
   return (
     <Center w={"100%"} h={"20em"} mt={5}>
       <Flex w={"95%"} h={"100%"} bg={"gray.200"} rounded={"lg"}>
@@ -150,98 +259,8 @@ export const FertilizeDetailsWrapper = () => {
                 <Center>Upcoming</Center>
               </Heading>
             </Center>
-            <Box w={"100%"}>
-              {nearestEvent ? (
-                <Grid
-                  h="200px"
-                  templateRows="repeat(3, 1fr)"
-                  templateColumns="repeat(4, 1fr)"
-                  gap={4}
-                >
-                  <GridItem bg={"gray.300"} rounded={"lg"}>
-                    <Center
-                      w={"100%"}
-                      h={"100%"}
-                      fontWeight={"bold"}
-                      color={"gray.600"}
-                    >
-                      Name:
-                    </Center>
-                  </GridItem>
-                  <GridItem>
-                    <Center w={"100%"} h={"100%"}>
-                      {nearestEvent.name}
-                    </Center>
-                  </GridItem>
-                  <GridItem bg={"gray.300"} rounded={"lg"}>
-                    <Center
-                      w={"100%"}
-                      h={"100%"}
-                      fontWeight={"bold"}
-                      color={"gray.600"}
-                    >
-                      Type:
-                    </Center>
-                  </GridItem>
-                  <GridItem>
-                    <Center w={"100%"} h={"100%"}>
-                      {nearestEvent.type}
-                    </Center>
-                  </GridItem>
-                  <GridItem bg={"gray.300"} rounded={"lg"}>
-                    <Center
-                      w={"100%"}
-                      h={"100%"}
-                      fontWeight={"bold"}
-                      color={"gray.600"}
-                    >
-                      Date:
-                    </Center>
-                  </GridItem>
-                  <GridItem>
-                    <Center w={"100%"} h={"100%"}>
-                      {formatDate(nearestEvent.date)}
-                    </Center>
-                  </GridItem>
-                  <GridItem bg={"gray.300"} rounded={"lg"}>
-                    <Center
-                      w={"100%"}
-                      h={"100%"}
-                      fontWeight={"bold"}
-                      color={"gray.600"}
-                    >
-                      Amount:
-                    </Center>
-                  </GridItem>
-                  <GridItem>
-                    <Center w={"100%"} h={"100%"}>
-                      {nearestEvent.amount}kg
-                    </Center>
-                  </GridItem>
-                  <GridItem bg={"gray.300"} rounded={"lg"}>
-                    <Center
-                      w={"100%"}
-                      h={"100%"}
-                      fontWeight={"bold"}
-                      color={"gray.600"}
-                    >
-                      Description:
-                    </Center>
-                  </GridItem>
-                  <GridItem colSpan={3}>
-                    <Center h={"100%"}>{nearestEvent.description}</Center>
-                  </GridItem>
-                </Grid>
-              ) : (
-                <Center
-                  h={"100%"}
-                  w={"100%"}
-                  fontWeight={"bold"}
-                  color={"gray.600"}
-                >
-                  You don't have any fertilization events added yet.
-                </Center>
-              )}
+            <Box h={"100%"} w={"100%"}>
+              {renderUpcomingEventGrid()}
             </Box>
           </Flex>
         </Center>

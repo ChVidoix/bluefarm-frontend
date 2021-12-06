@@ -150,7 +150,7 @@ export const FertilizeEventsPage = () => {
                     w={"15em"}
                   >
                     {crops?.find((crop: CropModel) => crop.id == selectedCrop)
-                      ?.name || ""}
+                      ?.name || <Spinner />}
                   </MenuButton>
                   <MenuList
                     bg={"gray.200"}
@@ -168,7 +168,7 @@ export const FertilizeEventsPage = () => {
               </Box>
             </Flex>
           </Center>
-          <FertilizeDetailsWrapper />
+          <FertilizeDetailsWrapper isLoading={isTableLoading} />
           <Center w={"100%"} mt={10} mb={2}>
             <Box bg={"gray.300"} rounded={"lg"} w={"95%"}>
               <Table variant="striped">
