@@ -167,7 +167,6 @@ export const CashEventsFilters = () => {
         })
       );
     } else if (value === CashFiltersMap.byYear) {
-      getCashEventsYears(events);
       const startDate = +new Date(`${selectedYear}-01-01`);
       dispatch(
         setCashEventsFilters({
@@ -282,8 +281,10 @@ export const CashEventsFilters = () => {
               bg={"gray.400"}
               justifyContent={"space-around"}
             >
-              <Center color={"gray.700"}>Balance:</Center>
-              <Center color={"gray.700"}>{balance}</Center>
+              <Center color={"gray.600"} fontWeight={"bold"}>
+                Balance:
+              </Center>
+              <Center color={"gray.600"}>{balance}</Center>
             </Flex>
           </Center>
           <Center mt={3} mb={3}>
@@ -295,7 +296,14 @@ export const CashEventsFilters = () => {
       <Box w={"45%"} bg={"gray.300"} rounded={"lg"}>
         <Flex direction={"column"} w={"100%"} h={"60%"} mt={2}>
           <Center w={"100%"} h={"2em"}>
-            <Center w={"10em"} h={"100%"} bg={"gray.400"} rounded={"lg"}>
+            <Center
+              w={"10em"}
+              h={"100%"}
+              bg={"gray.400"}
+              rounded={"lg"}
+              color={"gray.600"}
+              fontWeight={"bold"}
+            >
               Amount
             </Center>
           </Center>
@@ -303,7 +311,13 @@ export const CashEventsFilters = () => {
           <Flex w={"100%"}>
             <Spacer />
             <Box w={"47%"}>
-              <FormLabel htmlFor="amount">Min amount</FormLabel>
+              <FormLabel
+                htmlFor="min-amount"
+                color={"gray.600"}
+                fontWeight={"bold"}
+              >
+                Min amount
+              </FormLabel>
               <NumberInput
                 rounded={"lg"}
                 onChange={(valueString) =>
@@ -321,10 +335,16 @@ export const CashEventsFilters = () => {
             </Box>
             <Spacer />
             <Box w={"47%"}>
-              <FormLabel htmlFor="amount">Max amount</FormLabel>
+              <FormLabel
+                htmlFor="max-amount"
+                color={"gray.600"}
+                fontWeight={"bold"}
+              >
+                Max amount
+              </FormLabel>
               <NumberInput
                 rounded={"lg"}
-                onChange={(valueString) =>
+                onChange={(valueString: string) =>
                   handleMaxAmountChange(parse(valueString))
                 }
                 value={format(maxAmountInput)}
@@ -340,7 +360,14 @@ export const CashEventsFilters = () => {
             <Spacer />
           </Flex>
           <Center w={"100%"} h={"2em"} mt={5}>
-            <Center w={"10em"} h={"100%"} bg={"gray.400"} rounded={"lg"}>
+            <Center
+              w={"10em"}
+              h={"100%"}
+              bg={"gray.400"}
+              rounded={"lg"}
+              color={"gray.600"}
+              fontWeight={"bold"}
+            >
               Date
             </Center>
           </Center>

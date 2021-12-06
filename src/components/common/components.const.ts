@@ -2,6 +2,7 @@ import {
   CashEventModel,
   CropModel,
   EventModel,
+  FertilizeEventModel,
 } from "../../service/BlueFarm.service.const";
 import { As } from "@chakra-ui/react";
 import React, { Dispatch } from "react";
@@ -17,6 +18,8 @@ export const authenticatedLinks: { [name: string]: string } = {
   events: "Events",
   cash_events: "Billings",
   weather: "Weather",
+  harvests: "Harvests",
+  fertilize_events: "Fertilization",
 };
 
 export enum CashEventType {
@@ -34,6 +37,15 @@ export const FiltersMap: { [key: string]: string } = {
 };
 
 export const CashFiltersMap: { [key: string]: string } = {
+  all: "All upcoming",
+  week: "Next week",
+  twoWeeks: "Next two weeks",
+  month: "Next month",
+  previous: "Previous",
+  byYear: "By year",
+};
+
+export const FertilizeFiltersMap: { [key: string]: string } = {
   all: "All upcoming",
   week: "Next week",
   twoWeeks: "Next two weeks",
@@ -80,6 +92,14 @@ export const fullCashEventsColumns = [
   { Header: "Description", accessor: "description" },
 ];
 
+export const fertilizeEventsColumns = [
+  { Header: "Name", accessor: "name" },
+  { Header: "Date", accessor: "date" },
+  { Header: "Amount", accessor: "amount", isNumeric: true },
+  { Header: "Description", accessor: "description" },
+  { Header: "Type", accessor: "type" },
+];
+
 export interface HeaderProps {
   as?: As;
   title: string;
@@ -117,6 +137,10 @@ export interface EventOptionsProps {
   event: EventModel;
 }
 
+export interface FertilizeEventOptionsProps {
+  eventId: number;
+}
+
 export interface EditCashEventDrawerProps {
   event: CashEventModel;
 }
@@ -127,6 +151,12 @@ export interface CashEventOptionsProps {
 
 export interface FilterEvents {
   events: Array<EventModel>;
+  startTimestamp: number;
+  endTimestamp: number;
+}
+
+export interface FilterFertilizeEvents {
+  events: Array<FertilizeEventModel> | null;
   startTimestamp: number;
   endTimestamp: number;
 }

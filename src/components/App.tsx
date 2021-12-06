@@ -22,6 +22,8 @@ import CropsPage from "./cropsPage/CropsPage";
 import EventsPage from "./eventsPage/EventsPage";
 import CashEventsPage from "./cashEventsPage/CashEventsPage";
 import WeatherPage from "./weatherPage/WeatherPage";
+import { FertilizeEventsPage } from "./fertilizeEventsPage/FertilizeEventsPage";
+import { HarvestsPage } from "./harvestsPage/HarvestsPage";
 
 const App = () => {
   const [state, dispatch] = useReducer(reducer, BlueFarmInitialState);
@@ -47,6 +49,7 @@ const App = () => {
       <Router>
         <NavBar />
         <Routes>
+          <Route path={"/"} element={<PrivateRoute element={<HomePage />} />} />
           <Route
             path={"/home"}
             element={<PrivateRoute element={<HomePage />} />}
@@ -66,6 +69,14 @@ const App = () => {
           <Route
             path={"/weather"}
             element={<PrivateRoute element={<WeatherPage />} />}
+          />
+          <Route
+            path={"/fertilize_events"}
+            element={<PrivateRoute element={<FertilizeEventsPage />} />}
+          />
+          <Route
+            path={"/harvests"}
+            element={<PrivateRoute element={<HarvestsPage />} />}
           />
           <Route path={"/login"} element={<LoginPage />} />
           <Route path={"/register"} element={<RegisterPage />} />

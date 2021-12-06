@@ -37,6 +37,14 @@ export interface DeleteObjectModel {
   id?: number;
 }
 
+export interface DeleteFertilizeEventModel extends DeleteObjectModel {
+  cropId: number;
+}
+
+export interface DeleteHarvestModel extends DeleteObjectModel {
+  cropId: number;
+}
+
 export interface EditCropModel extends CreateCropModel {
   id: number;
 }
@@ -58,8 +66,56 @@ export interface CreateEventModel {
   end_date: string;
 }
 
+export interface CreateFertilizeEventModel {
+  token: string | null;
+  cropId: number;
+  name: string;
+  description: string;
+  date: string;
+  type: string;
+  amount: number;
+}
+
+export interface CreateHarvestModel {
+  token: string | null;
+  cropId: number;
+  name: string;
+  notes: string;
+  start_date: string;
+  end_date: string;
+  crop_amount: number;
+}
+
 export interface EditEventModel extends CreateEventModel {
   id: number;
+}
+
+export interface EditFertilizeEventModel extends CreateFertilizeEventModel {
+  fertilizeEventId: number;
+}
+
+export interface EditHarvestModel extends CreateHarvestModel {
+  harvestId: number;
+}
+
+export interface HarvestModel {
+  id: number;
+  name: string;
+  notes: string;
+  start_date: string;
+  end_date: string;
+  crop_amount: number;
+  crop: number;
+}
+
+export interface FertilizeEventModel {
+  id: number;
+  name: string;
+  description: string;
+  type: string;
+  date: string;
+  amount: number;
+  crop: number;
 }
 
 export interface CashEventModel {

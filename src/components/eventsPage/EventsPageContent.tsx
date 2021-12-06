@@ -25,7 +25,7 @@ import { useSortBy, useTable } from "react-table";
 import { eventsColumns } from "../common/components.const";
 import { TriangleDownIcon, TriangleUpIcon } from "@chakra-ui/icons";
 import { EventOptions } from "./EventOptions";
-import { ShowEventDescription } from "./ShowEventDescription";
+import { ShowDescription } from "../common/ShowDescription";
 import { setAllEvents, setFilteredEvents } from "../../actions/BlueFarmActions";
 import { EventsFilters } from "./EventsFilters";
 
@@ -83,7 +83,7 @@ export const EventsPageContent = () => {
   ): JSX.Element => {
     if (eventDescription.length > 15) {
       return (
-        <ShowEventDescription name={eventName} description={eventDescription} />
+        <ShowDescription name={eventName} description={eventDescription} />
       );
     }
     return <>{eventDescription}</>;

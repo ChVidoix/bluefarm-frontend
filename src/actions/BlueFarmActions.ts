@@ -6,6 +6,8 @@ import {
 import {
   CashEventModel,
   EventModel,
+  FertilizeEventModel,
+  HarvestModel,
   LoginResponseModel,
 } from "../service/BlueFarm.service.const";
 
@@ -98,5 +100,51 @@ export const setFilteredCashEvents = (
   events: Array<CashEventModel> | null
 ): Action<{ events: Array<CashEventModel> | null }> => ({
   type: BlueFarmActionType.SET_DIVIDED_CASH_EVENTS,
+  payload: { events },
+});
+
+export const setFertilizeEvents = (
+  events: Array<FertilizeEventModel>
+): Action<{ events: Array<FertilizeEventModel> }> => ({
+  type: BlueFarmActionType.SET_FERTILIZE_EVENTS,
+  payload: { events },
+});
+
+export const setFertilizeEventsFilters = (
+  startTimestamp: number,
+  endTimestamp: number
+): Action<{ startTimestamp: number; endTimestamp: number }> => ({
+  type: BlueFarmActionType.SET_FERTILIZE_EVENTS_FILTERS,
+  payload: { startTimestamp, endTimestamp },
+});
+
+export const setFilteredFertilizeEvents = (
+  events: Array<FertilizeEventModel> | null
+): Action<{ events: Array<FertilizeEventModel> | null }> => ({
+  type: BlueFarmActionType.SET_FILTERED_FERTILIZE_EVENTS,
+  payload: { events },
+});
+
+export const setSelectedCrop = (id: number): Action<{ id: number }> => ({
+  type: BlueFarmActionType.SET_SELECTED_CROP,
+  payload: { id },
+});
+
+export const setHarvests = (
+  events: Array<HarvestModel>
+): Action<{ events: Array<HarvestModel> }> => ({
+  type: BlueFarmActionType.SET_HARVESTS,
+  payload: { events },
+});
+
+export const setHarvestsFilters = (year: string): Action<{ year: string }> => ({
+  type: BlueFarmActionType.SET_HARVESTS_FILTERS,
+  payload: { year },
+});
+
+export const setFilteredHarvests = (
+  events: Array<HarvestModel> | null
+): Action<{ events: Array<HarvestModel> | null }> => ({
+  type: BlueFarmActionType.SET_FILTERED_HARVESTS,
   payload: { events },
 });

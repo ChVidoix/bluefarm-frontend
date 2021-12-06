@@ -1,4 +1,14 @@
-import { CashEventModel, EventModel } from "../service/BlueFarm.service.const";
+import {
+  CashEventModel,
+  EventModel,
+  FertilizeEventModel,
+  HarvestModel,
+} from "../service/BlueFarm.service.const";
+
+export enum CropYearFilterOptions {
+  allUpcoming = "All upcoming",
+  previous = "Previous",
+}
 
 export interface DjangoUserModel {
   id: number;
@@ -43,6 +53,24 @@ export interface BlueFarmState {
     filteredIncomes: Array<CashEventModel> | null;
     filters: CashEventsFilters;
   };
+  crops: {
+    selectedCrop: number;
+    fertilization: {
+      fertilizeEvents: Array<FertilizeEventModel> | null;
+      filteredFertilizeEvents: Array<FertilizeEventModel> | null;
+      filters: {
+        startTimestamp: number;
+        endTimestamp: number;
+      };
+    };
+    harvests: {
+      harvestsEvents: Array<HarvestModel> | null;
+      filteredHarvestsEvents: Array<HarvestModel> | null;
+      filters: {
+        year: CropYearFilterOptions | string;
+      };
+    };
+  };
   appState: BlueFarmAppState;
 }
 
@@ -68,6 +96,22 @@ export const BlueFarmInitialState: BlueFarmState = {
       endTimestamp: 2147483648000,
       minAmount: 0,
       maxAmount: 0,
+    },
+  },
+  crops: {
+    selectedCrop: 0,
+    fertilization: {
+      fertilizeEvents: null,
+      filteredFertilizeEvents: null,
+      filters: {
+        startTimestamp: +new Date(),
+        endTimestamp: +new Date(`${new Date().getFullYear()}-12-31`),
+      },
+    },
+    harvests: {
+      harvestsEvents: null,
+      filteredHarvestsEvents: null,
+      filters: { year: String(new Date().getFullYear()) },
     },
   },
   appState: {

@@ -129,6 +129,93 @@ export const reducer = (
         },
       };
     }
+    case BlueFarmActionType.SET_FERTILIZE_EVENTS: {
+      return {
+        ...state,
+        crops: {
+          ...state.crops,
+          fertilization: {
+            ...state.crops.fertilization,
+            fertilizeEvents: payload.events,
+            filteredFertilizeEvents: payload.events,
+          },
+        },
+        appState: { ...state.appState, isLoading: false },
+      };
+    }
+    case BlueFarmActionType.SET_FERTILIZE_EVENTS_FILTERS: {
+      return {
+        ...state,
+        crops: {
+          ...state.crops,
+          fertilization: {
+            ...state.crops.fertilization,
+            filters: payload,
+          },
+        },
+        appState: { ...state.appState, isLoading: false },
+      };
+    }
+    case BlueFarmActionType.SET_FILTERED_FERTILIZE_EVENTS: {
+      return {
+        ...state,
+        crops: {
+          ...state.crops,
+          fertilization: {
+            ...state.crops.fertilization,
+            filteredFertilizeEvents: payload.events,
+          },
+        },
+        appState: { ...state.appState, isLoading: false },
+      };
+    }
+    case BlueFarmActionType.SET_HARVESTS: {
+      return {
+        ...state,
+        crops: {
+          ...state.crops,
+          harvests: {
+            ...state.crops.harvests,
+            harvestsEvents: payload.events,
+            filteredHarvestsEvents: payload.events,
+          },
+        },
+        appState: { ...state.appState, isLoading: false },
+      };
+    }
+    case BlueFarmActionType.SET_HARVESTS_FILTERS: {
+      return {
+        ...state,
+        crops: {
+          ...state.crops,
+          harvests: {
+            ...state.crops.harvests,
+            filters: { year: payload.year },
+          },
+        },
+        appState: { ...state.appState, isLoading: false },
+      };
+    }
+    case BlueFarmActionType.SET_FILTERED_HARVESTS: {
+      return {
+        ...state,
+        crops: {
+          ...state.crops,
+          harvests: {
+            ...state.crops.harvests,
+            filteredHarvestsEvents: payload.events,
+          },
+        },
+        appState: { ...state.appState, isLoading: false },
+      };
+    }
+    case BlueFarmActionType.SET_SELECTED_CROP: {
+      return {
+        ...state,
+        crops: { ...state.crops, selectedCrop: payload.id },
+        appState: { ...state.appState, isLoading: false },
+      };
+    }
     default: {
       return state;
     }

@@ -31,7 +31,7 @@ export const CashEventsTable = ({
         <DrawerContent bg={"gray.200"}>
           <DrawerHeader>
             <Flex>
-              <Box>{title}</Box>
+              <Box>{title[0].toUpperCase() + title.slice(1)}</Box>
               <Spacer />
               <CloseButton onClick={onClose} />
             </Flex>

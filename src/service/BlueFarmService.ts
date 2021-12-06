@@ -10,17 +10,28 @@ import {
   CreateCashEventModel,
   CreateCropModel,
   CreateEventModel,
+  CreateFertilizeEventModel,
+  CreateHarvestModel,
   CropModel,
+  DeleteFertilizeEventModel,
+  DeleteHarvestModel,
   DeleteObjectModel,
   EditCashEventModel,
   EditCropModel,
   EditEventModel,
+  EditFertilizeEventModel,
+  EditHarvestModel,
   EventModel,
+  FertilizeEventModel,
+  HarvestModel,
   LoginResponseModel,
   UserLoginCredentialsModel,
   UserRegisterCredentialsModel,
 } from "./BlueFarm.service.const";
-import { FilterEvents } from "../components/common/components.const";
+import {
+  FilterEvents,
+  FilterFertilizeEvents,
+} from "../components/common/components.const";
 
 const tokenConfig = (token: string | null) => {
   const config = {
@@ -321,4 +332,188 @@ export const getCashEventsYears = (
   });
 
   return resultYears;
+};
+
+export const getFertilizeEventsYears = (
+  events: Array<FertilizeEventModel> | null
+) => {
+  const resultYears: Array<string> = [];
+
+  events?.forEach((event: FertilizeEventModel) => {
+    const year = event.date.slice(0, 4);
+    if (!resultYears.includes(year)) {
+      resultYears.push(year);
+    }
+  });
+
+  return resultYears;
+};
+
+export const getFertilizationEvents = (
+  token: string | null,
+  cropId: number
+): Promise<Array<FertilizeEventModel>> => {
+  return axios
+    .get(`/api/crops/${cropId}/fertilize_events/`, tokenConfig(token))
+    .then((res: AxiosResponse<Array<FertilizeEventModel>>) => res.data);
+};
+
+export const getHarvests = (
+  token: string | null,
+  cropId: number
+): Promise<Array<HarvestModel>> => {
+  return axios
+    .get(`/api/crops/${cropId}/harvests/`, tokenConfig(token))
+    .then((res: AxiosResponse<Array<HarvestModel>>) => res.data);
+};
+
+export const createFertilizeEvent = ({
+  token,
+  cropId,
+  name,
+  description,
+  date,
+  amount,
+  type,
+}: CreateFertilizeEventModel): Promise<FertilizeEventModel> => {
+  const body = JSON.stringify({ name, description, date, amount, type });
+  return axios
+    .post(`/api/crops/${cropId}/fertilize_events/`, body, tokenConfig(token))
+    .then((res: AxiosResponse<FertilizeEventModel>) => res.data);
+};
+
+export const editFertilizeEvent = ({
+  token,
+  amount,
+  type,
+  fertilizeEventId,
+  description,
+  date,
+  name,
+  cropId,
+}: EditFertilizeEventModel): Promise<FertilizeEventModel> => {
+  const body = JSON.stringify({ name, description, amount, date, type });
+  return axios
+    .put(
+      `/api/crops/${cropId}/fertilize_events/${fertilizeEventId}/`,
+      body,
+      tokenConfig(token)
+    )
+    .then((res: AxiosResponse<FertilizeEventModel>) => res.data);
+};
+
+export const deleteFertilizeEvent = ({
+  token,
+  id,
+  cropId,
+}: DeleteFertilizeEventModel) => {
+  return axios.delete(
+    `/api/crops/${cropId}/fertilize_events/${id}/`,
+    tokenConfig(token)
+  );
+};
+
+export const deleteHarvest = ({ token, id, cropId }: DeleteHarvestModel) => {
+  return axios.delete(
+    `/api/crops/${cropId}/harvests/${id}/`,
+    tokenConfig(token)
+  );
+};
+
+export const createHarvest = ({
+  token,
+  cropId,
+  name,
+  end_date,
+  start_date,
+  notes,
+  crop_amount,
+}: CreateHarvestModel): Promise<HarvestModel> => {
+  const body = JSON.stringify({
+    name,
+    notes,
+    start_date,
+    end_date,
+    crop_amount,
+  });
+  return axios
+    .post(`/api/crops/${cropId}/harvests/`, body, tokenConfig(token))
+    .then((res: AxiosResponse<HarvestModel>) => res.data);
+};
+
+export const editHarvest = ({
+  token,
+  name,
+  cropId,
+  crop_amount,
+  harvestId,
+  end_date,
+  start_date,
+  notes,
+}: EditHarvestModel): Promise<HarvestModel> => {
+  const body = JSON.stringify({
+    name,
+    crop_amount,
+    start_date,
+    end_date,
+    notes,
+  });
+  return axios
+    .put(
+      `/api/crops/${cropId}/harvests/${harvestId}/`,
+      body,
+      tokenConfig(token)
+    )
+    .then((res: AxiosResponse<HarvestModel>) => res.data);
+};
+
+export const filterFertilizeEvents = ({
+  events,
+  startTimestamp,
+  endTimestamp,
+}: FilterFertilizeEvents): Array<FertilizeEventModel> => {
+  const resultEvents: Array<FertilizeEventModel> = [];
+  events?.forEach((event: FertilizeEventModel) => {
+    if (
+      Date.parse(event.date) > startTimestamp &&
+      Date.parse(event.date) < endTimestamp
+    ) {
+      resultEvents.push(event);
+    }
+  });
+  return resultEvents;
+};
+
+export const formatDate = (date: string): string => {
+  const time = date.slice(11, 16);
+  const year = date.slice(0, 4);
+  const month = date.slice(5, 7);
+  const day = date.slice(8, 10);
+  return `${time} ${day}.${month}.${year}`;
+};
+
+export const getNearestFertilizeEvent = (
+  fertilizeEvents: Array<FertilizeEventModel> | null
+): FertilizeEventModel | null => {
+  let nearestEventTimestampDifference = 2147483648000;
+  let nearestEvent: FertilizeEventModel = {
+    id: 0,
+    date: "",
+    name: "",
+    description: "",
+    amount: 0,
+    crop: 0,
+    type: "",
+  };
+  fertilizeEvents?.forEach((event: FertilizeEventModel) => {
+    const differenceTimestamp = +new Date(event.date) - +new Date();
+    if (
+      differenceTimestamp < nearestEventTimestampDifference &&
+      differenceTimestamp > 0
+    ) {
+      nearestEventTimestampDifference = differenceTimestamp;
+      nearestEvent = event;
+    }
+  });
+  return nearestEvent.name ? nearestEvent : null;
 };

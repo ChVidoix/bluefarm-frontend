@@ -8,9 +8,9 @@ import {
   DrawerOverlay,
   useDisclosure,
 } from "@chakra-ui/react";
-import { ShowDescriptionProps } from "../common/components.const";
+import { ShowDescriptionProps } from "./components.const";
 
-export const ShowEventDescription = ({
+export const ShowDescription = ({
   name,
   description,
 }: ShowDescriptionProps) => {
