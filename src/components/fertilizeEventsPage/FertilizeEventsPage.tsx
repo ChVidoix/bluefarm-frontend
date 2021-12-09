@@ -14,6 +14,7 @@ import {
   Td,
   Th,
   Thead,
+  Tooltip,
   Tr,
 } from "@chakra-ui/react";
 import { useContext, useEffect, useState } from "react";
@@ -36,7 +37,6 @@ import {
   setFertilizeEvents,
   setSelectedCrop,
 } from "../../actions/BlueFarmActions";
-import { ShowDescription } from "../common/ShowDescription";
 import { AddFertilizationEventDrawer } from "./AddFertilizationEventDrawer";
 import { FertilizeEventOptions } from "./FertilizeEventOptions";
 import { FertilizeDetailsWrapper } from "./FertilizeDetailsWrapper";
@@ -100,7 +100,10 @@ export const FertilizeEventsPage = () => {
   ): JSX.Element => {
     if (eventDescription.length > 15) {
       return (
-        <ShowDescription name={eventName} description={eventDescription} />
+        <Tooltip label={eventDescription}>{`${eventDescription.slice(
+          0,
+          15
+        )}...`}</Tooltip>
       );
     }
     return <>{eventDescription}</>;
@@ -149,7 +152,7 @@ export const FertilizeEventsPage = () => {
                     rightIcon={<ChevronDownIcon />}
                     w={"15em"}
                   >
-                    {crops?.find((crop: CropModel) => crop.id == selectedCrop)
+                    {crops?.find((crop: CropModel) => crop.id === selectedCrop)
                       ?.name || <Spinner />}
                   </MenuButton>
                   <MenuList

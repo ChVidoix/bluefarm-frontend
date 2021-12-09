@@ -8,27 +8,28 @@ import {
   DrawerContent,
   DrawerHeader,
   DrawerOverlay,
+  IconButton,
   StackDivider,
   Text,
   useDisclosure,
   VStack,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
-import { ArrowRightIcon } from "@chakra-ui/icons";
 import { authenticatedLinks } from "../common/components.const";
+import { HamburgerIcon } from "@chakra-ui/icons";
 
 const DrawerMenu = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <>
-      <Button
-        aria-label="menu"
+      <IconButton
+        colorScheme="teal"
+        aria-label="Call Segun"
+        size="lg"
+        icon={<HamburgerIcon />}
         onClick={onOpen}
-        leftIcon={<ArrowRightIcon size="sm" />}
-      >
-        Menu
-      </Button>
+      />
       <Drawer onClose={onClose} isOpen={isOpen} size="xs" placement="left">
         <DrawerOverlay />
         <DrawerContent>

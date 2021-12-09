@@ -19,21 +19,21 @@ import {
 } from "@chakra-ui/react";
 import { ChangeEvent, useContext, useEffect, useState } from "react";
 import {
-  editFertilizeEvent,
+  editHarvest,
   parseJSDateToDjango,
 } from "../../service/BlueFarmService";
 import {
   BlueFarmContext,
   BlueFarmContextModel,
 } from "../../provider/BlueFarmProvider";
-import { FertilizeEventModel } from "../../service/BlueFarm.service.const";
+import { HarvestModel } from "../../service/BlueFarm.service.const";
 import { DatePicker } from "../common/DatePicker";
 import { format } from "date-fns";
-import { setFertilizeEvents } from "../../actions/BlueFarmActions";
+import { setHarvests } from "../../actions/BlueFarmActions";
 import { FertilizeEventOrHarvestOptionsProps } from "../common/components.const";
 import { FiEdit3 } from "react-icons/all";
 
-export const EditFertilizeEventDrawer = ({
+export const EditHarvestDrawer = ({
   eventId,
 }: FertilizeEventOrHarvestOptionsProps) => {
   const {
@@ -41,7 +41,7 @@ export const EditFertilizeEventDrawer = ({
       auth: { token },
       crops: {
         selectedCrop,
-        fertilization: { fertilizeEvents },
+        harvests: { harvestsEvents },
       },
     },
     dispatch,
@@ -49,35 +49,45 @@ export const EditFertilizeEventDrawer = ({
 
   const {
     name: editedName,
-    date: editedDate,
-    description: editedDescription,
+    start_date: editedStartDate,
+    end_date: editedEndDate,
+    notes: editedNotes,
     type: editedType,
-    amount: editedAmount,
-  } = fertilizeEvents?.find(
-    (filteredEvent: FertilizeEventModel) => filteredEvent.id === eventId
+    crop_amount: editedCropAmount,
+  } = harvestsEvents?.find(
+    (filteredHarvest: HarvestModel) => filteredHarvest.id === eventId
   )!;
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [name, setName] = useState("");
-  const [date, setDate] = useState(format(new Date(), "yyyy-MM-dd"));
-  const [time, setTime] = useState("12:00");
-  const [description, setDescription] = useState("");
+  const [startDate, setStartDate] = useState(format(new Date(), "yyyy-MM-dd"));
+  const [endDate, setEndDate] = useState(format(new Date(), "yyyy-MM-dd"));
+  const [startTime, setStartTime] = useState("12:00");
+  const [endTime, setEndTime] = useState("13:00");
+  const [notes, setNotes] = useState("");
   const [type, setType] = useState("");
-  const [amount, setAmount] = useState(0);
+  const [cropAmount, setCropAmount] = useState(0);
   const [addButtonLoading, setAddButtonLoading] = useState(false);
 
   useEffect(() => {
     if (isOpen) {
       setName(editedName);
       setType(editedType);
-      setAmount(editedAmount);
-      setDate(editedDate.slice(0, 10));
-      setTime(editedDate.slice(11, 16));
-      setDescription(editedDescription);
+      setCropAmount(editedCropAmount);
+      setStartDate(editedStartDate.slice(0, 10));
+      setEndDate(editedEndDate.slice(0, 10));
+      setEndTime(editedEndDate.slice(11, 16));
+      setStartTime(editedStartDate.slice(11, 16));
+      setNotes(editedNotes);
     }
   }, [isOpen]);
 
-  const isAddButtonInvalid = !name || !description || !type || amount === 0;
+  const isAddButtonInvalid =
+    !name ||
+    !notes ||
+    !type ||
+    cropAmount === 0 ||
+    +new Date(`${startDate} ${startTime}`) > +new Date(`${endDate} ${endTime}`);
 
   const handleNameChange = (event: ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
@@ -88,48 +98,51 @@ export const EditFertilizeEventDrawer = ({
   };
 
   const handleDescriptionChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
-    setDescription(event.target.value);
+    setNotes(event.target.value);
   };
 
   const handleAmountChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setAmount(+event.target.value);
+    setCropAmount(+event.target.value);
   };
 
   const clearInputs = () => {
     onClose();
     setName("");
     setType("");
-    setAmount(0);
-    setDate(format(new Date(), "yyyy-MM-dd"));
-    setTime("12:00");
-    setDescription("");
+    setCropAmount(0);
+    setStartDate(format(new Date(), "yyyy-MM-dd"));
+    setEndDate(format(new Date(), "yyyy-MM-dd"));
+    setStartTime("12:00");
+    setEndTime("13:00");
+    setNotes("");
   };
 
   const handleEditEvent = () => {
     setAddButtonLoading(true);
-    editFertilizeEvent({
+    editHarvest({
       token,
       cropId: selectedCrop,
-      fertilizeEventId: eventId,
+      harvestId: eventId,
       name,
-      date: parseJSDateToDjango(date, time),
-      description,
+      start_date: parseJSDateToDjango(startDate, startTime),
+      end_date: parseJSDateToDjango(endDate, endTime),
+      notes,
       type,
-      amount,
-    }).then((res: FertilizeEventModel) => {
-      if (fertilizeEvents) {
+      crop_amount: cropAmount,
+    }).then((res: HarvestModel) => {
+      if (harvestsEvents) {
         dispatch(
-          setFertilizeEvents(
-            fertilizeEvents.map((fertilizeEvent: FertilizeEventModel) => {
-              if (fertilizeEvent.id === res.id) {
+          setHarvests(
+            harvestsEvents.map((harvest: HarvestModel) => {
+              if (harvest.id === res.id) {
                 return res;
               }
-              return fertilizeEvent;
+              return harvest;
             })
           )
         );
       } else {
-        dispatch(setFertilizeEvents([res]));
+        dispatch(setHarvests([res]));
       }
       clearInputs();
       setAddButtonLoading(false);
@@ -145,7 +158,7 @@ export const EditFertilizeEventDrawer = ({
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton onClick={clearInputs} />
-          <DrawerHeader borderBottomWidth="2px">Edit {editedName}</DrawerHeader>
+          <DrawerHeader borderBottomWidth="2px">Edit harvest</DrawerHeader>
 
           <DrawerBody>
             <Stack spacing="24px">
@@ -153,7 +166,7 @@ export const EditFertilizeEventDrawer = ({
                 <FormLabel htmlFor="name">Name</FormLabel>
                 <Input
                   id="name"
-                  placeholder="Enter your fertilize event's name"
+                  placeholder="Enter your harvest's name"
                   maxLength={30}
                   value={name}
                   isInvalid={!name}
@@ -162,12 +175,23 @@ export const EditFertilizeEventDrawer = ({
               </Box>
 
               <Box>
-                <FormLabel htmlFor="date">Date</FormLabel>
+                <FormLabel htmlFor="start-date">Start date</FormLabel>
                 <DatePicker
-                  date={date}
-                  setDate={setDate}
-                  time={time}
-                  setTime={setTime}
+                  date={startDate}
+                  setDate={setStartDate}
+                  time={startTime}
+                  setTime={setStartTime}
+                />
+              </Box>
+
+              <Box>
+                <FormLabel htmlFor="end-date">End date</FormLabel>
+                <DatePicker
+                  date={endDate}
+                  time={endTime}
+                  min={startDate}
+                  setDate={setEndDate}
+                  setTime={setEndTime}
                 />
               </Box>
 
@@ -177,8 +201,8 @@ export const EditFertilizeEventDrawer = ({
                   <Input
                     type={"number"}
                     placeholder={"Type amount"}
-                    isInvalid={amount === 0}
-                    value={amount}
+                    isInvalid={cropAmount === 0}
+                    value={cropAmount}
                     onChange={handleAmountChange}
                   />
                   <InputRightAddon>kg</InputRightAddon>
@@ -186,23 +210,24 @@ export const EditFertilizeEventDrawer = ({
               </Box>
 
               <Box>
-                <FormLabel htmlFor="type">Type</FormLabel>
+                <FormLabel htmlFor="type">Variety</FormLabel>
                 <Input
                   id="name"
-                  placeholder="Enter your fertilize event's type"
+                  placeholder="Enter harvested variety"
                   maxLength={20}
                   value={type}
                   isInvalid={!type}
                   onChange={handleTypeChange}
                 />
               </Box>
+
               <Box>
-                <FormLabel htmlFor="desc">Description</FormLabel>
+                <FormLabel htmlFor="desc">Notes</FormLabel>
                 <Textarea
                   id="desc"
                   maxLength={150}
-                  value={description}
-                  isInvalid={!description}
+                  value={notes}
+                  isInvalid={!notes}
                   onChange={handleDescriptionChange}
                 />
               </Box>

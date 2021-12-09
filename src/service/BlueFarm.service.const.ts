@@ -80,6 +80,7 @@ export interface CreateHarvestModel {
   token: string | null;
   cropId: number;
   name: string;
+  type: string;
   notes: string;
   start_date: string;
   end_date: string;
@@ -102,6 +103,7 @@ export interface HarvestModel {
   id: number;
   name: string;
   notes: string;
+  type: string;
   start_date: string;
   end_date: string;
   crop_amount: number;

@@ -12,38 +12,34 @@ import {
 } from "../../provider/BlueFarmProvider";
 import { AiFillDelete, HiDotsVertical } from "react-icons/all";
 import { FertilizeEventOrHarvestOptionsProps } from "../common/components.const";
-import { FertilizeEventModel } from "../../service/BlueFarm.service.const";
-import { deleteFertilizeEvent } from "../../service/BlueFarmService";
-import { setFertilizeEvents } from "../../actions/BlueFarmActions";
-import { EditFertilizeEventDrawer } from "./EditFertilizeEventDrawer";
+import { HarvestModel } from "../../service/BlueFarm.service.const";
+import { deleteHarvest } from "../../service/BlueFarmService";
+import { setHarvests } from "../../actions/BlueFarmActions";
+import { EditHarvestDrawer } from "./EditHarvestDrawer";
 
-export const FertilizeEventOptions = ({
+export const HarvestOptions = ({
   eventId,
 }: FertilizeEventOrHarvestOptionsProps) => {
   const {
     state: {
       auth: { token },
-
       crops: {
         selectedCrop,
-        fertilization: { fertilizeEvents },
+        harvests: { harvestsEvents },
       },
     },
     dispatch,
   } = useContext(BlueFarmContext) as BlueFarmContextModel;
   const handleDelete = () => {
-    deleteFertilizeEvent({ token, id: eventId, cropId: selectedCrop }).then(
-      () => {
-        dispatch(
-          setFertilizeEvents(
-            fertilizeEvents?.filter(
-              (filteredEvent: FertilizeEventModel) =>
-                filteredEvent.id !== eventId
-            ) || []
-          )
-        );
-      }
-    );
+    deleteHarvest({ token, id: eventId, cropId: selectedCrop }).then(() => {
+      dispatch(
+        setHarvests(
+          harvestsEvents?.filter(
+            (filteredHarvest: HarvestModel) => filteredHarvest.id !== eventId
+          ) || []
+        )
+      );
+    });
   };
 
   return (
@@ -55,7 +51,7 @@ export const FertilizeEventOptions = ({
           icon={<HiDotsVertical />}
         />
         <MenuList>
-          <EditFertilizeEventDrawer eventId={eventId} />
+          <EditHarvestDrawer eventId={eventId} />
           <MenuItem icon={<AiFillDelete />} onClick={handleDelete}>
             Delete
           </MenuItem>

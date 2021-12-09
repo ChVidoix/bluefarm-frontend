@@ -137,9 +137,12 @@ export const setHarvests = (
   payload: { events },
 });
 
-export const setHarvestsFilters = (year: string): Action<{ year: string }> => ({
+export const setHarvestsFilters = (
+  startTimestamp: number,
+  endTimestamp: number
+): Action<{ startTimestamp: number; endTimestamp: number }> => ({
   type: BlueFarmActionType.SET_HARVESTS_FILTERS,
-  payload: { year },
+  payload: { startTimestamp, endTimestamp },
 });
 
 export const setFilteredHarvests = (

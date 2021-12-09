@@ -256,7 +256,9 @@ export const FertilizeDetailsWrapper = ({
                 rounded={"lg"}
                 bg={"gray.300"}
               >
-                <Center>Upcoming</Center>
+                <Center h={"100%"} w={"100%"}>
+                  Upcoming
+                </Center>
               </Heading>
             </Center>
             <Box h={"100%"} w={"100%"}>
@@ -276,7 +278,9 @@ export const FertilizeDetailsWrapper = ({
                 rounded={"lg"}
                 bg={"gray.300"}
               >
-                <Center>Filters</Center>
+                <Center h={"100%"} w={"100%"}>
+                  Filters
+                </Center>
               </Heading>
             </Center>
             <Grid

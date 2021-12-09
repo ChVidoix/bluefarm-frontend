@@ -11,6 +11,7 @@ import {
   Td,
   Th,
   Thead,
+  Tooltip,
   Tr,
 } from "@chakra-ui/react";
 import { filterEvents, getEvents } from "../../service/BlueFarmService";
@@ -25,7 +26,6 @@ import { useSortBy, useTable } from "react-table";
 import { eventsColumns } from "../common/components.const";
 import { TriangleDownIcon, TriangleUpIcon } from "@chakra-ui/icons";
 import { EventOptions } from "./EventOptions";
-import { ShowDescription } from "../common/ShowDescription";
 import { setAllEvents, setFilteredEvents } from "../../actions/BlueFarmActions";
 import { EventsFilters } from "./EventsFilters";
 
@@ -83,7 +83,10 @@ export const EventsPageContent = () => {
   ): JSX.Element => {
     if (eventDescription.length > 15) {
       return (
-        <ShowDescription name={eventName} description={eventDescription} />
+        <Tooltip label={eventDescription}>{`${eventDescription.slice(
+          0,
+          15
+        )}...`}</Tooltip>
       );
     }
     return <>{eventDescription}</>;

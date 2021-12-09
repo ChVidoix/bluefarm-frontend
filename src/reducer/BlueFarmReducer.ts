@@ -190,7 +190,7 @@ export const reducer = (
           ...state.crops,
           harvests: {
             ...state.crops.harvests,
-            filters: { year: payload.year },
+            filters: payload,
           },
         },
         appState: { ...state.appState, isLoading: false },

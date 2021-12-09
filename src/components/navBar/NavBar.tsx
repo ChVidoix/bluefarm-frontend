@@ -28,6 +28,7 @@ const NavBar = () => {
   const {
     state: {
       auth: { isAuthenticated, user, token },
+      appState: { isLoading },
     },
     dispatch,
   } = useContext(BlueFarmContext) as BlueFarmContextModel;
@@ -44,7 +45,7 @@ const NavBar = () => {
   return (
     <Box bg="teal.400" px={4} h="9vh">
       <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
-        {isAuthenticated && <DrawerMenu />}
+        {isAuthenticated && !isLoading && <DrawerMenu />}
         {isAuthenticated ? (
           <Flex alignItems={"center"}>
             <Menu>
@@ -69,9 +70,17 @@ const NavBar = () => {
             </Menu>
           </Flex>
         ) : (
-          <HStack as={"nav"} spacing={4} display={{ base: "none", md: "flex" }}>
-            <NotAuthenticatedLinks />
-          </HStack>
+          <>
+            {!isLoading && (
+              <HStack
+                as={"nav"}
+                spacing={4}
+                display={{ base: "none", md: "flex" }}
+              >
+                <NotAuthenticatedLinks />
+              </HStack>
+            )}
+          </>
         )}
       </Flex>
     </Box>

@@ -5,11 +5,6 @@ import {
   HarvestModel,
 } from "../service/BlueFarm.service.const";
 
-export enum CropYearFilterOptions {
-  allUpcoming = "All upcoming",
-  previous = "Previous",
-}
-
 export interface DjangoUserModel {
   id: number;
   username: string;
@@ -67,7 +62,8 @@ export interface BlueFarmState {
       harvestsEvents: Array<HarvestModel> | null;
       filteredHarvestsEvents: Array<HarvestModel> | null;
       filters: {
-        year: CropYearFilterOptions | string;
+        startTimestamp: number;
+        endTimestamp: number;
       };
     };
   };
@@ -111,7 +107,10 @@ export const BlueFarmInitialState: BlueFarmState = {
     harvests: {
       harvestsEvents: null,
       filteredHarvestsEvents: null,
-      filters: { year: String(new Date().getFullYear()) },
+      filters: {
+        startTimestamp: +new Date(),
+        endTimestamp: +new Date(`${new Date().getFullYear()}-12-31`),
+      },
     },
   },
   appState: {

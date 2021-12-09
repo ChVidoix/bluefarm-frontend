@@ -9,6 +9,7 @@ import {
   Td,
   Th,
   Thead,
+  Tooltip,
   Tr,
 } from "@chakra-ui/react";
 import { countCropsVarietyArea, getCrops } from "../../service/BlueFarmService";
@@ -20,7 +21,6 @@ import {
 import { CropModel } from "../../service/BlueFarm.service.const";
 import { AddCropDrawer } from "./AddCropDrawer";
 import { CropOptions } from "./CropOptions";
-import { ShowCropDescription } from "./ShowCropDescription";
 import CropsStats from "./CropsStats";
 
 const CropsPageContent = () => {
@@ -55,13 +55,13 @@ const CropsPageContent = () => {
     return <AddCropDrawer crops={crops} setCrops={setCrops} />;
   };
 
-  const cropDescriptionRowContent = (
-    cropName: string,
-    cropDescription: string
-  ): JSX.Element => {
+  const cropDescriptionRowContent = (cropDescription: string): JSX.Element => {
     if (cropDescription.length > 15) {
       return (
-        <ShowCropDescription name={cropName} description={cropDescription} />
+        <Tooltip label={cropDescription}>{`${cropDescription.slice(
+          0,
+          15
+        )}...`}</Tooltip>
       );
     }
     return <>{cropDescription}</>;
@@ -73,7 +73,7 @@ const CropsPageContent = () => {
       <Td>{crop.name}</Td>
       <Td>{crop.type}</Td>
       <Td isNumeric>{crop.area}</Td>
-      <Td>{cropDescriptionRowContent(crop.name, crop.description)}</Td>
+      <Td>{cropDescriptionRowContent(crop.description)}</Td>
       <Td>
         <CropOptions crops={crops} setCrops={setCrops} crop={crop} />
       </Td>

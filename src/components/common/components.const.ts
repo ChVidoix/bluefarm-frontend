@@ -3,9 +3,20 @@ import {
   CropModel,
   EventModel,
   FertilizeEventModel,
+  HarvestModel,
 } from "../../service/BlueFarm.service.const";
 import { As } from "@chakra-ui/react";
 import React, { Dispatch } from "react";
+
+export const eventType: { [key: string]: string } = {
+  all: "All events",
+  events: "Events",
+  cashEvents: "Billings",
+  harvests: "Harvests",
+  fertilizeEvents: "Fertilize events",
+};
+
+export const homeEventsCount = [5, 10, 15, 20];
 
 export const notAuthenticatedLinks: { [name: string]: string } = {
   login: "Login",
@@ -114,16 +125,6 @@ export interface CropOptionsProps extends AddCropDrawerProps {
   crop: CropModel;
 }
 
-export interface ShowDescriptionProps {
-  name: string;
-  description: string;
-}
-
-export interface AddEventDrawerProps {
-  events: Array<EventModel> | null;
-  setEvents: React.Dispatch<React.SetStateAction<Array<EventModel> | null>>;
-}
-
 export interface DatePickerProps {
   date: string;
   time: string;
@@ -137,7 +138,7 @@ export interface EventOptionsProps {
   event: EventModel;
 }
 
-export interface FertilizeEventOptionsProps {
+export interface FertilizeEventOrHarvestOptionsProps {
   eventId: number;
 }
 
@@ -157,6 +158,12 @@ export interface FilterEvents {
 
 export interface FilterFertilizeEvents {
   events: Array<FertilizeEventModel> | null;
+  startTimestamp: number;
+  endTimestamp: number;
+}
+
+export interface FilterHarvests {
+  events: Array<HarvestModel> | null;
   startTimestamp: number;
   endTimestamp: number;
 }

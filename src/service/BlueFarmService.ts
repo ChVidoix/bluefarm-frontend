@@ -31,7 +31,9 @@ import {
 import {
   FilterEvents,
   FilterFertilizeEvents,
+  FilterHarvests,
 } from "../components/common/components.const";
+import { formatDuration, intervalToDuration } from "date-fns";
 
 const tokenConfig = (token: string | null) => {
   const config = {
@@ -349,6 +351,19 @@ export const getFertilizeEventsYears = (
   return resultYears;
 };
 
+export const getHarvestsYears = (events: Array<HarvestModel> | null) => {
+  const resultYears: Array<string> = [];
+
+  events?.forEach((harvest: HarvestModel) => {
+    const year = harvest.start_date.slice(0, 4);
+    if (!resultYears.includes(year)) {
+      resultYears.push(year);
+    }
+  });
+
+  return resultYears;
+};
+
 export const getFertilizationEvents = (
   token: string | null,
   cropId: number
@@ -366,6 +381,20 @@ export const getHarvests = (
     .get(`/api/crops/${cropId}/harvests/`, tokenConfig(token))
     .then((res: AxiosResponse<Array<HarvestModel>>) => res.data);
 };
+
+export const getAllHarvests = (
+  token: string | null
+): Promise<Array<HarvestModel>> =>
+  axios
+    .get("/api/harvests/", tokenConfig(token))
+    .then((res: AxiosResponse<Array<HarvestModel>>) => res.data);
+
+export const getAllFertilizeEvents = (
+  token: string | null
+): Promise<Array<FertilizeEventModel>> =>
+  axios
+    .get("/api/fertilize_events/", tokenConfig(token))
+    .then((res: AxiosResponse<Array<FertilizeEventModel>>) => res.data);
 
 export const createFertilizeEvent = ({
   token,
@@ -424,6 +453,7 @@ export const createHarvest = ({
   token,
   cropId,
   name,
+  type,
   end_date,
   start_date,
   notes,
@@ -432,6 +462,7 @@ export const createHarvest = ({
   const body = JSON.stringify({
     name,
     notes,
+    type,
     start_date,
     end_date,
     crop_amount,
@@ -445,6 +476,7 @@ export const editHarvest = ({
   token,
   name,
   cropId,
+  type,
   crop_amount,
   harvestId,
   end_date,
@@ -453,6 +485,7 @@ export const editHarvest = ({
 }: EditHarvestModel): Promise<HarvestModel> => {
   const body = JSON.stringify({
     name,
+    type,
     crop_amount,
     start_date,
     end_date,
@@ -477,6 +510,23 @@ export const filterFertilizeEvents = ({
     if (
       Date.parse(event.date) > startTimestamp &&
       Date.parse(event.date) < endTimestamp
+    ) {
+      resultEvents.push(event);
+    }
+  });
+  return resultEvents;
+};
+
+export const filterHarvests = ({
+  events,
+  startTimestamp,
+  endTimestamp,
+}: FilterHarvests): Array<HarvestModel> => {
+  const resultEvents: Array<HarvestModel> = [];
+  events?.forEach((event: HarvestModel) => {
+    if (
+      Date.parse(event.start_date) > startTimestamp &&
+      Date.parse(event.start_date) < endTimestamp
     ) {
       resultEvents.push(event);
     }
@@ -516,4 +566,109 @@ export const getNearestFertilizeEvent = (
     }
   });
   return nearestEvent.name ? nearestEvent : null;
+};
+
+export const getHarvestsChartData = (
+  harvests: Array<HarvestModel> | null
+): { [key: string]: number } => {
+  const result: { [key: string]: number } = {};
+  harvests?.forEach((harvest: HarvestModel) => {
+    if (Object.keys(result).includes(harvest.type)) {
+      result[harvest.type] += harvest.crop_amount;
+    } else {
+      result[harvest.type] = harvest.crop_amount;
+    }
+  });
+  return result;
+};
+
+export const getHarvestsDuration = (
+  harvests: Array<HarvestModel> | null
+): string => {
+  let start = 2147483648000;
+  let end = 0;
+
+  harvests?.forEach((harvest: HarvestModel) => {
+    if (+new Date(harvest.start_date) < start) {
+      start = +new Date(harvest.start_date);
+    }
+    if (+new Date(harvest.end_date) > end) {
+      end = +new Date(harvest.end_date);
+    }
+  });
+
+  const duration = intervalToDuration({ start, end });
+  const formattedDurationDays = formatDuration(duration, { format: ["days"] });
+  const formattedDurationHours = formatDuration(duration, {
+    format: ["hours"],
+  });
+  return formattedDurationDays || formattedDurationHours;
+};
+
+export const findMostFruitfulVariety = (data: {
+  [key: string]: number;
+}): string => {
+  let variety = "";
+  let mostAmount = 0;
+  console.log(data);
+  Object.keys(data).forEach((searchedVariety: string) => {
+    if (data[searchedVariety] > mostAmount) {
+      mostAmount = data[searchedVariety];
+      variety = searchedVariety;
+    }
+  });
+  return variety;
+};
+
+export const sortEvents = (events: Array<any>): Array<any> => {
+  return events
+    .sort((a: any, b: any) => {
+      const startDateA = a.start_date || a.date;
+      const startDateB = b.start_date || b.date;
+      return +new Date(startDateA) - +new Date(startDateB);
+    })
+    .filter(
+      (event: any) =>
+        (+new Date(event.start_date) || +new Date(event.date)) > +new Date()
+    );
+};
+
+export const getSortedAllUpcomingEvents = (
+  events: Array<EventModel>,
+  cashEvents: Array<CashEventModel>,
+  fertilizeEvents: Array<FertilizeEventModel>,
+  harvests: Array<HarvestModel>
+): Array<any> => {
+  const allEvents: any = [
+    ...events,
+    ...cashEvents,
+    ...fertilizeEvents,
+    ...harvests,
+  ];
+
+  sortEvents(allEvents).forEach((event: any) => {
+    const keys = Object.keys(event);
+    if (keys.includes("type") && keys.includes("date")) {
+      event["event_type"] = "fertilization";
+    } else if (keys.includes("type") && keys.includes("start_date")) {
+      event["event_type"] = "harvest";
+    } else if (keys.includes("start_date")) {
+      event["event_type"] = "event";
+    } else {
+      event["event_type"] = "billing";
+    }
+  });
+
+  return allEvents.filter(
+    (event: any) =>
+      (+new Date(event.start_date) || +new Date(event.date)) > +new Date()
+  );
+};
+
+export const getThisWeekEventsCount = (events: Array<any>): number => {
+  return events.filter(
+    (event: any) =>
+      (+new Date(event.start_date) || +new Date(event.date)) <
+      +new Date() + 1000 * 60 * 60 * 24 * 7
+  ).length;
 };
