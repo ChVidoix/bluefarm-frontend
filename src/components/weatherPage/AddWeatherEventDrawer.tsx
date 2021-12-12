@@ -1,4 +1,6 @@
 import {
+  Alert,
+  AlertIcon,
   Box,
   Button,
   Drawer,
@@ -46,10 +48,13 @@ export const AddWeatherEventDrawer = () => {
   const [maxTemp, setMaxTemp] = useState(0);
   const [minTemp, setMinTemp] = useState(0);
   const [addButtonLoading, setAddButtonLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
 
   const isAddButtonInvalid = !description || !rainfallDescription;
 
-  const handleTypeChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleRainfallDescriptionChange = (
+    event: ChangeEvent<HTMLInputElement>
+  ) => {
     setRainfallDescription(event.target.value);
   };
 
@@ -76,6 +81,7 @@ export const AddWeatherEventDrawer = () => {
     setMinTemp(0);
     setDate(format(new Date(), "yyyy-MM-dd"));
     setDescription("");
+    setIsError(false);
   };
 
   const handleCreateEvent = () => {
@@ -89,6 +95,7 @@ export const AddWeatherEventDrawer = () => {
       max_temp: maxTemp,
     })
       .then((res: WeatherEventModel) => {
+        setIsError(false);
         const today = new Date();
         today.setHours(0, 0, 0, 0);
         if (weatherEvents) {
@@ -101,23 +108,30 @@ export const AddWeatherEventDrawer = () => {
         clearInputs();
         setAddButtonLoading(false);
       })
-      .catch((error) => {
-        console.log(error);
+      .catch(() => {
+        setIsError(true);
+        setAddButtonLoading(false);
       });
   };
 
   return (
     <>
       <Button leftIcon={<AddIcon />} onClick={onOpen}>
-        Add fertilize event
+        Add weather
       </Button>
       <Drawer placement={"right"} onClose={onClose} isOpen={isOpen}>
         <DrawerOverlay />
         <DrawerContent>
-          <DrawerCloseButton onClick={clearInputs} />
-          <DrawerHeader borderBottomWidth="2px">
-            Add fertilize event
-          </DrawerHeader>
+          {isError ? (
+            <Alert status="error">
+              <AlertIcon />
+              There was an error processing your request
+            </Alert>
+          ) : (
+            <DrawerCloseButton onClick={clearInputs} />
+          )}
+
+          <DrawerHeader borderBottomWidth="2px">Add weather</DrawerHeader>
 
           <DrawerBody>
             <Stack spacing="24px">
@@ -165,7 +179,7 @@ export const AddWeatherEventDrawer = () => {
                   maxLength={30}
                   value={rainfallDescription}
                   isInvalid={!rainfallDescription}
-                  onChange={handleTypeChange}
+                  onChange={handleRainfallDescriptionChange}
                 />
               </Box>
 

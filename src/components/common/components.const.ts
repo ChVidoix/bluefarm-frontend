@@ -4,6 +4,7 @@ import {
   EventModel,
   FertilizeEventModel,
   HarvestModel,
+  WeatherEventModel,
 } from "../../service/BlueFarm.service.const";
 import { As } from "@chakra-ui/react";
 import React, { Dispatch } from "react";
@@ -143,6 +144,12 @@ export interface FertilizeEventOrHarvestOptionsProps {
 
 export interface EditCashEventDrawerProps {
   event: CashEventModel;
+}
+
+export interface EditWeatherEventDrawerProps {
+  event: WeatherEventModel;
+  isOpen: boolean;
+  onClose: () => void;
 }
 
 export interface CashEventOptionsProps {

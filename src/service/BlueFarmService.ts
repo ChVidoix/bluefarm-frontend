@@ -545,6 +545,13 @@ export const formatDate = (date: string): string => {
   return `${time} ${day}.${month}.${year}`;
 };
 
+export const formatOnlyDate = (date: string): string => {
+  const year = date.slice(0, 4);
+  const month = date.slice(5, 7);
+  const day = date.slice(8, 10);
+  return `${day}.${month}.${year}`;
+};
+
 export const getNearestFertilizeEvent = (
   fertilizeEvents: Array<FertilizeEventModel> | null
 ): FertilizeEventModel | null => {
@@ -703,7 +710,7 @@ export const editWeatherEvent = ({
   description,
   date,
   rainfall,
-}: EditWeatherEventModel): Promise<EventModel> => {
+}: EditWeatherEventModel): Promise<WeatherEventModel> => {
   const body = JSON.stringify({
     description,
     date,
@@ -711,21 +718,23 @@ export const editWeatherEvent = ({
     min_temp,
     rainfall,
   });
-  return axios.put(`/api/weather_days/${id}/`, body, tokenConfig(token));
+  return axios
+    .put(`/api/weather_days/${id}/`, body, tokenConfig(token))
+    .then((res: AxiosResponse) => res.data);
 };
 
 export const getWeatherEventsToRender = (
   weatherEvents: Array<WeatherEventModel> | null,
   startTimestamp: number
-): Array<WeatherEventModel | undefined> => {
-  const result: Array<WeatherEventModel | undefined> = [];
+): Array<WeatherEventModel | string> => {
+  const result: Array<WeatherEventModel | string> = [];
   for (let i = 0; i < 7; ++i) {
     const startDate = new Date(startTimestamp + i * 1000 * 60 * 60 * 24);
     result.push(
       weatherEvents?.find(
         (event: WeatherEventModel) =>
           event.date === format(startDate, "yyyy-MM-dd")
-      )
+      ) || format(startDate, "yyyy-MM-dd")
     );
   }
 

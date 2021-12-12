@@ -9,6 +9,10 @@
   outline: none;
 }
 
+.datePicker:hover {
+  cursor: pointer;
+}
+
 .timePicker {
   background-color: rgba(0, 0, 0, 0);
   height: 2em;
@@ -19,6 +23,27 @@
   outline: none;
 }
 
+.timePicker:hover {
+  cursor: pointer;
+}
+
 .cashEventsTable:hover {
+  cursor: pointer;
+}
+
+.date {
+  background-color: rgba(0, 0, 0, 0);
+  border: none;
+}
+
+.date:focus {
+  outline: none;
+}
+
+.date:hover {
+  cursor: pointer;
+}
+
+.weatherTile:hover {
   cursor: pointer;
 }

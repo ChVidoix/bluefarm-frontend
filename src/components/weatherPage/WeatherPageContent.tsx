@@ -3,7 +3,7 @@ import {
   BlueFarmContext,
   BlueFarmContextModel,
 } from "../../provider/BlueFarmProvider";
-import React, { ChangeEvent, useContext, useEffect, useState } from "react";
+import React, { ChangeEvent, useContext, useEffect } from "react";
 import { AddWeatherEventDrawer } from "./AddWeatherEventDrawer";
 import { WeatherEventModel } from "../../service/BlueFarm.service.const";
 import { WeatherTile } from "./WeatherTile";
@@ -18,6 +18,7 @@ import {
   setWeatherEventsFilters,
 } from "../../actions/BlueFarmActions";
 import { format } from "date-fns";
+import "../../styles/styles.css";
 
 export const WeatherPageContent = () => {
   const {
@@ -32,10 +33,6 @@ export const WeatherPageContent = () => {
     dispatch,
   } = useContext(BlueFarmContext) as BlueFarmContextModel;
 
-  const [startDate, setStartDate] = useState(
-    format(startTimestamp, "yyyy-MM-dd")
-  );
-
   useEffect(() => {
     getWeatherEvents(token).then((res: Array<WeatherEventModel>) => {
       dispatch(setWeatherEvents(res));
@@ -48,16 +45,10 @@ export const WeatherPageContent = () => {
         filterWeatherEvents(weatherEvents, startTimestamp)
       )
     );
-  }, [startTimestamp]);
-
-  useEffect(() => {
-    if (startDate) {
-      dispatch(setWeatherEventsFilters(+new Date(startDate)));
-    }
-  }, [startDate]);
+  }, [startTimestamp, weatherEvents]);
 
   const handleDateChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setStartDate(event.target.value);
+    dispatch(setWeatherEventsFilters(+new Date(event.target.value)));
   };
 
   const renderWeatherTiles = (): Array<JSX.Element> | undefined => {
@@ -66,8 +57,8 @@ export const WeatherPageContent = () => {
       startTimestamp
     );
     return weatherEventsToRender.map(
-      (event: WeatherEventModel | undefined, index: number) => (
-        <WeatherTile key={index} weatherEvent={event} />
+      (eventOrDate: WeatherEventModel | string, index: number) => (
+        <WeatherTile key={index} weatherEventOrDate={eventOrDate} />
       )
     );
   };
@@ -87,11 +78,18 @@ export const WeatherPageContent = () => {
             </Center>
           </Box>
           <Spacer />
-          <Center w={"40%"} h={"3em"} mt={7} mb={7}>
+          <Center
+            w={"40%"}
+            h={"3em"}
+            mt={7}
+            mb={7}
+            rounded={"lg"}
+            bg={"gray.400"}
+          >
             <input
               type="date"
               className={"date"}
-              value={startDate}
+              value={format(startTimestamp, "yyyy-MM-dd")}
               onChange={handleDateChange}
             />
           </Center>
