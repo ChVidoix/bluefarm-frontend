@@ -67,13 +67,11 @@ const RegisterPage = () => {
   };
   const handleSignInButton = () => {
     if (validateForm()) {
-      registerUser({ username, password, email })
-        .then((res: LoginResponseModel) => {
+      registerUser({ username, password, email }).then(
+        (res: LoginResponseModel) => {
           dispatch(authenticateUser({ ...res }));
-        })
-        .catch((res) => {
-          console.log("error", res);
-        });
+        }
+      );
     }
   };
 
