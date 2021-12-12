@@ -12,6 +12,7 @@ import {
   CreateEventModel,
   CreateFertilizeEventModel,
   CreateHarvestModel,
+  CreateWeatherEventModel,
   CropModel,
   DeleteFertilizeEventModel,
   DeleteHarvestModel,
@@ -21,19 +22,21 @@ import {
   EditEventModel,
   EditFertilizeEventModel,
   EditHarvestModel,
+  EditWeatherEventModel,
   EventModel,
   FertilizeEventModel,
   HarvestModel,
   LoginResponseModel,
   UserLoginCredentialsModel,
   UserRegisterCredentialsModel,
+  WeatherEventModel,
 } from "./BlueFarm.service.const";
 import {
   FilterEvents,
   FilterFertilizeEvents,
   FilterHarvests,
 } from "../components/common/components.const";
-import { formatDuration, intervalToDuration } from "date-fns";
+import { format, formatDuration, intervalToDuration } from "date-fns";
 
 const tokenConfig = (token: string | null) => {
   const config = {
@@ -610,7 +613,6 @@ export const findMostFruitfulVariety = (data: {
 }): string => {
   let variety = "";
   let mostAmount = 0;
-  console.log(data);
   Object.keys(data).forEach((searchedVariety: string) => {
     if (data[searchedVariety] > mostAmount) {
       mostAmount = data[searchedVariety];
@@ -635,16 +637,10 @@ export const sortEvents = (events: Array<any>): Array<any> => {
 
 export const getSortedAllUpcomingEvents = (
   events: Array<EventModel>,
-  cashEvents: Array<CashEventModel>,
   fertilizeEvents: Array<FertilizeEventModel>,
   harvests: Array<HarvestModel>
 ): Array<any> => {
-  const allEvents: any = [
-    ...events,
-    ...cashEvents,
-    ...fertilizeEvents,
-    ...harvests,
-  ];
+  const allEvents: any = [...events, ...fertilizeEvents, ...harvests];
 
   sortEvents(allEvents).forEach((event: any) => {
     const keys = Object.keys(event);
@@ -654,8 +650,6 @@ export const getSortedAllUpcomingEvents = (
       event["event_type"] = "harvest";
     } else if (keys.includes("start_date")) {
       event["event_type"] = "event";
-    } else {
-      event["event_type"] = "billing";
     }
   });
 
@@ -671,4 +665,86 @@ export const getThisWeekEventsCount = (events: Array<any>): number => {
       (+new Date(event.start_date) || +new Date(event.date)) <
       +new Date() + 1000 * 60 * 60 * 24 * 7
   ).length;
+};
+
+export const getWeatherEvents = (
+  token: string | null
+): Promise<Array<WeatherEventModel>> => {
+  return axios
+    .get("/api/weather_days/", tokenConfig(token))
+    .then((res: AxiosResponse) => res.data);
+};
+
+export const createWeatherEvent = ({
+  token,
+  max_temp,
+  min_temp,
+  description,
+  date,
+  rainfall,
+}: CreateWeatherEventModel): Promise<WeatherEventModel> => {
+  const body = JSON.stringify({
+    description,
+    date,
+    max_temp,
+    min_temp,
+    rainfall,
+  });
+  return axios
+    .post("/api/weather_days/", body, tokenConfig(token))
+    .then((res: AxiosResponse) => res.data);
+};
+
+export const editWeatherEvent = ({
+  token,
+  id,
+  max_temp,
+  min_temp,
+  description,
+  date,
+  rainfall,
+}: EditWeatherEventModel): Promise<EventModel> => {
+  const body = JSON.stringify({
+    description,
+    date,
+    max_temp,
+    min_temp,
+    rainfall,
+  });
+  return axios.put(`/api/weather_days/${id}/`, body, tokenConfig(token));
+};
+
+export const getWeatherEventsToRender = (
+  weatherEvents: Array<WeatherEventModel> | null,
+  startTimestamp: number
+): Array<WeatherEventModel | undefined> => {
+  const result: Array<WeatherEventModel | undefined> = [];
+  for (let i = 0; i < 7; ++i) {
+    const startDate = new Date(startTimestamp + i * 1000 * 60 * 60 * 24);
+    result.push(
+      weatherEvents?.find(
+        (event: WeatherEventModel) =>
+          event.date === format(startDate, "yyyy-MM-dd")
+      )
+    );
+  }
+
+  return result;
+};
+
+export const filterWeatherEvents = (
+  weatherEvents: Array<WeatherEventModel> | null,
+  startTimestamp: number
+): Array<WeatherEventModel> => {
+  const result: Array<WeatherEventModel> = [];
+  weatherEvents?.forEach((event: WeatherEventModel) => {
+    if (
+      +new Date(event.date) >= startTimestamp &&
+      +new Date(event.date) < startTimestamp + 7 * 24 * 60 * 60 * 1000
+    ) {
+      result.push(event);
+    }
+  });
+
+  return result;
 };

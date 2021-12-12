@@ -11,7 +11,6 @@ import React, { Dispatch } from "react";
 export const eventType: { [key: string]: string } = {
   all: "All events",
   events: "Events",
-  cashEvents: "Billings",
   harvests: "Harvests",
   fertilizeEvents: "Fertilize events",
 };

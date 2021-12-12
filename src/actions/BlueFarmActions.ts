@@ -9,6 +9,7 @@ import {
   FertilizeEventModel,
   HarvestModel,
   LoginResponseModel,
+  WeatherEventModel,
 } from "../service/BlueFarm.service.const";
 
 export const getUser = (): Action<void> => ({
@@ -150,4 +151,25 @@ export const setFilteredHarvests = (
 ): Action<{ events: Array<HarvestModel> | null }> => ({
   type: BlueFarmActionType.SET_FILTERED_HARVESTS,
   payload: { events },
+});
+
+export const setWeatherEvents = (
+  events: Array<WeatherEventModel>
+): Action<{ events: Array<WeatherEventModel> }> => ({
+  type: BlueFarmActionType.SET_WEATHER_EVENTS,
+  payload: { events },
+});
+
+export const setFilteredWeatherEvents = (
+  events: Array<WeatherEventModel>
+): Action<{ events: Array<WeatherEventModel> }> => ({
+  type: BlueFarmActionType.SET_FILTERED_WEATHER_EVENTS,
+  payload: { events },
+});
+
+export const setWeatherEventsFilters = (
+  startTimestamp: number
+): Action<{ startTimestamp: number }> => ({
+  type: BlueFarmActionType.SET_WEATHER_EVENTS_FILTERS,
+  payload: { startTimestamp },
 });

@@ -3,6 +3,7 @@ import {
   EventModel,
   FertilizeEventModel,
   HarvestModel,
+  WeatherEventModel,
 } from "../service/BlueFarm.service.const";
 
 export interface DjangoUserModel {
@@ -67,6 +68,13 @@ export interface BlueFarmState {
       };
     };
   };
+  weather: {
+    weatherEvents: Array<WeatherEventModel> | null;
+    filteredWeatherEvents: Array<WeatherEventModel> | null;
+    filters: {
+      startTimestamp: number;
+    };
+  };
   appState: BlueFarmAppState;
 }
 
@@ -111,6 +119,13 @@ export const BlueFarmInitialState: BlueFarmState = {
         startTimestamp: +new Date(),
         endTimestamp: +new Date(`${new Date().getFullYear()}-12-31`),
       },
+    },
+  },
+  weather: {
+    weatherEvents: null,
+    filteredWeatherEvents: null,
+    filters: {
+      startTimestamp: +new Date() - 7 * 1000 * 60 * 60 * 24,
     },
   },
   appState: {

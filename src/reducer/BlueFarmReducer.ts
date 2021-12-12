@@ -216,6 +216,28 @@ export const reducer = (
         appState: { ...state.appState, isLoading: false },
       };
     }
+    case BlueFarmActionType.SET_WEATHER_EVENTS: {
+      return {
+        ...state,
+        weather: {
+          ...state.weather,
+          weatherEvents: payload.events,
+          filteredWeatherEvents: payload.events,
+        },
+      };
+    }
+    case BlueFarmActionType.SET_FILTERED_WEATHER_EVENTS: {
+      return {
+        ...state,
+        weather: {
+          ...state.weather,
+          filteredWeatherEvents: payload.events,
+        },
+      };
+    }
+    case BlueFarmActionType.SET_WEATHER_EVENTS_FILTERS: {
+      return { ...state, weather: { ...state.weather, filters: payload } };
+    }
     default: {
       return state;
     }

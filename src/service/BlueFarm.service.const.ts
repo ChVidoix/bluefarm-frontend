@@ -66,6 +66,15 @@ export interface CreateEventModel {
   end_date: string;
 }
 
+export interface CreateWeatherEventModel {
+  token: string | null;
+  description: string;
+  date: string;
+  max_temp: number;
+  min_temp: number;
+  rainfall: string;
+}
+
 export interface CreateFertilizeEventModel {
   token: string | null;
   cropId: number;
@@ -88,6 +97,10 @@ export interface CreateHarvestModel {
 }
 
 export interface EditEventModel extends CreateEventModel {
+  id: number;
+}
+
+export interface EditWeatherEventModel extends CreateWeatherEventModel {
   id: number;
 }
 
@@ -126,6 +139,15 @@ export interface CashEventModel {
   description: string;
   date: string;
   amount: number;
+}
+
+export interface WeatherEventModel {
+  id: number;
+  description: string;
+  date: string;
+  max_temp: number;
+  min_temp: number;
+  rainfall: string;
 }
 
 export interface CreateCashEventModel {

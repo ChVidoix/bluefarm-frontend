@@ -128,7 +128,6 @@ export const EventsPageContent = () => {
   return (
     <Center w={"100%"}>
       <Flex direction={"column"} w={"100%"} align={"center"}>
-        <Spacer />
         <EventsFilters />
         <Spacer />
         <Center rounded={"lg"} bg={"gray.300"} w={"85%"} mt={10} pb={1}>

@@ -18,7 +18,7 @@ export const DatePicker = ({
     setTime(event.target.value);
   };
   return (
-    <Box bg={"gray.200"} rounded={"lg"} w={"100%"} h={"2em"}>
+    <Box bg={"gray.300"} rounded={"lg"} w={"100%"} h={"2em"}>
       <Flex>
         <Spacer />
         <input

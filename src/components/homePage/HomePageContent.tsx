@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
 import {
-  CashEventModel,
   EventModel,
   FertilizeEventModel,
   HarvestModel,
@@ -9,7 +8,6 @@ import {
   formatDate,
   getAllFertilizeEvents,
   getAllHarvests,
-  getCashEvents,
   getEvents,
   getSortedAllUpcomingEvents,
   getThisWeekEventsCount,
@@ -51,7 +49,6 @@ export const HomePageContent = () => {
 
   const [harvests, setHarvests] = useState<Array<HarvestModel>>([]);
   const [events, setEvents] = useState<Array<EventModel>>([]);
-  const [cashEvents, setCashEvents] = useState<Array<CashEventModel>>([]);
   const [fertilizeEvents, setFertilizeEvents] = useState<
     Array<FertilizeEventModel>
   >([]);
@@ -62,12 +59,10 @@ export const HomePageContent = () => {
   const sortedEvents = {
     [eventType.all]: getSortedAllUpcomingEvents(
       events,
-      cashEvents,
       fertilizeEvents,
       harvests
     ),
     [eventType.events]: sortEvents(events),
-    [eventType.cashEvents]: sortEvents(cashEvents),
     [eventType.harvests]: sortEvents(harvests),
     [eventType.fertilizeEvents]: sortEvents(fertilizeEvents),
   };
@@ -86,9 +81,6 @@ export const HomePageContent = () => {
     });
     getEvents(token).then((res: Array<EventModel>) => {
       setEvents(res);
-    });
-    getCashEvents(token).then((res: Array<CashEventModel>) => {
-      setCashEvents(res);
       setIsTableLoading(false);
     });
   }, []);
@@ -185,9 +177,10 @@ export const HomePageContent = () => {
             {renderGridItem("First upcoming:")}
             {renderGridItem(
               String(
-                !isTableLoading &&
-                  `${sortedEvents[selectedEventsType][0]?.event_type}, 
-                  ${sortedEvents[selectedEventsType][0]?.name}`
+                !isTableLoading && sortedEvents[selectedEventsType][0]
+                  ? `${sortedEvents[selectedEventsType][0].event_type}, 
+                  ${sortedEvents[selectedEventsType][0].name}`
+                  : ""
               ),
               1,
               false
