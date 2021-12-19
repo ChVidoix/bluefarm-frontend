@@ -8,7 +8,7 @@ const CropsPage = () => {
       <Center h={"100%"}>
         <Flex
           direction={"column"}
-          w="80vw"
+          w="90vw"
           rounded={"lg"}
           height={"100%"}
           pt={5}
@@ -18,7 +18,7 @@ const CropsPage = () => {
           align={"center"}
           bg={"gray.200"}
         >
-          <PageHeader title={"Crops"} />
+          <PageHeader title={"Uprawy"} />
           <CropsPageContent />
           <Spacer />
         </Flex>

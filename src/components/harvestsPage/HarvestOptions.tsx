@@ -53,7 +53,7 @@ export const HarvestOptions = ({
         <MenuList>
           <EditHarvestDrawer eventId={eventId} />
           <MenuItem icon={<AiFillDelete />} onClick={handleDelete}>
-            Delete
+            Usuń
           </MenuItem>
         </MenuList>
       </Menu>

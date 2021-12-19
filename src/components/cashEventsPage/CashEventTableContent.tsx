@@ -71,7 +71,7 @@ export const CashEventsTableContent = ({
     }
     return (
       <>
-        <Button onClick={handleModalOpen}>Show {title}</Button>
+        <Button onClick={handleModalOpen}>Pokaż {title}</Button>
       </>
     );
   };
@@ -81,9 +81,9 @@ export const CashEventsTableContent = ({
     index: number,
     currentEvent: CashEventModel
   ) => {
-    if (cell.column.Header === "No.") {
+    if (cell.column.Header === "Lp.") {
       return <>{index + 1}</>;
-    } else if (cell.column.Header === "Date") {
+    } else if (cell.column.Header === "Data") {
       return (
         <>
           <>{currentEvent.date.slice(11, 16)}</>
@@ -151,7 +151,7 @@ export const CashEventsTableContent = ({
           </Tbody>
           <Tfoot borderTop={"2px"}>
             <Tr>
-              <Th>Total</Th>
+              <Th>Suma</Th>
               <Th></Th>
               <Th isNumeric>{getTotal()}</Th>
               <Th></Th>

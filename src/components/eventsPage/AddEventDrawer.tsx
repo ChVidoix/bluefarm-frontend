@@ -109,21 +109,21 @@ export const AddEventDrawer = () => {
   return (
     <>
       <Button leftIcon={<AddIcon />} onClick={onOpen}>
-        Add event
+        Dodaj wydarzenie
       </Button>
       <Drawer placement={"right"} onClose={onClose} isOpen={isOpen}>
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton onClick={clearInputs} />
-          <DrawerHeader borderBottomWidth="2px">Add a new crop</DrawerHeader>
+          <DrawerHeader borderBottomWidth="2px">Dodaj wydarzenie</DrawerHeader>
 
           <DrawerBody>
             <Stack spacing="24px">
               <Box>
-                <FormLabel htmlFor="name">Name</FormLabel>
+                <FormLabel htmlFor="name">Nazwa</FormLabel>
                 <Input
                   id="name"
-                  placeholder="Please enter your crop's name"
+                  placeholder="Podaj nazwę wydarzenia"
                   maxLength={30}
                   value={name}
                   isInvalid={!name}
@@ -132,7 +132,7 @@ export const AddEventDrawer = () => {
               </Box>
 
               <Box>
-                <FormLabel htmlFor="start-date">Start date</FormLabel>
+                <FormLabel htmlFor="start-date">Rozpoczęcie</FormLabel>
                 <DatePicker
                   date={startDate}
                   setDate={setStartDate}
@@ -142,7 +142,7 @@ export const AddEventDrawer = () => {
               </Box>
 
               <Box>
-                <FormLabel htmlFor="end-date">End date</FormLabel>
+                <FormLabel htmlFor="end-date">Zakończenie</FormLabel>
                 <DatePicker
                   date={endDate}
                   time={endTime}
@@ -153,7 +153,7 @@ export const AddEventDrawer = () => {
               </Box>
 
               <Box>
-                <FormLabel htmlFor="desc">Description</FormLabel>
+                <FormLabel htmlFor="desc">Opis</FormLabel>
                 <Textarea
                   id="desc"
                   maxLength={50}
@@ -167,14 +167,14 @@ export const AddEventDrawer = () => {
 
           <DrawerFooter borderTopWidth="1px">
             <Button variant="outline" mr={3} onClick={clearInputs}>
-              Cancel
+              Anuluj
             </Button>
             <Button
               isLoading={addButtonLoading}
               disabled={isAddButtonInvalid}
               onClick={handleCreateEvent}
             >
-              Add event
+              Dodaj wydarzenie
             </Button>
           </DrawerFooter>
         </DrawerContent>

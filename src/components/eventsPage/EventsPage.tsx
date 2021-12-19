@@ -19,7 +19,7 @@ const EventsPage = () => {
           align={"center"}
           bg={"gray.200"}
         >
-          <PageHeader title={"Events"} />
+          <PageHeader title={"Wydarzenia"} />
           <Spacer />
           <EventsPageContent />
           <Spacer />

@@ -166,7 +166,7 @@ export const FertilizeDetailsWrapper = ({
               fontWeight={"bold"}
               color={"gray.600"}
             >
-              Name:
+              Nazwa:
             </Center>
           </GridItem>
           <GridItem>
@@ -181,7 +181,7 @@ export const FertilizeDetailsWrapper = ({
               fontWeight={"bold"}
               color={"gray.600"}
             >
-              Type:
+              Rodzaj:
             </Center>
           </GridItem>
           <GridItem>
@@ -196,7 +196,7 @@ export const FertilizeDetailsWrapper = ({
               fontWeight={"bold"}
               color={"gray.600"}
             >
-              Date:
+              Data:
             </Center>
           </GridItem>
           <GridItem>
@@ -211,7 +211,7 @@ export const FertilizeDetailsWrapper = ({
               fontWeight={"bold"}
               color={"gray.600"}
             >
-              Amount:
+              Ilość:
             </Center>
           </GridItem>
           <GridItem>
@@ -226,7 +226,7 @@ export const FertilizeDetailsWrapper = ({
               fontWeight={"bold"}
               color={"gray.600"}
             >
-              Description:
+              Opis:
             </Center>
           </GridItem>
           <GridItem colSpan={3}>
@@ -237,7 +237,7 @@ export const FertilizeDetailsWrapper = ({
     } else {
       return (
         <Center h={"100%"} w={"100%"} fontWeight={"bold"} color={"gray.600"}>
-          You don't have any fertilization events added yet.
+          Nie masz żadnych wydarzeń dotyczących nawożenia.
         </Center>
       );
     }
@@ -257,7 +257,7 @@ export const FertilizeDetailsWrapper = ({
                 bg={"gray.300"}
               >
                 <Center h={"100%"} w={"100%"}>
-                  Upcoming
+                  Nadchodzące
                 </Center>
               </Heading>
             </Center>
@@ -279,7 +279,7 @@ export const FertilizeDetailsWrapper = ({
                 bg={"gray.300"}
               >
                 <Center h={"100%"} w={"100%"}>
-                  Filters
+                  Filtry
                 </Center>
               </Heading>
             </Center>
@@ -294,7 +294,7 @@ export const FertilizeDetailsWrapper = ({
             >
               <GridItem>
                 <Center fontWeight={"bold"} color={"gray.600"} height={"100%"}>
-                  Select your events from:
+                  Wybierz nawożenia:
                 </Center>
               </GridItem>
               <GridItem>
@@ -332,7 +332,7 @@ export const FertilizeDetailsWrapper = ({
                     color={"gray.600"}
                     height={"100%"}
                   >
-                    Select year:
+                    Wybierz rok:
                   </Center>
                 </GridItem>
                 <GridItem>

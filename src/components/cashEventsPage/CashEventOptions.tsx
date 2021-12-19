@@ -51,7 +51,7 @@ export const CashEventOptions = ({ id }: CashEventOptionsProps) => {
         <MenuList>
           {event && <EditCashEventDrawer event={event} />}
           <MenuItem icon={<AiFillDelete />} onClick={handleDelete}>
-            Delete
+            Usuń
           </MenuItem>
         </MenuList>
       </Menu>

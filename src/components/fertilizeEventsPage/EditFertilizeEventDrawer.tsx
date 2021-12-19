@@ -139,21 +139,21 @@ export const EditFertilizeEventDrawer = ({
   return (
     <>
       <MenuItem icon={<FiEdit3 />} onClick={onOpen}>
-        Edit
+        Edytuj
       </MenuItem>
       <Drawer placement={"right"} onClose={onClose} isOpen={isOpen}>
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton onClick={clearInputs} />
-          <DrawerHeader borderBottomWidth="2px">Edit {editedName}</DrawerHeader>
+          <DrawerHeader borderBottomWidth="2px">Edytuj {editedName}</DrawerHeader>
 
           <DrawerBody>
             <Stack spacing="24px">
               <Box>
-                <FormLabel htmlFor="name">Name</FormLabel>
+                <FormLabel htmlFor="name">Nazwa</FormLabel>
                 <Input
                   id="name"
-                  placeholder="Enter your fertilize event's name"
+                  placeholder="Podaj nazwę"
                   maxLength={30}
                   value={name}
                   isInvalid={!name}
@@ -162,7 +162,7 @@ export const EditFertilizeEventDrawer = ({
               </Box>
 
               <Box>
-                <FormLabel htmlFor="date">Date</FormLabel>
+                <FormLabel htmlFor="date">Data</FormLabel>
                 <DatePicker
                   date={date}
                   setDate={setDate}
@@ -172,11 +172,11 @@ export const EditFertilizeEventDrawer = ({
               </Box>
 
               <Box>
-                <FormLabel htmlFor="amount">Amount</FormLabel>
+                <FormLabel htmlFor="amount">Ilość</FormLabel>
                 <InputGroup>
                   <Input
                     type={"number"}
-                    placeholder={"Type amount"}
+                    placeholder={"Podaj ilość"}
                     isInvalid={amount === 0}
                     value={amount}
                     onChange={handleAmountChange}
@@ -186,10 +186,10 @@ export const EditFertilizeEventDrawer = ({
               </Box>
 
               <Box>
-                <FormLabel htmlFor="type">Type</FormLabel>
+                <FormLabel htmlFor="type">Rodzaj</FormLabel>
                 <Input
                   id="name"
-                  placeholder="Enter your fertilize event's type"
+                  placeholder="Podaj rodzaj"
                   maxLength={20}
                   value={type}
                   isInvalid={!type}
@@ -197,7 +197,7 @@ export const EditFertilizeEventDrawer = ({
                 />
               </Box>
               <Box>
-                <FormLabel htmlFor="desc">Description</FormLabel>
+                <FormLabel htmlFor="desc">Opis</FormLabel>
                 <Textarea
                   id="desc"
                   maxLength={150}
@@ -211,14 +211,14 @@ export const EditFertilizeEventDrawer = ({
 
           <DrawerFooter borderTopWidth="1px">
             <Button variant="outline" mr={3} onClick={clearInputs}>
-              Cancel
+              Anuluj
             </Button>
             <Button
               isLoading={addButtonLoading}
               disabled={isAddButtonInvalid}
               onClick={handleEditEvent}
             >
-              Save
+              Zapisz
             </Button>
           </DrawerFooter>
         </DrawerContent>

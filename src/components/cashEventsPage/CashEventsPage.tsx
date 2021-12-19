@@ -18,7 +18,7 @@ const CashEventsPage = () => {
           align={"center"}
           bg={"gray.200"}
         >
-          <PageHeader title={"Billings"} />
+          <PageHeader title={"Wydatki i przychody"} />
           <CashEventsPageContent />
           <Spacer />
         </Flex>

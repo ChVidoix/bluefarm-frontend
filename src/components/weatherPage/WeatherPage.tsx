@@ -16,7 +16,7 @@ const WeatherPage = () => {
         >
           <Flex direction={"column"}>
             <Center w={"100%"} mt={5}>
-              <PageHeader title={"Weather"} />
+              <PageHeader title={"Pogoda"} />
             </Center>
             <Center w={"100%"} mt={5} mb={2}>
               <Box bg={"gray.300"} rounded={"lg"} w={"95%"}>

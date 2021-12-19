@@ -10,7 +10,6 @@ import {
   getAllHarvests,
   getEvents,
   getSortedAllUpcomingEvents,
-  getThisWeekEventsCount,
   sortEvents,
 } from "../../service/BlueFarmService";
 import {
@@ -67,9 +66,7 @@ export const HomePageContent = () => {
     [eventType.fertilizeEvents]: sortEvents(fertilizeEvents),
   };
 
-  const weekSelectedEventsCount = getThisWeekEventsCount(
-    sortedEvents[selectedEventsType]
-  );
+  const weekSelectedEventsCount = sortedEvents[selectedEventsType].length;
 
   useEffect(() => {
     setIsTableLoading(true);
@@ -108,7 +105,7 @@ export const HomePageContent = () => {
         />
       </Center>
     ) : (
-      <>Upcoming</>
+      <>Nadchodzące wydarzenia</>
     );
   };
 
@@ -171,10 +168,10 @@ export const HomePageContent = () => {
             templateColumns="repeat(2, 1fr)"
             gap={4}
           >
-            {renderGridItem("This week", 2)}
-            {renderGridItem("Number of events:")}
+            {renderGridItem("W tym tygodniu", 2)}
+            {renderGridItem("Ilość wydarzeń:")}
             {renderGridItem(String(weekSelectedEventsCount), 1, false)}
-            {renderGridItem("First upcoming:")}
+            {renderGridItem("Pierwsze nadchodzące:")}
             {renderGridItem(
               String(
                 !isTableLoading && sortedEvents[selectedEventsType][0]
@@ -191,11 +188,12 @@ export const HomePageContent = () => {
           <Box w={"95%"}>
             <Grid
               h="200px"
-              templateRows="repeat(2, 1fr)"
+              templateRows="repeat(3, 1fr)"
               templateColumns="repeat(2, 1fr)"
               gap={4}
             >
-              {renderGridItem("Type:")}
+              {renderGridItem("Filtry", 2)}
+              {renderGridItem("Rodzaj:")}
               <GridItem>
                 <Center w={"100%"} h={"100%"}>
                   <Menu>
@@ -206,7 +204,7 @@ export const HomePageContent = () => {
                   </Menu>
                 </Center>
               </GridItem>
-              {renderGridItem("Number of events:")}
+              {renderGridItem("Ilość wydarzeń:")}
               <GridItem>
                 <Center w={"100%"} h={"100%"}>
                   <Menu>
@@ -229,11 +227,11 @@ export const HomePageContent = () => {
             <TableCaption>{renderTableCaption()}</TableCaption>
             <Thead>
               <Tr>
-                <Th isNumeric>No.</Th>
-                <Th>Name</Th>
-                <Th>Date</Th>
-                <Th>Type</Th>
-                <Th>Description</Th>
+                <Th isNumeric>Lp.</Th>
+                <Th>Nazwa</Th>
+                <Th>Data</Th>
+                <Th>Rodzaj</Th>
+                <Th>Opis</Th>
               </Tr>
             </Thead>
             <Tbody>

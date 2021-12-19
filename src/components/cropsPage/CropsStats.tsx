@@ -44,7 +44,7 @@ const CropsStats = ({
   };
 
   const tableSummaryContent = (): JSX.Element => {
-    return varietyAreaData ? <>Summary of area by variety</> : <Spinner />;
+    return varietyAreaData ? <>Podsumowanie upraw: rodzaj a powierzchnia</> : <Spinner />;
   };
 
   const data = {
@@ -70,11 +70,11 @@ const CropsStats = ({
         <Flex direction={"column"} h={"100%"}>
           <Center w={"30vw"} h={"7vh"} rounded={"lg"} bg={"gray.300"} mb={5}>
             <Heading as={"h5"} color={"gray.600"}>
-              Varieties:
+              Rodzaje:
             </Heading>
           </Center>
           <Center mt={3}>
-            <Box w={"80%"}>
+            <Box>
               <Doughnut data={data} />
             </Box>
           </Center>
@@ -85,7 +85,7 @@ const CropsStats = ({
         <Flex direction={"column"} h={"100%"}>
           <Center w={"30vw"} h={"7vh"} rounded={"lg"} bg={"gray.300"} mb={5}>
             <Heading as={"h5"} color={"gray.600"}>
-              Details:
+              Szczegóły:
             </Heading>
           </Center>
           <Spacer />
@@ -94,14 +94,14 @@ const CropsStats = ({
               <TableCaption>{tableSummaryContent()}</TableCaption>
               <Thead borderBottom={"2px"}>
                 <Tr>
-                  <Th>Variety</Th>
-                  <Th isNumeric>Area</Th>
+                  <Th>Rodzaj</Th>
+                  <Th isNumeric>Powierzchnia</Th>
                 </Tr>
               </Thead>
               <Tbody>{detailsTableRows()}</Tbody>
               <Tfoot>
                 <Tr>
-                  <Th>Total</Th>
+                  <Th>Suma</Th>
                   <Th isNumeric>{totalArea}</Th>
                 </Tr>
               </Tfoot>

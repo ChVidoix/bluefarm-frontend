@@ -121,10 +121,11 @@ export const createCrop = ({
   token,
   name,
   type,
+  variety,
   area,
   description,
 }: CreateCropModel): Promise<CropModel> => {
-  const body = JSON.stringify({ name, description, type, area });
+  const body = JSON.stringify({ name, description, type, variety, area });
   return axios
     .post("/api/crops/", body, tokenConfig(token))
     .then((res) => res.data);
@@ -139,16 +140,17 @@ export const editCrop = ({
   id,
   name,
   type,
+  variety,
   area,
   description,
 }: EditCropModel): Promise<CropModel> => {
-  const body = JSON.stringify({ name, description, type, area });
+  const body = JSON.stringify({ name, description, variety, type, area });
   return axios
     .put(`/api/crops/${id}/`, body, tokenConfig(token))
     .then((res: AxiosResponse<CropModel>) => res.data);
 };
 
-export const countCropsVarietyArea = (
+export const countCropsTypeArea = (
   crops: Array<CropModel> | null
 ): { [key: string]: number } | undefined => {
   return crops?.reduce(
@@ -456,7 +458,6 @@ export const createHarvest = ({
   token,
   cropId,
   name,
-  type,
   end_date,
   start_date,
   notes,
@@ -465,7 +466,6 @@ export const createHarvest = ({
   const body = JSON.stringify({
     name,
     notes,
-    type,
     start_date,
     end_date,
     crop_amount,
@@ -479,7 +479,6 @@ export const editHarvest = ({
   token,
   name,
   cropId,
-  type,
   crop_amount,
   harvestId,
   end_date,
@@ -488,7 +487,6 @@ export const editHarvest = ({
 }: EditHarvestModel): Promise<HarvestModel> => {
   const body = JSON.stringify({
     name,
-    type,
     crop_amount,
     start_date,
     end_date,
@@ -578,25 +576,18 @@ export const getNearestFertilizeEvent = (
   return nearestEvent.name ? nearestEvent : null;
 };
 
-export const getHarvestsChartData = (
-  harvests: Array<HarvestModel> | null
-): { [key: string]: number } => {
-  const result: { [key: string]: number } = {};
-  harvests?.forEach((harvest: HarvestModel) => {
-    if (Object.keys(result).includes(harvest.type)) {
-      result[harvest.type] += harvest.crop_amount;
-    } else {
-      result[harvest.type] = harvest.crop_amount;
-    }
-  });
-  return result;
-};
+export const formatHarvestsDuration = (text: string): string =>
+  text.replace("days", "dni").replace("hours", "godzin");
 
 export const getHarvestsDuration = (
   harvests: Array<HarvestModel> | null
 ): string => {
   let start = 2147483648000;
   let end = 0;
+
+  if (!harvests) {
+    return "-";
+  }
 
   harvests?.forEach((harvest: HarvestModel) => {
     if (+new Date(harvest.start_date) < start) {
@@ -615,18 +606,17 @@ export const getHarvestsDuration = (
   return formattedDurationDays || formattedDurationHours;
 };
 
-export const findMostFruitfulVariety = (data: {
-  [key: string]: number;
-}): string => {
-  let variety = "";
-  let mostAmount = 0;
-  Object.keys(data).forEach((searchedVariety: string) => {
-    if (data[searchedVariety] > mostAmount) {
-      mostAmount = data[searchedVariety];
-      variety = searchedVariety;
+export const getMostFruitfulHarvest = (
+  filteredHarvests: Array<HarvestModel> | null
+): HarvestModel => {
+  let result: HarvestModel | any = {};
+  filteredHarvests?.forEach((harvest: HarvestModel) => {
+    if (harvest.crop_amount > result.crop_amount || !result.crop_amount) {
+      result = harvest;
     }
   });
-  return variety;
+
+  return result;
 };
 
 export const sortEvents = (events: Array<any>): Array<any> => {
@@ -651,12 +641,12 @@ export const getSortedAllUpcomingEvents = (
 
   sortEvents(allEvents).forEach((event: any) => {
     const keys = Object.keys(event);
-    if (keys.includes("type") && keys.includes("date")) {
-      event["event_type"] = "fertilization";
-    } else if (keys.includes("type") && keys.includes("start_date")) {
-      event["event_type"] = "harvest";
+    if (keys.includes("notes")) {
+      event["event_type"] = "zbiór";
+    } else if (keys.includes("amount")) {
+      event["event_type"] = "nawożenie";
     } else if (keys.includes("start_date")) {
-      event["event_type"] = "event";
+      event["event_type"] = "wydarzenie";
     }
   });
 
@@ -664,14 +654,6 @@ export const getSortedAllUpcomingEvents = (
     (event: any) =>
       (+new Date(event.start_date) || +new Date(event.date)) > +new Date()
   );
-};
-
-export const getThisWeekEventsCount = (events: Array<any>): number => {
-  return events.filter(
-    (event: any) =>
-      (+new Date(event.start_date) || +new Date(event.date)) <
-      +new Date() + 1000 * 60 * 60 * 24 * 7
-  ).length;
 };
 
 export const getWeatherEvents = (

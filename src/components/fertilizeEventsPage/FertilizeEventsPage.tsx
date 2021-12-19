@@ -178,12 +178,12 @@ export const FertilizeEventsPage = () => {
                 <TableCaption>{renderTableCaption}</TableCaption>
                 <Thead>
                   <Tr>
-                    <Th isNumeric>No.</Th>
-                    <Th>Name</Th>
-                    <Th>Date</Th>
-                    <Th>Type</Th>
-                    <Th isNumeric>Amount [kg]</Th>
-                    <Th>Description</Th>
+                    <Th isNumeric>Lp.</Th>
+                    <Th>Nazwa</Th>
+                    <Th>Data</Th>
+                    <Th>Rodzaj</Th>
+                    <Th isNumeric>Ilość [kg]</Th>
+                    <Th>Opis</Th>
                     <Th />
                   </Tr>
                 </Thead>

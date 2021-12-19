@@ -18,7 +18,7 @@ const HomePage = () => {
           align={"center"}
           bg={"gray.200"}
         >
-          <PageHeader title={"Home"} />
+          <PageHeader title={"Start"} />
           <HomePageContent />
           <Spacer />
         </Flex>

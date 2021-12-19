@@ -20,6 +20,7 @@ export interface CropModel {
   name: string;
   description: string;
   type: string;
+  variety: string;
   area: number;
   farmer: number;
 }
@@ -28,6 +29,7 @@ export interface CreateCropModel {
   token: string | null;
   name: string;
   type: string;
+  variety: string;
   description: string;
   area: number;
 }
@@ -89,7 +91,6 @@ export interface CreateHarvestModel {
   token: string | null;
   cropId: number;
   name: string;
-  type: string;
   notes: string;
   start_date: string;
   end_date: string;
@@ -116,7 +117,6 @@ export interface HarvestModel {
   id: number;
   name: string;
   notes: string;
-  type: string;
   start_date: string;
   end_date: string;
   crop_amount: number;

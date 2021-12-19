@@ -104,15 +104,15 @@ export const AddCashEventDrawer = () => {
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton onClick={clearInputs} />
-          <DrawerHeader borderBottomWidth="2px">Add a new billing</DrawerHeader>
+          <DrawerHeader borderBottomWidth="2px">Dodaj nowy wydatek lub przychód</DrawerHeader>
 
           <DrawerBody>
             <Stack spacing="24px">
               <Box>
-                <FormLabel htmlFor="name">Name</FormLabel>
+                <FormLabel htmlFor="name">Nazwa</FormLabel>
                 <Input
                   id="name"
-                  placeholder="Please enter your billing's name"
+                  placeholder="Podaj nazwę"
                   maxLength={30}
                   value={name}
                   isInvalid={!name}
@@ -126,14 +126,14 @@ export const AddCashEventDrawer = () => {
                   value={cashEventType}
                 >
                   <Stack direction="row">
-                    <Radio value={CashEventType.outgoing}>Outgoing</Radio>
-                    <Radio value={CashEventType.income}>Income</Radio>
+                    <Radio value={CashEventType.outgoing}>Wydatek</Radio>
+                    <Radio value={CashEventType.income}>Przychód</Radio>
                   </Stack>
                 </RadioGroup>
               </Box>
 
               <Box>
-                <FormLabel htmlFor="amount">Amount</FormLabel>
+                <FormLabel htmlFor="amount">Kwota</FormLabel>
                 <InputGroup>
                   <Input
                     type={"number"}
@@ -147,7 +147,7 @@ export const AddCashEventDrawer = () => {
               </Box>
 
               <Box>
-                <FormLabel htmlFor="date">Select date</FormLabel>
+                <FormLabel htmlFor="date">Data</FormLabel>
                 <DatePicker
                   date={date}
                   setDate={setDate}
@@ -157,7 +157,7 @@ export const AddCashEventDrawer = () => {
               </Box>
 
               <Box>
-                <FormLabel htmlFor="desc">Description</FormLabel>
+                <FormLabel htmlFor="desc">Opis</FormLabel>
                 <Textarea
                   id="desc"
                   maxLength={50}
@@ -171,14 +171,14 @@ export const AddCashEventDrawer = () => {
 
           <DrawerFooter borderTopWidth="1px">
             <Button variant="outline" mr={3} onClick={clearInputs}>
-              Cancel
+              Anuluj
             </Button>
             <Button
               isLoading={addButtonLoading}
               disabled={isAddButtonInvalid}
               onClick={handleCreateCashEvent}
             >
-              Add billing
+              Dodaj {cashEventType === CashEventType.outgoing ? "wydatek" : 'przychód'}
             </Button>
           </DrawerFooter>
         </DrawerContent>

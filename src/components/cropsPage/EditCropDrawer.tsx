@@ -38,7 +38,8 @@ export const EditCropDrawer = ({ crop, crops, setCrops }: CropOptionsProps) => {
   const [isAreaInvalid, setIsAreaInvalid] = useState(false);
   const [area, setArea] = useState(String(crop.area));
   const [name, setName] = useState(crop.name);
-  const [variety, setVariety] = useState(crop.type);
+  const [type, setType] = useState(crop.type);
+  const [variety, setVariety] = useState(crop.variety);
   const [description, setDescription] = useState(crop.description);
   const [saveButtonLoading, setSaveButtonLoading] = useState(false);
 
@@ -47,7 +48,8 @@ export const EditCropDrawer = ({ crop, crops, setCrops }: CropOptionsProps) => {
   useEffect(() => {
     if (isOpen) {
       setName(crop.name);
-      setVariety(crop.type);
+      setVariety(crop.variety);
+      setType(crop.type);
       setArea(String(crop.area));
       setDescription(crop.description);
     }
@@ -67,6 +69,10 @@ export const EditCropDrawer = ({ crop, crops, setCrops }: CropOptionsProps) => {
     setName(event.target.value);
   };
 
+  const handleTypeChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setType(event.target.value);
+  };
+
   const handleVarietyChange = (event: ChangeEvent<HTMLInputElement>) => {
     setVariety(event.target.value);
   };
@@ -79,6 +85,7 @@ export const EditCropDrawer = ({ crop, crops, setCrops }: CropOptionsProps) => {
     onClose();
     setName("");
     setVariety("");
+    setType("");
     setArea("1");
     setDescription("");
   };
@@ -89,7 +96,7 @@ export const EditCropDrawer = ({ crop, crops, setCrops }: CropOptionsProps) => {
       token,
       id: crop.id,
       name,
-      type: variety,
+      type, variety,
       area: +area,
       description,
     }).then((res: CropModel) => {
@@ -114,21 +121,21 @@ export const EditCropDrawer = ({ crop, crops, setCrops }: CropOptionsProps) => {
   return (
     <>
       <MenuItem icon={<FiEdit3 />} onClick={onOpen}>
-        Edit
+        Edytuj
       </MenuItem>
       <Drawer placement={"right"} onClose={onClose} isOpen={isOpen}>
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton onClick={clearInputs} />
-          <DrawerHeader borderBottomWidth="2px">Edit {crop.name}</DrawerHeader>
+          <DrawerHeader borderBottomWidth="2px">Edytuj {crop.name}</DrawerHeader>
 
           <DrawerBody>
             <Stack spacing="24px">
               <Box>
-                <FormLabel htmlFor="name">Name</FormLabel>
+                <FormLabel htmlFor="name">Nazwa</FormLabel>
                 <Input
                   id="name"
-                  placeholder="Please enter your crop's name"
+                  placeholder="Podaj nazwę uprawy"
                   maxLength={30}
                   value={name}
                   isInvalid={!name}
@@ -137,10 +144,22 @@ export const EditCropDrawer = ({ crop, crops, setCrops }: CropOptionsProps) => {
               </Box>
 
               <Box>
-                <FormLabel htmlFor="variety">Variety</FormLabel>
+                <FormLabel htmlFor="variety">Rodzaj</FormLabel>
+                <Input
+                  id="type"
+                  placeholder="Podaj rodzaj uprawy"
+                  maxLength={20}
+                  value={type}
+                  isInvalid={!type}
+                  onChange={handleTypeChange}
+                />
+              </Box>
+
+              <Box>
+                <FormLabel htmlFor="variety">Odmiana</FormLabel>
                 <Input
                   id="variety"
-                  placeholder="Please enter blueberry variety"
+                  placeholder="Podaj odmianę uprawy"
                   maxLength={20}
                   value={variety}
                   isInvalid={!variety}
@@ -149,11 +168,11 @@ export const EditCropDrawer = ({ crop, crops, setCrops }: CropOptionsProps) => {
               </Box>
 
               <Box>
-                <FormLabel htmlFor="url">Area</FormLabel>
+                <FormLabel htmlFor="url">Powierzchnia</FormLabel>
                 <InputGroup>
                   <Input
                     type={"number"}
-                    placeholder={"Type you crop's area"}
+                    placeholder={"Podaj powierzchnię uprawy"}
                     isInvalid={isAreaInvalid}
                     value={area}
                     onChange={handleAreaChange}
@@ -165,7 +184,7 @@ export const EditCropDrawer = ({ crop, crops, setCrops }: CropOptionsProps) => {
               </Box>
 
               <Box>
-                <FormLabel htmlFor="desc">Description</FormLabel>
+                <FormLabel htmlFor="desc">Opis</FormLabel>
                 <Textarea
                   id="desc"
                   maxLength={50}
@@ -179,14 +198,14 @@ export const EditCropDrawer = ({ crop, crops, setCrops }: CropOptionsProps) => {
 
           <DrawerFooter borderTopWidth="1px">
             <Button variant="outline" mr={3} onClick={clearInputs}>
-              Cancel
+              Anuluj
             </Button>
             <Button
               isLoading={saveButtonLoading}
               disabled={isAddButtonInvalid}
               onClick={handleSaveCrop}
             >
-              Save
+              Zapisz
             </Button>
           </DrawerFooter>
         </DrawerContent>

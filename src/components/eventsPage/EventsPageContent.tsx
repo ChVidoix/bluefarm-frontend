@@ -93,9 +93,9 @@ export const EventsPageContent = () => {
   };
 
   const renderCell = (cell: any, index: number, currentEvent: EventModel) => {
-    if (cell.column.Header === "No.") {
+    if (cell.column.Header === "Lp.") {
       return <>{index + 1}</>;
-    } else if (cell.column.Header === "Description") {
+    } else if (cell.column.Header === "Opis") {
       return (
         <>
           {eventDescriptionRowContent(
@@ -104,7 +104,7 @@ export const EventsPageContent = () => {
           )}
         </>
       );
-    } else if (cell.column.Header === "Start date") {
+    } else if (cell.column.Header === "Rozpoczęcie") {
       return (
         <>
           <>{currentEvent.start_date.slice(11, 16)}</>
@@ -112,7 +112,7 @@ export const EventsPageContent = () => {
           <>{currentEvent.start_date.slice(0, 10).replaceAll("-", ".")}</>
         </>
       );
-    } else if (cell.column.Header === "End date") {
+    } else if (cell.column.Header === "Zakończenie") {
       return (
         <>
           <>{currentEvent.end_date.slice(11, 16)}</>

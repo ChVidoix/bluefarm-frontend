@@ -43,7 +43,7 @@ export const CropOptions = ({ crop, crops, setCrops }: CropOptionsProps) => {
         <MenuList>
           <EditCropDrawer crop={crop} crops={crops} setCrops={setCrops} />
           <MenuItem icon={<AiFillDelete />} onClick={handleDelete}>
-            Delete
+            Usuń
           </MenuItem>
         </MenuList>
       </Menu>

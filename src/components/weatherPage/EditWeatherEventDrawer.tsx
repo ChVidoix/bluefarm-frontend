@@ -136,19 +136,19 @@ export const EditWeatherEventDrawer = ({
         {isError ? (
           <Alert status="error">
             <AlertIcon />
-            There was an error processing your request
+            Wystąpił błąd podczas edycji pogody
           </Alert>
         ) : (
           <DrawerCloseButton onClick={clearInputs} />
         )}
         <DrawerHeader borderBottomWidth="2px">
-          Edit weather for {formatOnlyDate(event.date)}
+          Edytuj pogodę dla {formatOnlyDate(event.date)}
         </DrawerHeader>
 
         <DrawerBody>
           <Stack spacing="24px">
             <Box>
-              <FormLabel htmlFor="date">Date</FormLabel>
+              <FormLabel htmlFor="date">Data</FormLabel>
               <input
                 type="date"
                 className={"datePicker"}
@@ -158,7 +158,7 @@ export const EditWeatherEventDrawer = ({
             </Box>
 
             <Box>
-              <FormLabel htmlFor="amount">Min temperature</FormLabel>
+              <FormLabel htmlFor="amount">Minimalna temperatura</FormLabel>
               <InputGroup>
                 <Input
                   type={"number"}
@@ -171,7 +171,7 @@ export const EditWeatherEventDrawer = ({
             </Box>
 
             <Box>
-              <FormLabel htmlFor="amount">Max temperature</FormLabel>
+              <FormLabel htmlFor="amount">Maksymalna temperatura</FormLabel>
               <InputGroup>
                 <Input
                   type={"number"}
@@ -184,7 +184,7 @@ export const EditWeatherEventDrawer = ({
             </Box>
 
             <Box>
-              <FormLabel htmlFor="type">Rainfall description</FormLabel>
+              <FormLabel htmlFor="type">Opis opadów</FormLabel>
               <Input
                 id="rainfall"
                 placeholder="Enter rainfall description"
@@ -196,7 +196,7 @@ export const EditWeatherEventDrawer = ({
             </Box>
 
             <Box>
-              <FormLabel htmlFor="desc">Description</FormLabel>
+              <FormLabel htmlFor="desc">Opis</FormLabel>
               <Textarea
                 id="desc"
                 maxLength={150}
@@ -210,14 +210,14 @@ export const EditWeatherEventDrawer = ({
 
         <DrawerFooter borderTopWidth="1px">
           <Button variant="outline" mr={3} onClick={clearInputs}>
-            Cancel
+            Anuluj
           </Button>
           <Button
             isLoading={saveButtonLoading}
             disabled={isAddButtonInvalid}
             onClick={handleEditCashEvent}
           >
-            Save
+            Zapisz
           </Button>
         </DrawerFooter>
       </DrawerContent>

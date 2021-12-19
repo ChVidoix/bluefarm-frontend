@@ -94,16 +94,16 @@ export const WeatherTile = ({
           weatherEventOrDate.min_temp,
           weatherEventOrDate.max_temp
         )}
-        {renderTileTitleBox("Rainfall")}
+        {renderTileTitleBox("Opady")}
         {renderTextTooltip(weatherEventOrDate.rainfall)}
-        {renderTileTitleBox("Description")}
+        {renderTileTitleBox("Opis")}
         {renderTextTooltip(weatherEventOrDate.description)}
       </Flex>
     ) : (
       <Flex direction={"column"} w={"95%"} h={"100%"} pb={1}>
         {renderTileTitleBox(formatOnlyDate(weatherEventOrDate))}
         <Center w={"100%"} h={"100%"}>
-          no weather defined yet
+          Brak danych
         </Center>
       </Flex>
     );

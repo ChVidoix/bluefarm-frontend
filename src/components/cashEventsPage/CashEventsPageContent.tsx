@@ -35,9 +35,9 @@ export const CashEventsPageContent = () => {
       <Spacer />
       <Flex w={"100%"} align={"flex-start"}>
         <Spacer />
-        <CashEventsTable cashEvents={filteredIncomes} title={"incomes"} />
+        <CashEventsTable cashEvents={filteredIncomes} title={"przychody"} />
         <Spacer />
-        <CashEventsTable cashEvents={filteredOutgoings} title={"outgoings"} />
+        <CashEventsTable cashEvents={filteredOutgoings} title={"wydatki"} />
         <Spacer />
       </Flex>
     </>

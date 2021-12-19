@@ -137,7 +137,7 @@ export const FullCashEventsTable = ({
           </Tbody>
           <Tfoot borderTop={"2px"}>
             <Tr>
-              <Th>Total</Th>
+              <Th>Suma</Th>
               <Th />
               <Th />
               <Th isNumeric>{getTotal()}</Th>

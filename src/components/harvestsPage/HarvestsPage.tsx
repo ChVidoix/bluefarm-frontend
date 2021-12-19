@@ -137,7 +137,6 @@ export const HarvestsPage = () => {
         <Td>{harvest.name}</Td>
         <Td>{formatDate(harvest.start_date)}</Td>
         <Td>{formatDate(harvest.end_date)}</Td>
-        <Td>{harvest.type}</Td>
         <Td isNumeric>{harvest.crop_amount}</Td>
         <Td>{harvestNotesRowContent(harvest.name, harvest.notes)}</Td>
         <Td>
@@ -178,7 +177,7 @@ export const HarvestsPage = () => {
               </Box>
             </Flex>
           </Center>
-          <HarvestsStats isLoading={isTableLoading} />
+          <HarvestsStats isLoading={isTableLoading} crops={crops} />
           <Center w={"100%"} mt={5} mb={2}>
             <Box bg={"gray.300"} rounded={"lg"} w={"95%"}>
               <Table variant="striped">
@@ -189,7 +188,6 @@ export const HarvestsPage = () => {
                     <Th>Name</Th>
                     <Th>Start date</Th>
                     <Th>End date</Th>
-                    <Th>Type</Th>
                     <Th isNumeric>Amount [kg]</Th>
                     <Th>Notes</Th>
                     <Th />

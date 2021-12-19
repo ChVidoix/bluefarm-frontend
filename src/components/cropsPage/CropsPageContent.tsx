@@ -12,7 +12,7 @@ import {
   Tooltip,
   Tr,
 } from "@chakra-ui/react";
-import { countCropsVarietyArea, getCrops } from "../../service/BlueFarmService";
+import { countCropsTypeArea, getCrops } from "../../service/BlueFarmService";
 import { useContext, useEffect, useState } from "react";
 import {
   BlueFarmContext,
@@ -72,6 +72,7 @@ const CropsPageContent = () => {
       <Td isNumeric>{index + 1}</Td>
       <Td>{crop.name}</Td>
       <Td>{crop.type}</Td>
+      <Td>{crop.variety}</Td>
       <Td isNumeric>{crop.area}</Td>
       <Td>{cropDescriptionRowContent(crop.description)}</Td>
       <Td>
@@ -83,11 +84,11 @@ const CropsPageContent = () => {
   return (
     <>
       <Spacer />
-      <CropsStats varietyAreaData={countCropsVarietyArea(crops)} />
+      <CropsStats varietyAreaData={countCropsTypeArea(crops)} />
       <Spacer />
       <Center rounded={"lg"} bg={"gray.300"} w={"30vw"} h={"7vh"} mt={10}>
         <Heading as={"h5"} color={"gray.600"}>
-          All crops
+          Wszystkie uprawy
         </Heading>
       </Center>
       <Center rounded={"lg"} bg={"gray.300"} w={"80%"} mt={5}>
@@ -95,11 +96,12 @@ const CropsPageContent = () => {
           <TableCaption>{tableCaption()}</TableCaption>
           <Thead borderBottom={"2px"}>
             <Tr>
-              <Th isNumeric>Number</Th>
-              <Th>Name</Th>
-              <Th>Variety</Th>
-              <Th isNumeric>Area</Th>
-              <Th>Description</Th>
+              <Th isNumeric>Lp.</Th>
+              <Th>Nazwa</Th>
+              <Th>Rodzaj</Th>
+              <Th>Odmiana</Th>
+              <Th isNumeric>Powierzchnia</Th>
+              <Th>Opis</Th>
               <Th />
             </Tr>
           </Thead>

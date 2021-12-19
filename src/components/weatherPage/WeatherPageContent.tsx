@@ -74,7 +74,7 @@ export const WeatherPageContent = () => {
               fontWeight={"bold"}
               color={"gray.700"}
             >
-              Select a week starting from:
+              Wybierz tydzień rozpoczynający się od:
             </Center>
           </Box>
           <Spacer />

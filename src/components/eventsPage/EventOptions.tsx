@@ -48,7 +48,7 @@ export const EventOptions = ({ event }: EventOptionsProps) => {
         <MenuList>
           <EditEventDrawer event={event} />
           <MenuItem icon={<AiFillDelete />} onClick={handleDelete}>
-            Delete
+            Usuń
           </MenuItem>
         </MenuList>
       </Menu>

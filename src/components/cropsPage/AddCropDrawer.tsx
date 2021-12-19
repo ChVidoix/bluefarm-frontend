@@ -37,11 +37,12 @@ export const AddCropDrawer = ({ crops, setCrops }: AddCropDrawerProps) => {
   const [isAreaInvalid, setIsAreaInvalid] = useState(false);
   const [area, setArea] = useState("1");
   const [name, setName] = useState("");
+  const [type, setType] = useState("");
   const [variety, setVariety] = useState("");
   const [description, setDescription] = useState("");
   const [addButtonLoading, setAddButtonLoading] = useState(false);
 
-  const isAddButtonInvalid = isAreaInvalid || !name || !variety || !description;
+  const isAddButtonInvalid = isAreaInvalid || !name || !variety || !type || !description;
 
   const handleAreaChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (Number(event.target.value) < 1) {
@@ -57,6 +58,10 @@ export const AddCropDrawer = ({ crops, setCrops }: AddCropDrawerProps) => {
     setName(event.target.value);
   };
 
+  const handleTypeChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setType(event.target.value);
+  };
+
   const handleVarietyChange = (event: ChangeEvent<HTMLInputElement>) => {
     setVariety(event.target.value);
   };
@@ -68,6 +73,7 @@ export const AddCropDrawer = ({ crops, setCrops }: AddCropDrawerProps) => {
   const clearInputs = () => {
     onClose();
     setName("");
+    setType("");
     setVariety("");
     setArea("1");
     setDescription("");
@@ -75,7 +81,7 @@ export const AddCropDrawer = ({ crops, setCrops }: AddCropDrawerProps) => {
 
   const handleCreateCrop = () => {
     setAddButtonLoading(true);
-    createCrop({ token, name, type: variety, area: +area, description }).then(
+    createCrop({ token, name, type, variety, area: +area, description }).then(
       (res: CropModel) => {
         if (crops) {
           setCrops([...crops, res]);
@@ -91,21 +97,21 @@ export const AddCropDrawer = ({ crops, setCrops }: AddCropDrawerProps) => {
   return (
     <>
       <Button leftIcon={<AddIcon />} onClick={onOpen}>
-        Add crop
+        Dodaj uprawę
       </Button>
       <Drawer placement={"right"} onClose={onClose} isOpen={isOpen}>
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton onClick={clearInputs} />
-          <DrawerHeader borderBottomWidth="2px">Add a new crop</DrawerHeader>
+          <DrawerHeader borderBottomWidth="2px">Dodaj nową uprawę</DrawerHeader>
 
           <DrawerBody>
             <Stack spacing="24px">
               <Box>
-                <FormLabel htmlFor="name">Name</FormLabel>
+                <FormLabel htmlFor="name">Nazwa</FormLabel>
                 <Input
                   id="name"
-                  placeholder="Please enter your crop's name"
+                  placeholder="Podaj nazwę uprawy"
                   maxLength={30}
                   value={name}
                   isInvalid={!name}
@@ -114,10 +120,22 @@ export const AddCropDrawer = ({ crops, setCrops }: AddCropDrawerProps) => {
               </Box>
 
               <Box>
-                <FormLabel htmlFor="variety">Variety</FormLabel>
+                <FormLabel htmlFor="variety">Rodzaj</FormLabel>
+                <Input
+                  id="type"
+                  placeholder="Podaj rodzaj uprawy"
+                  maxLength={20}
+                  value={type}
+                  isInvalid={!type}
+                  onChange={handleTypeChange}
+                />
+              </Box>
+
+              <Box>
+                <FormLabel htmlFor="variety">Odmiana</FormLabel>
                 <Input
                   id="variety"
-                  placeholder="Please enter blueberry variety"
+                  placeholder="Podaj odmianę"
                   maxLength={20}
                   value={variety}
                   isInvalid={!variety}
@@ -126,11 +144,11 @@ export const AddCropDrawer = ({ crops, setCrops }: AddCropDrawerProps) => {
               </Box>
 
               <Box>
-                <FormLabel htmlFor="area">Area</FormLabel>
+                <FormLabel htmlFor="area">Powierzchnia</FormLabel>
                 <InputGroup>
                   <Input
                     type={"number"}
-                    placeholder={"Type you crop's area"}
+                    placeholder={"Podaj powierzchnię uprawy"}
                     isInvalid={isAreaInvalid}
                     value={area}
                     onChange={handleAreaChange}
@@ -142,7 +160,7 @@ export const AddCropDrawer = ({ crops, setCrops }: AddCropDrawerProps) => {
               </Box>
 
               <Box>
-                <FormLabel htmlFor="desc">Description</FormLabel>
+                <FormLabel htmlFor="desc">Opis</FormLabel>
                 <Textarea
                   id="desc"
                   maxLength={50}
@@ -156,14 +174,14 @@ export const AddCropDrawer = ({ crops, setCrops }: AddCropDrawerProps) => {
 
           <DrawerFooter borderTopWidth="1px">
             <Button variant="outline" mr={3} onClick={clearInputs}>
-              Cancel
+              Anuluj
             </Button>
             <Button
               isLoading={addButtonLoading}
               disabled={isAddButtonInvalid}
               onClick={handleCreateCrop}
             >
-              Add crop
+              Dodaj
             </Button>
           </DrawerFooter>
         </DrawerContent>

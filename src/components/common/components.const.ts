@@ -10,105 +10,105 @@ import { As } from "@chakra-ui/react";
 import React, { Dispatch } from "react";
 
 export const eventType: { [key: string]: string } = {
-  all: "All events",
-  events: "Events",
-  harvests: "Harvests",
-  fertilizeEvents: "Fertilize events",
+  all: "Wszystkie",
+  events: "Wydarzenia",
+  harvests: "Zbiory",
+  fertilizeEvents: "Nawożenie",
 };
 
 export const homeEventsCount = [5, 10, 15, 20];
 
 export const notAuthenticatedLinks: { [name: string]: string } = {
-  login: "Login",
-  register: "Register",
+  login: "Logowanie",
+  register: "Rejestracja",
 };
 
 export const authenticatedLinks: { [name: string]: string } = {
-  home: "Home",
-  crops: "Crops",
-  events: "Events",
-  cash_events: "Billings",
-  weather: "Weather",
-  harvests: "Harvests",
-  fertilize_events: "Fertilization",
+  home: "Start",
+  crops: "Uprawy",
+  events: "Wydarzenia",
+  cash_events: "Wydatki i przychody",
+  weather: "Pogoda",
+  harvests: "Zbiory",
+  fertilize_events: "Nawożenie",
 };
 
 export enum CashEventType {
-  outgoing = "outgoing",
-  income = "income",
+  outgoing = "wydatki",
+  income = "przychody",
 }
 
 export const FiltersMap: { [key: string]: string } = {
-  all: "All upcoming",
-  week: "Next week",
-  twoWeeks: "Next two weeks",
-  month: "Next month",
-  custom: "Selected date",
-  previous: "Previous",
+  all: "Wszystkie nadchodzące",
+  week: "Najbliższy tydzień",
+  twoWeeks: "Najbliższe dwa tygodnie",
+  month: "Najbliższy miesiąc",
+  custom: "Według daty",
+  previous: "Poprzednie",
 };
 
 export const CashFiltersMap: { [key: string]: string } = {
-  all: "All upcoming",
-  week: "Next week",
-  twoWeeks: "Next two weeks",
-  month: "Next month",
-  previous: "Previous",
-  byYear: "By year",
+  all: "Wszystkie nadchodzące",
+  week: "Najbliższy tydzień",
+  twoWeeks: "Najbliższe dwa tygodnie",
+  month: "Najbliższy miesiąc",
+  previous: "Poprzednie",
+  byYear: "Według lat",
 };
 
 export const FertilizeFiltersMap: { [key: string]: string } = {
-  all: "All upcoming",
-  week: "Next week",
-  twoWeeks: "Next two weeks",
-  month: "Next month",
-  previous: "Previous",
-  byYear: "By year",
+  all: "Wszystkie nadchodzące",
+  week: "Najbliższy tydzień",
+  twoWeeks: "Najbliższe dwa tygodnie",
+  month: "Najbliższy miesiąc",
+  previous: "Poprzednie",
+  byYear: "Według lat",
 };
 
 export const eventsColumns = [
   {
-    Header: "No.",
+    Header: "Lp.",
     accessor: "id",
     disableSortBy: true,
   },
   {
-    Header: "Name",
+    Header: "Nazwa",
     accessor: "name",
     width: 100,
   },
-  { Header: "Start date", accessor: "start_date" },
-  { Header: "End date", accessor: "end_date" },
+  { Header: "Rozpoczęcie", accessor: "start_date" },
+  { Header: "Zakończenie", accessor: "end_date" },
   {
-    Header: "Description",
+    Header: "Opis",
     accessor: "description",
     disableSortBy: true,
   },
 ];
 
 export const cashEventsColumns = [
-  { Header: "No.", accessor: "id", disableSortBy: true },
+  { Header: "Lp.", accessor: "id", disableSortBy: true },
   {
-    Header: "Name",
+    Header: "Nazwa",
     accessor: "name",
     width: 100,
   },
-  { Header: "Amount", accessor: "amount", isNumeric: true },
+  { Header: "Kwota", accessor: "amount", isNumeric: true },
 ];
 
 export const fullCashEventsColumns = [
-  { Header: "No.", accessor: "id", disableSortBy: true },
-  { Header: "Name", accessor: "name" },
-  { Header: "Date", accessor: "date" },
-  { Header: "Amount", accessor: "amount", isNumeric: true },
-  { Header: "Description", accessor: "description" },
+  { Header: "Lp.", accessor: "id", disableSortBy: true },
+  { Header: "Nazwa", accessor: "name" },
+  { Header: "Data", accessor: "date" },
+  { Header: "Kwota", accessor: "amount", isNumeric: true },
+  { Header: "Opis", accessor: "description" },
 ];
 
 export const fertilizeEventsColumns = [
-  { Header: "Name", accessor: "name" },
-  { Header: "Date", accessor: "date" },
-  { Header: "Amount", accessor: "amount", isNumeric: true },
-  { Header: "Description", accessor: "description" },
-  { Header: "Type", accessor: "type" },
+  { Header: "Nazwa", accessor: "name" },
+  { Header: "Data", accessor: "date" },
+  { Header: "Kwota", accessor: "amount", isNumeric: true },
+  { Header: "Opis", accessor: "description" },
+  { Header: "Rodzaj", accessor: "type" },
 ];
 
 export interface HeaderProps {

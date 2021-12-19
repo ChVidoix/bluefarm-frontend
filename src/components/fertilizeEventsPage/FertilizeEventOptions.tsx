@@ -57,7 +57,7 @@ export const FertilizeEventOptions = ({
         <MenuList>
           <EditFertilizeEventDrawer eventId={eventId} />
           <MenuItem icon={<AiFillDelete />} onClick={handleDelete}>
-            Delete
+            Usuń
           </MenuItem>
         </MenuList>
       </Menu>

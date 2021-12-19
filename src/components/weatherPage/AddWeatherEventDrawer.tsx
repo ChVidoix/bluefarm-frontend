@@ -117,7 +117,7 @@ export const AddWeatherEventDrawer = () => {
   return (
     <>
       <Button leftIcon={<AddIcon />} onClick={onOpen}>
-        Add weather
+        Dodaj pogodę
       </Button>
       <Drawer placement={"right"} onClose={onClose} isOpen={isOpen}>
         <DrawerOverlay />
@@ -125,18 +125,18 @@ export const AddWeatherEventDrawer = () => {
           {isError ? (
             <Alert status="error">
               <AlertIcon />
-              There was an error processing your request
+              Wystąpił błąd podczas dodawania pogody
             </Alert>
           ) : (
             <DrawerCloseButton onClick={clearInputs} />
           )}
 
-          <DrawerHeader borderBottomWidth="2px">Add weather</DrawerHeader>
+          <DrawerHeader borderBottomWidth="2px">Dodaj nowy dzień</DrawerHeader>
 
           <DrawerBody>
             <Stack spacing="24px">
               <Box>
-                <FormLabel htmlFor="date">Date</FormLabel>
+                <FormLabel htmlFor="date">Data</FormLabel>
                 <input
                   type="date"
                   className={"datePicker"}
@@ -146,7 +146,7 @@ export const AddWeatherEventDrawer = () => {
               </Box>
 
               <Box>
-                <FormLabel htmlFor="amount">Min temperature</FormLabel>
+                <FormLabel htmlFor="amount">Minimalna temperatura</FormLabel>
                 <InputGroup>
                   <Input
                     type={"number"}
@@ -159,7 +159,7 @@ export const AddWeatherEventDrawer = () => {
               </Box>
 
               <Box>
-                <FormLabel htmlFor="amount">Max temperature</FormLabel>
+                <FormLabel htmlFor="amount">Maksymalna temperatura</FormLabel>
                 <InputGroup>
                   <Input
                     type={"number"}
@@ -172,7 +172,7 @@ export const AddWeatherEventDrawer = () => {
               </Box>
 
               <Box>
-                <FormLabel htmlFor="type">Rainfall description</FormLabel>
+                <FormLabel htmlFor="type">Opis opadów</FormLabel>
                 <Input
                   id="rainfall"
                   placeholder="Enter rainfall description"
@@ -184,7 +184,7 @@ export const AddWeatherEventDrawer = () => {
               </Box>
 
               <Box>
-                <FormLabel htmlFor="desc">Description</FormLabel>
+                <FormLabel htmlFor="desc">Opis</FormLabel>
                 <Textarea
                   id="desc"
                   maxLength={150}
@@ -198,14 +198,14 @@ export const AddWeatherEventDrawer = () => {
 
           <DrawerFooter borderTopWidth="1px">
             <Button variant="outline" mr={3} onClick={clearInputs}>
-              Cancel
+              Anuluj
             </Button>
             <Button
               isLoading={addButtonLoading}
               disabled={isAddButtonInvalid}
               onClick={handleCreateEvent}
             >
-              Add day
+              Dodaj pogodę
             </Button>
           </DrawerFooter>
         </DrawerContent>

@@ -66,10 +66,10 @@ export const CashEventsFilters = () => {
   const parse = (val: string) => val.replace(/^\$/, "");
 
   const data = {
-    labels: labels,
+    labels: ['przychody', "wydatki"],
     datasets: [
       {
-        label: "billings",
+        label: "Wydatki i przychody",
         data: values,
         backgroundColor: values.map(
           () =>
@@ -282,7 +282,7 @@ export const CashEventsFilters = () => {
               justifyContent={"space-around"}
             >
               <Center color={"gray.600"} fontWeight={"bold"}>
-                Balance:
+                Bilans:
               </Center>
               <Center color={"gray.600"}>{balance}</Center>
             </Flex>
@@ -304,7 +304,7 @@ export const CashEventsFilters = () => {
               color={"gray.600"}
               fontWeight={"bold"}
             >
-              Amount
+              Kwota
             </Center>
           </Center>
 
@@ -316,7 +316,7 @@ export const CashEventsFilters = () => {
                 color={"gray.600"}
                 fontWeight={"bold"}
               >
-                Min amount
+                Minimalna kwota
               </FormLabel>
               <NumberInput
                 rounded={"lg"}
@@ -340,7 +340,7 @@ export const CashEventsFilters = () => {
                 color={"gray.600"}
                 fontWeight={"bold"}
               >
-                Max amount
+                Maksymalna kwota
               </FormLabel>
               <NumberInput
                 rounded={"lg"}
@@ -368,13 +368,13 @@ export const CashEventsFilters = () => {
               color={"gray.600"}
               fontWeight={"bold"}
             >
-              Date
+              Data
             </Center>
           </Center>
-          <Flex w={"100%"} h={"4em"} mb={5} rounded={"lg"} bg={"gray.300"}>
+          <Flex w={"100%"} h={"4em"} mb={15} rounded={"lg"} bg={"gray.300"}>
             <Spacer />
             <Center color={"gray.700"} height={"100%"}>
-              Select your events from:
+              Wybierz wydatki i przychody:
             </Center>
             <Spacer />
             <Center color={"gray.700"} height={"100%"}>
@@ -400,7 +400,7 @@ export const CashEventsFilters = () => {
           <Flex w={"100%"} h={"4em"} mb={5} rounded={"lg"} bg={"gray.300"}>
             <Spacer />
             <Center color={"gray.700"} height={"100%"}>
-              Select year:
+              Wybierz rok:
             </Center>
             <Spacer />
             <Center color={"gray.700"} height={"100%"}>

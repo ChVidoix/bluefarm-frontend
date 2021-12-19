@@ -52,7 +52,6 @@ export const EditHarvestDrawer = ({
     start_date: editedStartDate,
     end_date: editedEndDate,
     notes: editedNotes,
-    type: editedType,
     crop_amount: editedCropAmount,
   } = harvestsEvents?.find(
     (filteredHarvest: HarvestModel) => filteredHarvest.id === eventId
@@ -65,14 +64,12 @@ export const EditHarvestDrawer = ({
   const [startTime, setStartTime] = useState("12:00");
   const [endTime, setEndTime] = useState("13:00");
   const [notes, setNotes] = useState("");
-  const [type, setType] = useState("");
   const [cropAmount, setCropAmount] = useState(0);
   const [addButtonLoading, setAddButtonLoading] = useState(false);
 
   useEffect(() => {
     if (isOpen) {
       setName(editedName);
-      setType(editedType);
       setCropAmount(editedCropAmount);
       setStartDate(editedStartDate.slice(0, 10));
       setEndDate(editedEndDate.slice(0, 10));
@@ -85,16 +82,11 @@ export const EditHarvestDrawer = ({
   const isAddButtonInvalid =
     !name ||
     !notes ||
-    !type ||
     cropAmount === 0 ||
     +new Date(`${startDate} ${startTime}`) > +new Date(`${endDate} ${endTime}`);
 
   const handleNameChange = (event: ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
-  };
-
-  const handleTypeChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setType(event.target.value);
   };
 
   const handleDescriptionChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
@@ -108,7 +100,6 @@ export const EditHarvestDrawer = ({
   const clearInputs = () => {
     onClose();
     setName("");
-    setType("");
     setCropAmount(0);
     setStartDate(format(new Date(), "yyyy-MM-dd"));
     setEndDate(format(new Date(), "yyyy-MM-dd"));
@@ -127,7 +118,6 @@ export const EditHarvestDrawer = ({
       start_date: parseJSDateToDjango(startDate, startTime),
       end_date: parseJSDateToDjango(endDate, endTime),
       notes,
-      type,
       crop_amount: cropAmount,
     }).then((res: HarvestModel) => {
       if (harvestsEvents) {
@@ -207,18 +197,6 @@ export const EditHarvestDrawer = ({
                   />
                   <InputRightAddon>kg</InputRightAddon>
                 </InputGroup>
-              </Box>
-
-              <Box>
-                <FormLabel htmlFor="type">Variety</FormLabel>
-                <Input
-                  id="name"
-                  placeholder="Enter harvested variety"
-                  maxLength={20}
-                  value={type}
-                  isInvalid={!type}
-                  onChange={handleTypeChange}
-                />
               </Box>
 
               <Box>

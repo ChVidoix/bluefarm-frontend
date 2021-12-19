@@ -154,7 +154,7 @@ export const EventsFilters = () => {
       <Flex w={"100%"} h={"4em"} mb={5} rounded={"lg"} bg={"gray.300"}>
         <Spacer />
         <Center color={"gray.700"} height={"100%"}>
-          Select your events from:
+          Wybierz wydarzenia:
         </Center>
         <Spacer />
         <Center color={"gray.700"} height={"100%"}>
@@ -179,7 +179,7 @@ export const EventsFilters = () => {
             rounded={"lg"}
             bg={"gray.300"}
           >
-            <Center h={"2em"}>Select events starting from:</Center>
+            <Center h={"2em"}>Wydarzenia rozpoczynające się od:</Center>
             <DatePicker
               date={filterStartDate}
               setDate={setFilterStartDate}
@@ -195,7 +195,7 @@ export const EventsFilters = () => {
             rounded={"lg"}
             bg={"gray.300"}
           >
-            <Center h={"2em"}>Select events starting before:</Center>
+            <Center h={"2em"}>Wydarzenia rozpoczynające się przed:</Center>
             <DatePicker
               date={filterEndDate}
               setDate={setFilterEndDate}

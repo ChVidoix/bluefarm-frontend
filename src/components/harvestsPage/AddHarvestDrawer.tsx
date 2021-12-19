@@ -50,18 +50,13 @@ export const AddHarvestDrawer = () => {
   const [startTime, setStartTime] = useState("12:00");
   const [endTime, setEndTime] = useState("13:00");
   const [notes, setNotes] = useState("");
-  const [type, setType] = useState("");
   const [cropAmount, setCropAmount] = useState(0);
   const [addButtonLoading, setAddButtonLoading] = useState(false);
 
-  const isAddButtonInvalid = !name || !notes || !type || cropAmount === 0;
+  const isAddButtonInvalid = !name || !notes || cropAmount === 0;
 
   const handleNameChange = (event: ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
-  };
-
-  const handleTypeChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setType(event.target.value);
   };
 
   const handleDescriptionChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
@@ -75,7 +70,6 @@ export const AddHarvestDrawer = () => {
   const clearInputs = () => {
     onClose();
     setName("");
-    setType("");
     setCropAmount(0);
     setStartDate(format(new Date(), "yyyy-MM-dd"));
     setEndDate(format(new Date(), "yyyy-MM-dd"));
@@ -94,13 +88,12 @@ export const AddHarvestDrawer = () => {
       end_date: parseJSDateToDjango(endDate, endTime),
       crop_amount: cropAmount,
       notes,
-      type,
     }).then((res: HarvestModel) => {
       if (harvestsEvents) {
         dispatch(setHarvests([...harvestsEvents, res]));
         dispatch(
           setHarvestsFilters(
-            +new Date(),
+            +new Date(`${new Date().getFullYear()}-01-01`),
             +new Date(`${new Date().getFullYear()}-12-31`)
           )
         );
@@ -108,7 +101,7 @@ export const AddHarvestDrawer = () => {
         dispatch(setHarvests([res]));
         dispatch(
           setHarvestsFilters(
-            +new Date(),
+            +new Date(`${new Date().getFullYear()}-01-01`),
             +new Date(`${new Date().getFullYear()}-12-31`)
           )
         );
@@ -121,18 +114,18 @@ export const AddHarvestDrawer = () => {
   return (
     <>
       <Button leftIcon={<AddIcon />} onClick={onOpen}>
-        Add harvest
+        Dodaj zbiór
       </Button>
       <Drawer placement={"right"} onClose={onClose} isOpen={isOpen}>
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton onClick={clearInputs} />
-          <DrawerHeader borderBottomWidth="2px">Add harvest</DrawerHeader>
+          <DrawerHeader borderBottomWidth="2px">Dodaj zbiór</DrawerHeader>
 
           <DrawerBody>
             <Stack spacing="24px">
               <Box>
-                <FormLabel htmlFor="name">Name</FormLabel>
+                <FormLabel htmlFor="name">Nazwa</FormLabel>
                 <Input
                   id="name"
                   placeholder="Enter your harvest's name"
@@ -144,7 +137,7 @@ export const AddHarvestDrawer = () => {
               </Box>
 
               <Box>
-                <FormLabel htmlFor="start-date">Start date</FormLabel>
+                <FormLabel htmlFor="start-date">Rozpoczęcie</FormLabel>
                 <DatePicker
                   date={startDate}
                   setDate={setStartDate}
@@ -154,7 +147,7 @@ export const AddHarvestDrawer = () => {
               </Box>
 
               <Box>
-                <FormLabel htmlFor="end-date">End date</FormLabel>
+                <FormLabel htmlFor="end-date">Zakończenie</FormLabel>
                 <DatePicker
                   date={endDate}
                   time={endTime}
@@ -165,7 +158,7 @@ export const AddHarvestDrawer = () => {
               </Box>
 
               <Box>
-                <FormLabel htmlFor="amount">Amount</FormLabel>
+                <FormLabel htmlFor="amount">Ilość</FormLabel>
                 <InputGroup>
                   <Input
                     type={"number"}
@@ -179,19 +172,7 @@ export const AddHarvestDrawer = () => {
               </Box>
 
               <Box>
-                <FormLabel htmlFor="type">Variety</FormLabel>
-                <Input
-                  id="name"
-                  placeholder="Enter harvested variety"
-                  maxLength={20}
-                  value={type}
-                  isInvalid={!type}
-                  onChange={handleTypeChange}
-                />
-              </Box>
-
-              <Box>
-                <FormLabel htmlFor="desc">Notes</FormLabel>
+                <FormLabel htmlFor="desc">Notatki</FormLabel>
                 <Textarea
                   id="desc"
                   maxLength={150}
@@ -205,14 +186,14 @@ export const AddHarvestDrawer = () => {
 
           <DrawerFooter borderTopWidth="1px">
             <Button variant="outline" mr={3} onClick={clearInputs}>
-              Cancel
+              Anuluj
             </Button>
             <Button
               isLoading={addButtonLoading}
               disabled={isAddButtonInvalid}
               onClick={handleCreateEvent}
             >
-              Add event
+              Dodaj zbiór
             </Button>
           </DrawerFooter>
         </DrawerContent>
