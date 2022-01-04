@@ -15,7 +15,7 @@ import { EventOptionsProps } from "../common/components.const";
 import { EventModel } from "../../service/BlueFarm.service.const";
 import { deleteEvent } from "../../service/BlueFarmService";
 import { EditEventDrawer } from "./EditEventDrawer";
-import { setAllEvents } from "../../actions/BlueFarmActions";
+import { setAllEvents, setAppStateError } from "../../actions/BlueFarmActions";
 
 export const EventOptions = ({ event }: EventOptionsProps) => {
   const {
@@ -26,15 +26,19 @@ export const EventOptions = ({ event }: EventOptionsProps) => {
     dispatch,
   } = useContext(BlueFarmContext) as BlueFarmContextModel;
   const handleDelete = () => {
-    deleteEvent({ token, id: event.id }).then(() => {
-      dispatch(
-        setAllEvents(
-          events?.filter(
-            (filteredEvent: EventModel) => filteredEvent.id !== event.id
-          ) || []
-        )
-      );
-    });
+    deleteEvent({ token, id: event.id })
+      .then(() => {
+        dispatch(
+          setAllEvents(
+            events?.filter(
+              (filteredEvent: EventModel) => filteredEvent.id !== event.id
+            ) || []
+          )
+        );
+      })
+      .catch(() => {
+        dispatch(setAppStateError("Coś poszło nie tak, spróbuj ponownie"));
+      });
   };
 
   return (

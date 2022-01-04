@@ -29,7 +29,11 @@ import {
 import { HarvestModel } from "../../service/BlueFarm.service.const";
 import { DatePicker } from "../common/DatePicker";
 import { format } from "date-fns";
-import { setHarvests, setHarvestsFilters } from "../../actions/BlueFarmActions";
+import {
+  setAppStateError,
+  setHarvests,
+  setHarvestsFilters,
+} from "../../actions/BlueFarmActions";
 
 export const AddHarvestDrawer = () => {
   const {
@@ -88,27 +92,31 @@ export const AddHarvestDrawer = () => {
       end_date: parseJSDateToDjango(endDate, endTime),
       crop_amount: cropAmount,
       notes,
-    }).then((res: HarvestModel) => {
-      if (harvestsEvents) {
-        dispatch(setHarvests([...harvestsEvents, res]));
-        dispatch(
-          setHarvestsFilters(
-            +new Date(`${new Date().getFullYear()}-01-01`),
-            +new Date(`${new Date().getFullYear()}-12-31`)
-          )
-        );
-      } else {
-        dispatch(setHarvests([res]));
-        dispatch(
-          setHarvestsFilters(
-            +new Date(`${new Date().getFullYear()}-01-01`),
-            +new Date(`${new Date().getFullYear()}-12-31`)
-          )
-        );
-      }
-      clearInputs();
-      setAddButtonLoading(false);
-    });
+    })
+      .then((res: HarvestModel) => {
+        if (harvestsEvents) {
+          dispatch(setHarvests([...harvestsEvents, res]));
+          dispatch(
+            setHarvestsFilters(
+              +new Date(`${new Date().getFullYear()}-01-01`),
+              +new Date(`${new Date().getFullYear()}-12-31`)
+            )
+          );
+        } else {
+          dispatch(setHarvests([res]));
+          dispatch(
+            setHarvestsFilters(
+              +new Date(`${new Date().getFullYear()}-01-01`),
+              +new Date(`${new Date().getFullYear()}-12-31`)
+            )
+          );
+        }
+        clearInputs();
+        setAddButtonLoading(false);
+      })
+      .catch(() => {
+        dispatch(setAppStateError("Coś poszło nie tak, spróbuj ponownie"));
+      });
   };
 
   return (

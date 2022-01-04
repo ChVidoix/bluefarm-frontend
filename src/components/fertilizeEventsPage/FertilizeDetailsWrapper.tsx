@@ -249,17 +249,18 @@ export const FertilizeDetailsWrapper = ({
         <Center w={"50%"} h={"100%"}>
           <Flex direction={"column"} w={"95%"} h={"100%"}>
             <Center w={"100%"} mb={5}>
-              <Heading
+              <Box
                 w={"25vw"}
                 h={"7vh"}
                 color={"gray.600"}
+                fontWeight={"bold"}
                 rounded={"lg"}
                 bg={"gray.300"}
               >
                 <Center h={"100%"} w={"100%"}>
                   Nadchodzące
                 </Center>
-              </Heading>
+              </Box>
             </Center>
             <Box h={"100%"} w={"100%"}>
               {renderUpcomingEventGrid()}
@@ -270,18 +271,19 @@ export const FertilizeDetailsWrapper = ({
         <Center w={"50%"}>
           <Flex direction={"column"} w={"95%"} h={"100%"}>
             <Center w={"100%"} mb={5}>
-              <Heading
+              <Box
                 as={"h5"}
                 w={"25vw"}
                 h={"7vh"}
                 color={"gray.600"}
+                fontWeight={"bold"}
                 rounded={"lg"}
                 bg={"gray.300"}
               >
                 <Center h={"100%"} w={"100%"}>
                   Filtry
                 </Center>
-              </Heading>
+              </Box>
             </Center>
             <Grid
               w={"100%"}

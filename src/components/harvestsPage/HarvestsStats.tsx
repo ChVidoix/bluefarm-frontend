@@ -1,6 +1,8 @@
 import {
+  Box,
   Button,
-  Center, Divider,
+  Center,
+  Divider,
   Flex,
   Grid,
   GridItem,
@@ -8,10 +10,11 @@ import {
   Menu,
   MenuButton,
   MenuItem,
-  MenuList, Tooltip,
+  MenuList,
+  Tooltip,
 } from "@chakra-ui/react";
 import { ChevronDownIcon } from "@chakra-ui/icons";
-import { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   BlueFarmContext,
   BlueFarmContextModel,
@@ -21,13 +24,21 @@ import {
   setHarvestsFilters,
 } from "../../actions/BlueFarmActions";
 import {
-  filterHarvests, formatHarvestsDuration,
+  filterHarvests,
+  formatHarvestsDuration,
   getHarvestsDuration,
-  getHarvestsYears, getMostFruitfulHarvest,
+  getHarvestsYears,
+  getMostFruitfulHarvest,
 } from "../../service/BlueFarmService";
-import {CropModel, HarvestModel} from "../../service/BlueFarm.service.const";
+import { CropModel, HarvestModel } from "../../service/BlueFarm.service.const";
 
-export const HarvestsStats = ({ isLoading, crops }: { isLoading: boolean, crops: Array<CropModel> | null }) => {
+export const HarvestsStats = ({
+  isLoading,
+  crops,
+}: {
+  isLoading: boolean;
+  crops: Array<CropModel> | null;
+}) => {
   const {
     state: {
       crops: {
@@ -44,12 +55,16 @@ export const HarvestsStats = ({ isLoading, crops }: { isLoading: boolean, crops:
 
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
   const yearsList = getHarvestsYears(harvestsEvents);
-  const selectedCrop = crops ? crops.find((crop: CropModel) => crop.id === selectedCropId) : undefined;
+  const selectedCrop = crops
+    ? crops.find((crop: CropModel) => crop.id === selectedCropId)
+    : undefined;
   const totalHarvested = filteredHarvestsEvents?.reduce(
     (acc: number, curr: HarvestModel) => acc + curr.crop_amount,
     0
   );
-  const harvestsDuration = formatHarvestsDuration(getHarvestsDuration(filteredHarvestsEvents))
+  const harvestsDuration = formatHarvestsDuration(
+    getHarvestsDuration(filteredHarvestsEvents)
+  );
   const mostFruitfulHarvest = getMostFruitfulHarvest(filteredHarvestsEvents);
 
   useEffect(() => {
@@ -82,16 +97,11 @@ export const HarvestsStats = ({ isLoading, crops }: { isLoading: boolean, crops:
 
   const renderTitleGridItem = (text: string): JSX.Element => (
     <GridItem bg={"gray.300"} rounded={"lg"} padding={3}>
-      <Center
-        w={"100%"}
-        h={"100%"}
-        fontWeight={"bold"}
-        color={"gray.600"}
-      >
+      <Center w={"100%"} h={"100%"} fontWeight={"bold"} color={"gray.600"}>
         {text}
       </Center>
     </GridItem>
-  )
+  );
 
   const renderContendGridItem = (text: string | JSX.Element): JSX.Element => (
     <GridItem>
@@ -99,7 +109,7 @@ export const HarvestsStats = ({ isLoading, crops }: { isLoading: boolean, crops:
         {text}
       </Center>
     </GridItem>
-  )
+  );
 
   const renderCropDescription = (description?: string): JSX.Element => {
     if (description && description.length > 15) {
@@ -111,25 +121,19 @@ export const HarvestsStats = ({ isLoading, crops }: { isLoading: boolean, crops:
       );
     }
     return <>{description}</>;
-  }
+  };
 
   return (
     <Center>
       <Flex direction={"column"} w={"95%"} mt={5}>
         <Flex>
           <Flex direction={"column"} h={"100%"} w={"47%"} mb={7}>
-            <Center w={"100%"}>
-              <Center
-                w={"30vw"}
-                h={"7vh"}
-                rounded={"lg"}
-                bg={"gray.300"}
-                mb={5}
-              >
-                <Heading as={"h5"} color={"gray.600"}>
+            <Center w={"100%"} h={"100%"}>
+              <Box h={"2.5em"} w={"15vw"} bg={"gray.300"} rounded={"lg"}>
+                <Center h={"100%"} color={"gray.600"} fontWeight={"bold"}>
                   Dane uprawy:
-                </Heading>
-              </Center>
+                </Center>
+              </Box>
             </Center>
             <Center w={"100%"} minH={"40vh"}>
               <Grid
@@ -137,35 +141,46 @@ export const HarvestsStats = ({ isLoading, crops }: { isLoading: boolean, crops:
                 templateColumns="repeat(4, 1fr)"
                 gap={6}
               >
-                {renderTitleGridItem('Nazwa:')}
-                {renderContendGridItem(String(!isLoading && selectedCrop?.name))}
+                {renderTitleGridItem("Nazwa:")}
+                {renderContendGridItem(
+                  String(!isLoading && selectedCrop?.name)
+                )}
                 <GridItem />
                 <GridItem />
                 {renderTitleGridItem("Rodzaj:")}
-                {renderContendGridItem(String(!isLoading && selectedCrop?.type))}
+                {renderContendGridItem(
+                  String(!isLoading && selectedCrop?.type)
+                )}
                 {renderTitleGridItem("Odmiana:")}
-                {renderContendGridItem(String(!isLoading && selectedCrop?.variety))}
+                {renderContendGridItem(
+                  String(!isLoading && selectedCrop?.variety)
+                )}
                 {renderTitleGridItem("Powierzchnia:")}
-                {renderContendGridItem(String(!isLoading && selectedCrop?.area))}
+                {renderContendGridItem(
+                  <>
+                    {String(!isLoading && selectedCrop?.area)} m<sup>2</sup>
+                  </>
+                )}
                 {renderTitleGridItem("Opis:")}
-                {renderContendGridItem(renderCropDescription(selectedCrop?.description))}
+                {renderContendGridItem(
+                  renderCropDescription(selectedCrop?.description)
+                )}
               </Grid>
             </Center>
           </Flex>
-          <Divider borderColor={"gray.800"} w={'10px'} h={'50vh'} orientation="vertical" />
+          <Divider
+            borderColor={"gray.800"}
+            w={"10px"}
+            h={"50vh"}
+            orientation="vertical"
+          />
           <Flex direction={"column"} h={"100%"} w={"47%"} mb={7}>
-            <Center w={"100%"}>
-              <Center
-                w={"30vw"}
-                h={"7vh"}
-                rounded={"lg"}
-                bg={"gray.300"}
-                mb={5}
-              >
-                <Heading as={"h5"} color={"gray.600"}>
+            <Center w={"100%"} h={"100%"}>
+              <Box h={"2.5em"} w={"15vw"} bg={"gray.300"} rounded={"lg"}>
+                <Center h={"100%"} color={"gray.600"} fontWeight={"bold"}>
                   Szczegóły:
-                </Heading>
-              </Center>
+                </Center>
+              </Box>
             </Center>
             <Center w={"100%"} minH={"40vh"}>
               <Grid
@@ -173,18 +188,24 @@ export const HarvestsStats = ({ isLoading, crops }: { isLoading: boolean, crops:
                 templateColumns="repeat(4, 1fr)"
                 gap={6}
               >
-                {renderTitleGridItem('Year:')}
+                {renderTitleGridItem("Rok:")}
                 {renderContendGridItem(String(!isLoading && selectedYear))}
                 <GridItem />
                 <GridItem />
                 {renderTitleGridItem("Zebrano łącznie:")}
-                {renderContendGridItem(String(!isLoading && `${totalHarvested} kg`))}
+                {renderContendGridItem(
+                  String(!isLoading && `${totalHarvested} kg`)
+                )}
                 {renderTitleGridItem("Czas zbioru:")}
                 {renderContendGridItem(String(!isLoading && harvestsDuration))}
                 {renderTitleGridItem("Najbardziej plenny:")}
-                {renderContendGridItem(String(!isLoading && mostFruitfulHarvest.name))}
+                {renderContendGridItem(
+                  String(!isLoading && mostFruitfulHarvest.name)
+                )}
                 {renderTitleGridItem("Zebrano:")}
-                {renderContendGridItem(String(!isLoading && mostFruitfulHarvest.crop_amount))}
+                {renderContendGridItem(
+                  String(!isLoading && mostFruitfulHarvest.crop_amount)
+                )}
               </Grid>
             </Center>
           </Flex>

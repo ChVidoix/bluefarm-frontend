@@ -19,7 +19,10 @@ import {
   BlueFarmContextModel,
 } from "../../provider/BlueFarmProvider";
 import { registerUser } from "../../service/BlueFarmService";
-import { authenticateUser } from "../../actions/BlueFarmActions";
+import {
+  authenticateUser,
+  setAppStateError,
+} from "../../actions/BlueFarmActions";
 import { LoginResponseModel } from "../../service/BlueFarm.service.const";
 
 const RegisterPage = () => {
@@ -67,11 +70,13 @@ const RegisterPage = () => {
   };
   const handleSignInButton = () => {
     if (validateForm()) {
-      registerUser({ username, password, email }).then(
-        (res: LoginResponseModel) => {
+      registerUser({ username, password, email })
+        .then((res: LoginResponseModel) => {
           dispatch(authenticateUser({ ...res }));
-        }
-      );
+        })
+        .catch(() => {
+          dispatch(setAppStateError("Coś poszło nie tak, spróbuj ponownie"));
+        });
     }
   };
 
@@ -83,12 +88,12 @@ const RegisterPage = () => {
     <Flex minH="91vh" align={"center"} justify={"center"} bg="gray.200">
       <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
         <Stack align={"center"}>
-          <Heading fontSize={"4xl"}>Register to BlueFarm</Heading>
+          <Heading fontSize={"4xl"}>Zarejestruj się w BlueFarm</Heading>
         </Stack>
         <Box rounded={"lg"} bg="white" boxShadow={"lg"} p={8}>
           <Stack spacing={4}>
             <FormControl id="username">
-              <FormLabel>Username</FormLabel>
+              <FormLabel>Nazwa użytkownika</FormLabel>
               <Input
                 type="text"
                 value={username}
@@ -96,11 +101,11 @@ const RegisterPage = () => {
               />
             </FormControl>
             <FormControl id="email">
-              <FormLabel>Email address</FormLabel>
+              <FormLabel>Adres email</FormLabel>
               <Input type="email" value={email} onChange={handleEmailChange} />
             </FormControl>
             <FormControl id="password">
-              <FormLabel>Password</FormLabel>
+              <FormLabel>Hasło</FormLabel>
               <Input
                 type="password"
                 value={password}
@@ -111,16 +116,14 @@ const RegisterPage = () => {
               id="passwordConfirmation"
               isInvalid={!arePasswordsSame}
             >
-              <FormLabel>Confirm your password</FormLabel>
+              <FormLabel>Potwierdź hasło</FormLabel>
               <Input
                 type="password"
                 value={passwordConfirmation}
                 onChange={handlePasswordConfirmChange}
               />
               {!arePasswordsSame && (
-                <FormErrorMessage>
-                  The password confirmation does not match
-                </FormErrorMessage>
+                <FormErrorMessage>Hasła są od siebie różne</FormErrorMessage>
               )}
             </FormControl>
             <Stack spacing={10}>
@@ -134,16 +137,16 @@ const RegisterPage = () => {
                   checked={termsCheckbox}
                   onChange={handleTermsCheckbox}
                 >
-                  I agree with the terms and conditions
+                  Potwierdzam, że zapoznałem się z regulaminem
                 </Checkbox>
               </Stack>
               <Button color={"white"} onClick={handleSignInButton}>
-                Register
+                Zarejestruj
               </Button>
               <Text>
-                Already have an account?{" "}
+                Masz już konto?{" "}
                 <Link color="teal.600">
-                  <RouterLink to={"/login"}>Sign in</RouterLink>
+                  <RouterLink to={"/login"}>Zaloguj się</RouterLink>
                 </Link>
               </Text>
             </Stack>

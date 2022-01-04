@@ -34,6 +34,7 @@ import {
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { PageHeader } from "../common/PageHeader";
 import {
+  setAppStateError,
   setFertilizeEvents,
   setSelectedCrop,
 } from "../../actions/BlueFarmActions";
@@ -58,20 +59,26 @@ export const FertilizeEventsPage = () => {
 
   useEffect(() => {
     setIsTableLoading(true);
-    getCrops(token).then((cropsResponse: Array<CropModel>) => {
-      setCrops(cropsResponse);
-      dispatch(setSelectedCrop(cropsResponse[0].id));
-    });
+    getCrops(token)
+      .then((cropsResponse: Array<CropModel>) => {
+        setCrops(cropsResponse);
+        dispatch(setSelectedCrop(cropsResponse[0].id));
+      })
+      .catch(() => {
+        dispatch(setAppStateError("Coś poszło nie tak, spróbuj ponownie"));
+      });
   }, [token]);
 
   useEffect(() => {
     if (selectedCrop !== 0) {
-      getFertilizationEvents(token, selectedCrop).then(
-        (fertilizationArray: Array<FertilizeEventModel>) => {
+      getFertilizationEvents(token, selectedCrop)
+        .then((fertilizationArray: Array<FertilizeEventModel>) => {
           dispatch(setFertilizeEvents(fertilizationArray));
           setIsTableLoading(false);
-        }
-      );
+        })
+        .catch(() => {
+          dispatch(setAppStateError("Coś poszło nie tak, spróbuj ponownie"));
+        });
     }
   }, [selectedCrop]);
 
@@ -166,7 +173,7 @@ export const FertilizeEventsPage = () => {
               </Center>
               <Box w={"70%"}>
                 <Center>
-                  <PageHeader title={"Fertilization"} />
+                  <PageHeader title={"Nawożenie"} />
                 </Center>
               </Box>
             </Flex>

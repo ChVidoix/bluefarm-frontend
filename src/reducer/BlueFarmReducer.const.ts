@@ -21,7 +21,7 @@ export interface Auth {
 
 export interface BlueFarmAppState {
   isLoading: boolean;
-  isError: boolean;
+  errorMessage: string;
 }
 
 export interface CashEventsFilters {
@@ -130,6 +130,6 @@ export const BlueFarmInitialState: BlueFarmState = {
   },
   appState: {
     isLoading: false,
-    isError: false,
+    errorMessage: "",
   },
 };

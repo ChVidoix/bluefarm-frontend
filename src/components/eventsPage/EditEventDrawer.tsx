@@ -30,7 +30,11 @@ import {
 } from "../../service/BlueFarmService";
 import { format } from "date-fns";
 import { DatePicker } from "../common/DatePicker";
-import { setAllEvents, setFilteredEvents } from "../../actions/BlueFarmActions";
+import {
+  setAllEvents,
+  setAppStateError,
+  setFilteredEvents,
+} from "../../actions/BlueFarmActions";
 
 export const EditEventDrawer = ({ event }: EventOptionsProps) => {
   const {
@@ -91,41 +95,45 @@ export const EditEventDrawer = ({ event }: EventOptionsProps) => {
       start_date: parseJSDateToDjango(startDate, startTime),
       end_date: parseJSDateToDjango(endDate, endTime),
       description,
-    }).then((res: EventModel) => {
-      if (events) {
-        const newEvents: Array<EventModel> = events.map(
-          (mappedEvent: EventModel) => {
-            if (mappedEvent.id === event.id) {
-              return { ...res };
+    })
+      .then((res: EventModel) => {
+        if (events) {
+          const newEvents: Array<EventModel> = events.map(
+            (mappedEvent: EventModel) => {
+              if (mappedEvent.id === event.id) {
+                return { ...res };
+              }
+              return mappedEvent;
             }
-            return mappedEvent;
-          }
-        );
-        dispatch(setAllEvents(newEvents));
-        dispatch(
-          setFilteredEvents(
-            filterEvents({
-              events: newEvents,
-              startTimestamp: +new Date(),
-              endTimestamp: 2147483648000,
-            })
-          )
-        );
-      } else {
-        dispatch(setAllEvents([res]));
-        dispatch(
-          setFilteredEvents(
-            filterEvents({
-              events: [res],
-              startTimestamp: +new Date(),
-              endTimestamp: 2147483648000,
-            })
-          )
-        );
-      }
-      setSaveButtonLoading(false);
-      clearInputs();
-    });
+          );
+          dispatch(setAllEvents(newEvents));
+          dispatch(
+            setFilteredEvents(
+              filterEvents({
+                events: newEvents,
+                startTimestamp: +new Date(),
+                endTimestamp: 2147483648000,
+              })
+            )
+          );
+        } else {
+          dispatch(setAllEvents([res]));
+          dispatch(
+            setFilteredEvents(
+              filterEvents({
+                events: [res],
+                startTimestamp: +new Date(),
+                endTimestamp: 2147483648000,
+              })
+            )
+          );
+        }
+        setSaveButtonLoading(false);
+        clearInputs();
+      })
+      .catch(() => {
+        dispatch(setAppStateError("Coś poszło nie tak, spróbuj ponownie"));
+      });
   };
 
   return (

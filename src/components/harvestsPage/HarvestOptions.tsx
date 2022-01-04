@@ -14,7 +14,7 @@ import { AiFillDelete, HiDotsVertical } from "react-icons/all";
 import { FertilizeEventOrHarvestOptionsProps } from "../common/components.const";
 import { HarvestModel } from "../../service/BlueFarm.service.const";
 import { deleteHarvest } from "../../service/BlueFarmService";
-import { setHarvests } from "../../actions/BlueFarmActions";
+import { setAppStateError, setHarvests } from "../../actions/BlueFarmActions";
 import { EditHarvestDrawer } from "./EditHarvestDrawer";
 
 export const HarvestOptions = ({
@@ -31,15 +31,19 @@ export const HarvestOptions = ({
     dispatch,
   } = useContext(BlueFarmContext) as BlueFarmContextModel;
   const handleDelete = () => {
-    deleteHarvest({ token, id: eventId, cropId: selectedCrop }).then(() => {
-      dispatch(
-        setHarvests(
-          harvestsEvents?.filter(
-            (filteredHarvest: HarvestModel) => filteredHarvest.id !== eventId
-          ) || []
-        )
-      );
-    });
+    deleteHarvest({ token, id: eventId, cropId: selectedCrop })
+      .then(() => {
+        dispatch(
+          setHarvests(
+            harvestsEvents?.filter(
+              (filteredHarvest: HarvestModel) => filteredHarvest.id !== eventId
+            ) || []
+          )
+        );
+      })
+      .catch(() => {
+        dispatch(setAppStateError("Coś poszło nie tak, spróbuj ponownie"));
+      });
   };
 
   return (

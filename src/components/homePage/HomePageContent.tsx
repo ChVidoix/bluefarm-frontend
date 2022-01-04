@@ -38,12 +38,14 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import { eventType, homeEventsCount } from "../common/components.const";
+import { setAppStateError } from "../../actions/BlueFarmActions";
 
 export const HomePageContent = () => {
   const {
     state: {
       auth: { token },
     },
+    dispatch,
   } = useContext(BlueFarmContext) as BlueFarmContextModel;
 
   const [harvests, setHarvests] = useState<Array<HarvestModel>>([]);
@@ -70,16 +72,28 @@ export const HomePageContent = () => {
 
   useEffect(() => {
     setIsTableLoading(true);
-    getAllFertilizeEvents(token).then((res: Array<FertilizeEventModel>) => {
-      setFertilizeEvents(res);
-    });
-    getAllHarvests(token).then((res: Array<HarvestModel>) => {
-      setHarvests(res);
-    });
-    getEvents(token).then((res: Array<EventModel>) => {
-      setEvents(res);
-      setIsTableLoading(false);
-    });
+    getAllFertilizeEvents(token)
+      .then((res: Array<FertilizeEventModel>) => {
+        setFertilizeEvents(res);
+      })
+      .catch(() => {
+        dispatch(setAppStateError("Coś poszło nie tak, spróbuj ponownie"));
+      });
+    getAllHarvests(token)
+      .then((res: Array<HarvestModel>) => {
+        setHarvests(res);
+      })
+      .catch(() => {
+        dispatch(setAppStateError("Coś poszło nie tak, spróbuj ponownie"));
+      });
+    getEvents(token)
+      .then((res: Array<EventModel>) => {
+        setEvents(res);
+        setIsTableLoading(false);
+      })
+      .catch(() => {
+        dispatch(setAppStateError("Coś poszło nie tak, spróbuj ponownie"));
+      });
   }, []);
 
   const descriptionRowContent = (description: string): JSX.Element => {
@@ -134,7 +148,7 @@ export const HomePageContent = () => {
   const renderEventsNumMenuList = () => {
     return homeEventsCount.map((number: number) => (
       <MenuItem key={number} onClick={() => setEventsNumToShow(number)}>
-        {`First ${number}`}
+        {`Pierwsze ${number}`}
       </MenuItem>
     ));
   };
@@ -212,7 +226,7 @@ export const HomePageContent = () => {
                       h={"2.5em"}
                       w={"15vw"}
                       as={Button}
-                    >{`First ${eventsNumToShow}`}</MenuButton>
+                    >{`Pierwsze ${eventsNumToShow}`}</MenuButton>
                     <MenuList>{renderEventsNumMenuList()}</MenuList>
                   </Menu>
                 </Center>

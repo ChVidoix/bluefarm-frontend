@@ -26,12 +26,14 @@ import { CropModel } from "../../service/BlueFarm.service.const";
 import { CropOptionsProps } from "../common/components.const";
 import { FiEdit3 } from "react-icons/all";
 import { editCrop } from "../../service/BlueFarmService";
+import { setAppStateError } from "../../actions/BlueFarmActions";
 
 export const EditCropDrawer = ({ crop, crops, setCrops }: CropOptionsProps) => {
   const {
     state: {
       auth: { token },
     },
+    dispatch,
   } = useContext(BlueFarmContext) as BlueFarmContextModel;
 
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -96,26 +98,31 @@ export const EditCropDrawer = ({ crop, crops, setCrops }: CropOptionsProps) => {
       token,
       id: crop.id,
       name,
-      type, variety,
+      type,
+      variety,
       area: +area,
       description,
-    }).then((res: CropModel) => {
-      if (crops) {
-        const newCrops: Array<CropModel> = crops.map(
-          (mappedCrop: CropModel) => {
-            if (mappedCrop.id === crop.id) {
-              return { ...res };
+    })
+      .then((res: CropModel) => {
+        if (crops) {
+          const newCrops: Array<CropModel> = crops.map(
+            (mappedCrop: CropModel) => {
+              if (mappedCrop.id === crop.id) {
+                return { ...res };
+              }
+              return mappedCrop;
             }
-            return mappedCrop;
-          }
-        );
-        setCrops(newCrops);
-      } else {
-        setCrops([res]);
-      }
-      setSaveButtonLoading(false);
-      clearInputs();
-    });
+          );
+          setCrops(newCrops);
+        } else {
+          setCrops([res]);
+        }
+        setSaveButtonLoading(false);
+        clearInputs();
+      })
+      .catch(() => {
+        dispatch(setAppStateError("Coś poszło nie tak, spróbuj ponownie"));
+      });
   };
 
   return (
@@ -127,7 +134,9 @@ export const EditCropDrawer = ({ crop, crops, setCrops }: CropOptionsProps) => {
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton onClick={clearInputs} />
-          <DrawerHeader borderBottomWidth="2px">Edytuj {crop.name}</DrawerHeader>
+          <DrawerHeader borderBottomWidth="2px">
+            Edytuj {crop.name}
+          </DrawerHeader>
 
           <DrawerBody>
             <Stack spacing="24px">

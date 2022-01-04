@@ -4,7 +4,7 @@ import { CashEventsPageContent } from "./CashEventsPageContent";
 
 const CashEventsPage = () => {
   return (
-    <Box bg="gray.100" h="100%">
+    <Box bg="gray.100" h="100%" minH={"91vh"}>
       <Center h={"100%"}>
         <Flex
           direction={"column"}

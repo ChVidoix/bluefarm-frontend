@@ -19,6 +19,7 @@ import {
 import {
   logoutUserAction,
   logoutUserLoading,
+  setAppStateError,
 } from "../../actions/BlueFarmActions";
 import { memo, useContext } from "react";
 import { logoutUser } from "../../service/BlueFarmService";
@@ -36,9 +37,13 @@ const NavBar = () => {
   const handleLogout = () => {
     dispatch(logoutUserLoading());
     if (token) {
-      logoutUser(token).then(() => {
-        dispatch(logoutUserAction());
-      });
+      logoutUser(token)
+        .then(() => {
+          dispatch(logoutUserAction());
+        })
+        .catch(() => {
+          dispatch(setAppStateError("Coś poszło nie tak, spróbuj ponownie"));
+        });
     }
   };
 
@@ -59,12 +64,11 @@ const NavBar = () => {
                 <Avatar size="sm" />
               </MenuButton>
               <MenuList>
-                <MenuGroup title={`Logged as ${user?.username}` || "Profile"}>
+                <MenuGroup
+                  title={`Zalogowany jako ${user?.username}` || "Profil"}
+                >
                   <MenuDivider />
-                  <MenuItem>Link 1</MenuItem>
-                  <MenuItem>Link 2</MenuItem>
-                  <MenuDivider />
-                  <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                  <MenuItem onClick={handleLogout}>Wyloguj</MenuItem>
                 </MenuGroup>
               </MenuList>
             </Menu>

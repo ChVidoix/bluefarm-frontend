@@ -14,7 +14,10 @@ import { AiFillDelete, HiDotsVertical } from "react-icons/all";
 import { FertilizeEventOrHarvestOptionsProps } from "../common/components.const";
 import { FertilizeEventModel } from "../../service/BlueFarm.service.const";
 import { deleteFertilizeEvent } from "../../service/BlueFarmService";
-import { setFertilizeEvents } from "../../actions/BlueFarmActions";
+import {
+  setAppStateError,
+  setFertilizeEvents,
+} from "../../actions/BlueFarmActions";
 import { EditFertilizeEventDrawer } from "./EditFertilizeEventDrawer";
 
 export const FertilizeEventOptions = ({
@@ -32,8 +35,8 @@ export const FertilizeEventOptions = ({
     dispatch,
   } = useContext(BlueFarmContext) as BlueFarmContextModel;
   const handleDelete = () => {
-    deleteFertilizeEvent({ token, id: eventId, cropId: selectedCrop }).then(
-      () => {
+    deleteFertilizeEvent({ token, id: eventId, cropId: selectedCrop })
+      .then(() => {
         dispatch(
           setFertilizeEvents(
             fertilizeEvents?.filter(
@@ -42,8 +45,10 @@ export const FertilizeEventOptions = ({
             ) || []
           )
         );
-      }
-    );
+      })
+      .catch(() => {
+        dispatch(setAppStateError("Coś poszło nie tak, spróbuj ponownie"));
+      });
   };
 
   return (

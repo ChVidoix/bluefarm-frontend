@@ -14,7 +14,7 @@ export const reducer = (
         ...state,
         appState: {
           isLoading: true,
-          isError: false,
+          errorMessage: "",
         },
       };
     }
@@ -28,7 +28,7 @@ export const reducer = (
         },
         appState: {
           isLoading: false,
-          isError: false,
+          errorMessage: "",
         },
       };
     }
@@ -45,16 +45,9 @@ export const reducer = (
           isLoading: false,
         },
         appState: {
-          ...state.appState,
+          errorMessage: "Coś poszło nie tak, spróbuj ponownie później",
           isLoading: false,
         },
-      };
-    }
-    case BlueFarmActionType.AUTHENTICATE_FAIL: {
-      return {
-        ...state,
-        auth: { ...state.auth, isLoading: false },
-        appState: { isError: true, isLoading: false },
       };
     }
     case BlueFarmActionType.AUTHENTICATE_LOADING: {
@@ -66,13 +59,20 @@ export const reducer = (
       return {
         ...state,
         auth: { user, token, isAuthenticated: true, isLoading: false },
-        appState: { isLoading: false, isError: false },
+        appState: { isLoading: false, errorMessage: "" },
       };
     }
     case BlueFarmActionType.APP_STATE_LOADING: {
       return {
         ...state,
-        appState: { isLoading: payload.value, isError: false },
+        appState: { isLoading: payload.value, errorMessage: "" },
+      };
+    }
+    case BlueFarmActionType.APP_STATE_ERROR: {
+      return {
+        ...state,
+        auth: { ...state.auth, isLoading: false },
+        appState: { isLoading: false, errorMessage: payload.errorMessage },
       };
     }
     case BlueFarmActionType.SET_FILTERED_EVENTS: {

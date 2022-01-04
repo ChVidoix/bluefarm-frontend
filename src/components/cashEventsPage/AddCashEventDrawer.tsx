@@ -31,7 +31,7 @@ import {
 import { CashEventModel } from "../../service/BlueFarm.service.const";
 import { DatePicker } from "../common/DatePicker";
 import { format } from "date-fns";
-import { setCashEvents } from "../../actions/BlueFarmActions";
+import { setAppStateError, setCashEvents } from "../../actions/BlueFarmActions";
 import { CashEventType } from "../common/components.const";
 
 export const AddCashEventDrawer = () => {
@@ -84,27 +84,33 @@ export const AddCashEventDrawer = () => {
       date: parseJSDateToDjango(date, time),
       description,
       amount: calculatedAmount,
-    }).then((res: CashEventModel) => {
-      if (events) {
-        dispatch(setCashEvents([...events, res]));
-      } else {
-        dispatch(setCashEvents([res]));
-      }
-      clearInputs();
-      setAddButtonLoading(false);
-    });
+    })
+      .then((res: CashEventModel) => {
+        if (events) {
+          dispatch(setCashEvents([...events, res]));
+        } else {
+          dispatch(setCashEvents([res]));
+        }
+        clearInputs();
+        setAddButtonLoading(false);
+      })
+      .catch(() => {
+        dispatch(setAppStateError("Coś poszło nie tak, spróbuj ponownie"));
+      });
   };
 
   return (
     <Box mt={5}>
       <Button leftIcon={<AddIcon />} onClick={onOpen}>
-        Add billing
+        Dodaj
       </Button>
       <Drawer placement={"right"} onClose={onClose} isOpen={isOpen}>
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton onClick={clearInputs} />
-          <DrawerHeader borderBottomWidth="2px">Dodaj nowy wydatek lub przychód</DrawerHeader>
+          <DrawerHeader borderBottomWidth="2px">
+            Dodaj nowy wydatek lub przychód
+          </DrawerHeader>
 
           <DrawerBody>
             <Stack spacing="24px">
@@ -178,7 +184,10 @@ export const AddCashEventDrawer = () => {
               disabled={isAddButtonInvalid}
               onClick={handleCreateCashEvent}
             >
-              Dodaj {cashEventType === CashEventType.outgoing ? "wydatek" : 'przychód'}
+              Dodaj{" "}
+              {cashEventType === CashEventType.outgoing
+                ? "wydatek"
+                : "przychód"}
             </Button>
           </DrawerFooter>
         </DrawerContent>

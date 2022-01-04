@@ -29,7 +29,10 @@ import {
 import { FertilizeEventModel } from "../../service/BlueFarm.service.const";
 import { DatePicker } from "../common/DatePicker";
 import { format } from "date-fns";
-import { setFertilizeEvents } from "../../actions/BlueFarmActions";
+import {
+  setAppStateError,
+  setFertilizeEvents,
+} from "../../actions/BlueFarmActions";
 import { FertilizeEventOrHarvestOptionsProps } from "../common/components.const";
 import { FiEdit3 } from "react-icons/all";
 
@@ -116,24 +119,28 @@ export const EditFertilizeEventDrawer = ({
       description,
       type,
       amount,
-    }).then((res: FertilizeEventModel) => {
-      if (fertilizeEvents) {
-        dispatch(
-          setFertilizeEvents(
-            fertilizeEvents.map((fertilizeEvent: FertilizeEventModel) => {
-              if (fertilizeEvent.id === res.id) {
-                return res;
-              }
-              return fertilizeEvent;
-            })
-          )
-        );
-      } else {
-        dispatch(setFertilizeEvents([res]));
-      }
-      clearInputs();
-      setAddButtonLoading(false);
-    });
+    })
+      .then((res: FertilizeEventModel) => {
+        if (fertilizeEvents) {
+          dispatch(
+            setFertilizeEvents(
+              fertilizeEvents.map((fertilizeEvent: FertilizeEventModel) => {
+                if (fertilizeEvent.id === res.id) {
+                  return res;
+                }
+                return fertilizeEvent;
+              })
+            )
+          );
+        } else {
+          dispatch(setFertilizeEvents([res]));
+        }
+        clearInputs();
+        setAddButtonLoading(false);
+      })
+      .catch(() => {
+        dispatch(setAppStateError("Coś poszło nie tak, spróbuj ponownie"));
+      });
   };
 
   return (
@@ -145,7 +152,9 @@ export const EditFertilizeEventDrawer = ({
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton onClick={clearInputs} />
-          <DrawerHeader borderBottomWidth="2px">Edytuj {editedName}</DrawerHeader>
+          <DrawerHeader borderBottomWidth="2px">
+            Edytuj {editedName}
+          </DrawerHeader>
 
           <DrawerBody>
             <Stack spacing="24px">

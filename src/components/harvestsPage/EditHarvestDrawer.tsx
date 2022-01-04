@@ -29,7 +29,7 @@ import {
 import { HarvestModel } from "../../service/BlueFarm.service.const";
 import { DatePicker } from "../common/DatePicker";
 import { format } from "date-fns";
-import { setHarvests } from "../../actions/BlueFarmActions";
+import { setAppStateError, setHarvests } from "../../actions/BlueFarmActions";
 import { FertilizeEventOrHarvestOptionsProps } from "../common/components.const";
 import { FiEdit3 } from "react-icons/all";
 
@@ -119,24 +119,28 @@ export const EditHarvestDrawer = ({
       end_date: parseJSDateToDjango(endDate, endTime),
       notes,
       crop_amount: cropAmount,
-    }).then((res: HarvestModel) => {
-      if (harvestsEvents) {
-        dispatch(
-          setHarvests(
-            harvestsEvents.map((harvest: HarvestModel) => {
-              if (harvest.id === res.id) {
-                return res;
-              }
-              return harvest;
-            })
-          )
-        );
-      } else {
-        dispatch(setHarvests([res]));
-      }
-      clearInputs();
-      setAddButtonLoading(false);
-    });
+    })
+      .then((res: HarvestModel) => {
+        if (harvestsEvents) {
+          dispatch(
+            setHarvests(
+              harvestsEvents.map((harvest: HarvestModel) => {
+                if (harvest.id === res.id) {
+                  return res;
+                }
+                return harvest;
+              })
+            )
+          );
+        } else {
+          dispatch(setHarvests([res]));
+        }
+        clearInputs();
+        setAddButtonLoading(false);
+      })
+      .catch(() => {
+        dispatch(setAppStateError("Coś poszło nie tak, spróbuj ponownie"));
+      });
   };
 
   return (

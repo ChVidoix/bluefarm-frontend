@@ -28,7 +28,11 @@ import {
 import { EventModel } from "../../service/BlueFarm.service.const";
 import { DatePicker } from "../common/DatePicker";
 import { format } from "date-fns";
-import { setAllEvents, setFilteredEvents } from "../../actions/BlueFarmActions";
+import {
+  setAllEvents,
+  setAppStateError,
+  setFilteredEvents,
+} from "../../actions/BlueFarmActions";
 
 export const AddEventDrawer = () => {
   const {
@@ -77,33 +81,37 @@ export const AddEventDrawer = () => {
       start_date: parseJSDateToDjango(startDate, startTime),
       end_date: parseJSDateToDjango(endDate, endTime),
       description,
-    }).then((res: EventModel) => {
-      if (events) {
-        dispatch(setAllEvents([...events, res]));
-        dispatch(
-          setFilteredEvents(
-            filterEvents({
-              events: [...events, res],
-              startTimestamp: +new Date(),
-              endTimestamp: 2147483648000,
-            })
-          )
-        );
-      } else {
-        dispatch(setAllEvents([res]));
-        dispatch(
-          setFilteredEvents(
-            filterEvents({
-              events: [res],
-              startTimestamp: +new Date(),
-              endTimestamp: 2147483648000,
-            })
-          )
-        );
-      }
-      clearInputs();
-      setAddButtonLoading(false);
-    });
+    })
+      .then((res: EventModel) => {
+        if (events) {
+          dispatch(setAllEvents([...events, res]));
+          dispatch(
+            setFilteredEvents(
+              filterEvents({
+                events: [...events, res],
+                startTimestamp: +new Date(),
+                endTimestamp: 2147483648000,
+              })
+            )
+          );
+        } else {
+          dispatch(setAllEvents([res]));
+          dispatch(
+            setFilteredEvents(
+              filterEvents({
+                events: [res],
+                startTimestamp: +new Date(),
+                endTimestamp: 2147483648000,
+              })
+            )
+          );
+        }
+        clearInputs();
+        setAddButtonLoading(false);
+      })
+      .catch(() => {
+        dispatch(setAppStateError("Coś poszło nie tak, spróbuj ponownie"));
+      });
   };
 
   return (

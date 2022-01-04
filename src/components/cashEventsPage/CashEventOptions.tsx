@@ -12,7 +12,7 @@ import {
 } from "../../provider/BlueFarmProvider";
 import { AiFillDelete, HiDotsVertical } from "react-icons/all";
 import { CashEventOptionsProps } from "../common/components.const";
-import { setCashEvents } from "../../actions/BlueFarmActions";
+import { setAppStateError, setCashEvents } from "../../actions/BlueFarmActions";
 import { CashEventModel } from "../../service/BlueFarm.service.const";
 import { deleteCashEvent } from "../../service/BlueFarmService";
 import { EditCashEventDrawer } from "./EditCashEventDrawer";
@@ -29,15 +29,19 @@ export const CashEventOptions = ({ id }: CashEventOptionsProps) => {
   const event = events?.find((event: CashEventModel) => event.id === id);
 
   const handleDelete = () => {
-    deleteCashEvent({ token, id: event?.id }).then(() => {
-      dispatch(
-        setCashEvents(
-          events?.filter(
-            (filteredEvent: CashEventModel) => filteredEvent.id !== event?.id
-          ) || []
-        )
-      );
-    });
+    deleteCashEvent({ token, id: event?.id })
+      .then(() => {
+        dispatch(
+          setCashEvents(
+            events?.filter(
+              (filteredEvent: CashEventModel) => filteredEvent.id !== event?.id
+            ) || []
+          )
+        );
+      })
+      .catch(() => {
+        dispatch(setAppStateError("Coś poszło nie tak, spróbuj ponownie"));
+      });
   };
 
   return (

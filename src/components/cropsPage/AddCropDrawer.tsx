@@ -25,12 +25,14 @@ import {
 } from "../../provider/BlueFarmProvider";
 import { CropModel } from "../../service/BlueFarm.service.const";
 import { AddCropDrawerProps } from "../common/components.const";
+import { setAppStateError } from "../../actions/BlueFarmActions";
 
 export const AddCropDrawer = ({ crops, setCrops }: AddCropDrawerProps) => {
   const {
     state: {
       auth: { token },
     },
+    dispatch,
   } = useContext(BlueFarmContext) as BlueFarmContextModel;
 
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -42,7 +44,8 @@ export const AddCropDrawer = ({ crops, setCrops }: AddCropDrawerProps) => {
   const [description, setDescription] = useState("");
   const [addButtonLoading, setAddButtonLoading] = useState(false);
 
-  const isAddButtonInvalid = isAreaInvalid || !name || !variety || !type || !description;
+  const isAddButtonInvalid =
+    isAreaInvalid || !name || !variety || !type || !description;
 
   const handleAreaChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (Number(event.target.value) < 1) {
@@ -81,8 +84,8 @@ export const AddCropDrawer = ({ crops, setCrops }: AddCropDrawerProps) => {
 
   const handleCreateCrop = () => {
     setAddButtonLoading(true);
-    createCrop({ token, name, type, variety, area: +area, description }).then(
-      (res: CropModel) => {
+    createCrop({ token, name, type, variety, area: +area, description })
+      .then((res: CropModel) => {
         if (crops) {
           setCrops([...crops, res]);
         } else {
@@ -90,8 +93,10 @@ export const AddCropDrawer = ({ crops, setCrops }: AddCropDrawerProps) => {
         }
         clearInputs();
         setAddButtonLoading(false);
-      }
-    );
+      })
+      .catch(() => {
+        dispatch(setAppStateError("Coś poszło nie tak, spróbuj ponownie"));
+      });
   };
 
   return (

@@ -59,14 +59,13 @@ export const CashEventsFilters = () => {
   const yearsList = getCashEventsYears(events);
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
 
-  const labels = Object.keys(detailed);
   const values = Object.values(detailed);
 
   const format = (val: string) => `$` + val;
   const parse = (val: string) => val.replace(/^\$/, "");
 
   const data = {
-    labels: ['przychody', "wydatki"],
+    labels: ["przychody", "wydatki"],
     datasets: [
       {
         label: "Wydatki i przychody",
@@ -373,7 +372,7 @@ export const CashEventsFilters = () => {
           </Center>
           <Flex w={"100%"} h={"4em"} mb={15} rounded={"lg"} bg={"gray.300"}>
             <Spacer />
-            <Center color={"gray.700"} height={"100%"}>
+            <Center color={"gray.700"} height={"100%"} p={2}>
               Wybierz wydatki i przychody:
             </Center>
             <Spacer />

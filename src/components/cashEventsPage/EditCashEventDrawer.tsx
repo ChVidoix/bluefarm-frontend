@@ -36,7 +36,7 @@ import {
   EditCashEventDrawerProps,
 } from "../common/components.const";
 import { FiEdit3 } from "react-icons/all";
-import { setCashEvents } from "../../actions/BlueFarmActions";
+import { setAppStateError, setCashEvents } from "../../actions/BlueFarmActions";
 
 export const EditCashEventDrawer = ({ event }: EditCashEventDrawerProps) => {
   const {
@@ -108,21 +108,25 @@ export const EditCashEventDrawer = ({ event }: EditCashEventDrawerProps) => {
       date: parseJSDateToDjango(date, time),
       description,
       amount: calculatedAmount,
-    }).then((res: CashEventModel) => {
-      if (events) {
-        const newEvents: Array<CashEventModel> = events.map(
-          (mappedEvent: CashEventModel) => {
-            if (event.id === mappedEvent.id) {
-              return { ...res };
+    })
+      .then((res: CashEventModel) => {
+        if (events) {
+          const newEvents: Array<CashEventModel> = events.map(
+            (mappedEvent: CashEventModel) => {
+              if (event.id === mappedEvent.id) {
+                return { ...res };
+              }
+              return mappedEvent;
             }
-            return mappedEvent;
-          }
-        );
-        dispatch(setCashEvents(newEvents));
-      }
-      clearInputs();
-      setAddButtonLoading(false);
-    });
+          );
+          dispatch(setCashEvents(newEvents));
+        }
+        clearInputs();
+        setAddButtonLoading(false);
+      })
+      .catch(() => {
+        dispatch(setAppStateError("Coś poszło nie tak, spróbuj ponownie"));
+      });
   };
 
   return (
@@ -134,7 +138,9 @@ export const EditCashEventDrawer = ({ event }: EditCashEventDrawerProps) => {
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton onClick={clearInputs} />
-          <DrawerHeader borderBottomWidth="2px">Edytuj {event.name}</DrawerHeader>
+          <DrawerHeader borderBottomWidth="2px">
+            Edytuj {event.name}
+          </DrawerHeader>
 
           <DrawerBody>
             <Stack spacing="24px">

@@ -969,12 +969,12 @@ describe("Bluefarm service tests", () => {
     ];
 
     const expectedResult: FertilizeEventModel = {
-      id: 1,
+      id: 2,
       name: "fertilize 2",
       type: "type",
-      description: "description 1",
-      date: "2021-12-20T12:00:00Z",
-      amount: 300,
+      description: "description 2",
+      date: "2022-12-20T12:00:00Z",
+      amount: -200,
       crop: 1,
     };
 
@@ -1053,7 +1053,7 @@ describe("Bluefarm service tests", () => {
   });
 
   test("should sort all events", () => {
-    // this test may fail later because this function's result  depends on the currentdate
+    // this test may fail later because this function's result  depends on the current date
     const events: Array<any> = [
       {
         id: 2,
@@ -1065,10 +1065,10 @@ describe("Bluefarm service tests", () => {
         crop: 1,
       },
       {
-        id: 1,
+        id: 3,
         name: "outgoing 1",
         description: "description 1",
-        date: "2021-12-20T12:00:00Z",
+        date: "2021-12-30T12:00:00Z",
         amount: -100,
         farmer: 2,
       },
@@ -1084,10 +1084,10 @@ describe("Bluefarm service tests", () => {
 
     const expectedResult = [
       {
-        id: 1,
+        id: 3,
         name: "outgoing 1",
         description: "description 1",
-        date: "2021-12-20T12:00:00Z",
+        date: "2021-12-30T12:00:00Z",
         amount: -100,
         farmer: 2,
       },

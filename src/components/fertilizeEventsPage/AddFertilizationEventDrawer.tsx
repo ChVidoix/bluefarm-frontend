@@ -30,6 +30,7 @@ import { FertilizeEventModel } from "../../service/BlueFarm.service.const";
 import { DatePicker } from "../common/DatePicker";
 import { format } from "date-fns";
 import {
+  setAppStateError,
   setFertilizeEvents,
   setFertilizeEventsFilters,
 } from "../../actions/BlueFarmActions";
@@ -93,27 +94,31 @@ export const AddFertilizationEventDrawer = () => {
       description,
       type,
       amount,
-    }).then((res: FertilizeEventModel) => {
-      if (fertilizeEvents) {
-        dispatch(setFertilizeEvents([...fertilizeEvents, res]));
-        dispatch(
-          setFertilizeEventsFilters(
-            +new Date(),
-            +new Date(`${new Date().getFullYear()}-12-31`)
-          )
-        );
-      } else {
-        dispatch(setFertilizeEvents([res]));
-        dispatch(
-          setFertilizeEventsFilters(
-            +new Date(),
-            +new Date(`${new Date().getFullYear()}-12-31`)
-          )
-        );
-      }
-      clearInputs();
-      setAddButtonLoading(false);
-    });
+    })
+      .then((res: FertilizeEventModel) => {
+        if (fertilizeEvents) {
+          dispatch(setFertilizeEvents([...fertilizeEvents, res]));
+          dispatch(
+            setFertilizeEventsFilters(
+              +new Date(),
+              +new Date(`${new Date().getFullYear()}-12-31`)
+            )
+          );
+        } else {
+          dispatch(setFertilizeEvents([res]));
+          dispatch(
+            setFertilizeEventsFilters(
+              +new Date(),
+              +new Date(`${new Date().getFullYear()}-12-31`)
+            )
+          );
+        }
+        clearInputs();
+        setAddButtonLoading(false);
+      })
+      .catch(() => {
+        dispatch(setAppStateError("Coś poszło nie tak, spróbuj ponownie"));
+      });
   };
 
   return (
@@ -125,9 +130,7 @@ export const AddFertilizationEventDrawer = () => {
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton onClick={clearInputs} />
-          <DrawerHeader borderBottomWidth="2px">
-            Dodaj nawożenie
-          </DrawerHeader>
+          <DrawerHeader borderBottomWidth="2px">Dodaj nawożenie</DrawerHeader>
 
           <DrawerBody>
             <Stack spacing="24px">

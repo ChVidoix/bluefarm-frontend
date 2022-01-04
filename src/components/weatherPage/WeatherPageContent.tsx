@@ -13,6 +13,7 @@ import {
   getWeatherEventsToRender,
 } from "../../service/BlueFarmService";
 import {
+  setAppStateError,
   setFilteredWeatherEvents,
   setWeatherEvents,
   setWeatherEventsFilters,
@@ -34,9 +35,13 @@ export const WeatherPageContent = () => {
   } = useContext(BlueFarmContext) as BlueFarmContextModel;
 
   useEffect(() => {
-    getWeatherEvents(token).then((res: Array<WeatherEventModel>) => {
-      dispatch(setWeatherEvents(res));
-    });
+    getWeatherEvents(token)
+      .then((res: Array<WeatherEventModel>) => {
+        dispatch(setWeatherEvents(res));
+      })
+      .catch(() => {
+        dispatch(setAppStateError("Coś poszło nie tak, spróbuj ponownie"));
+      });
   }, []);
 
   useEffect(() => {

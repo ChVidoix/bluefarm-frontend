@@ -1,4 +1,5 @@
 import {
+  Box,
   Center,
   Heading,
   Spacer,
@@ -22,6 +23,8 @@ import { CropModel } from "../../service/BlueFarm.service.const";
 import { AddCropDrawer } from "./AddCropDrawer";
 import { CropOptions } from "./CropOptions";
 import CropsStats from "./CropsStats";
+import { setAppStateError } from "../../actions/BlueFarmActions";
+import { AddEventDrawer } from "../eventsPage/AddEventDrawer";
 
 const CropsPageContent = () => {
   const {
@@ -29,14 +32,19 @@ const CropsPageContent = () => {
       auth: { token },
       appState: { isLoading },
     },
+    dispatch,
   } = useContext(BlueFarmContext) as BlueFarmContextModel;
 
   const [crops, setCrops] = useState<Array<CropModel> | null>(null);
 
   useEffect(() => {
-    getCrops(token).then((cropsResponse: Array<CropModel>) => {
-      setCrops(cropsResponse);
-    });
+    getCrops(token)
+      .then((cropsResponse: Array<CropModel>) => {
+        setCrops(cropsResponse);
+      })
+      .catch(() => {
+        dispatch(setAppStateError("Coś poszło nie tak, spróbuj ponownie"));
+      });
   }, [token]);
 
   const tableCaption = (): JSX.Element => {
@@ -83,34 +91,58 @@ const CropsPageContent = () => {
 
   return (
     <>
-      <Spacer />
-      <CropsStats varietyAreaData={countCropsTypeArea(crops)} />
-      <Spacer />
-      <Center rounded={"lg"} bg={"gray.300"} w={"30vw"} h={"7vh"} mt={10}>
-        <Heading as={"h5"} color={"gray.600"}>
-          Wszystkie uprawy
-        </Heading>
-      </Center>
-      <Center rounded={"lg"} bg={"gray.300"} w={"80%"} mt={5}>
-        <Table variant="striped">
-          <TableCaption>{tableCaption()}</TableCaption>
-          <Thead borderBottom={"2px"}>
-            <Tr>
-              <Th isNumeric>Lp.</Th>
-              <Th>Nazwa</Th>
-              <Th>Rodzaj</Th>
-              <Th>Odmiana</Th>
-              <Th isNumeric>Powierzchnia</Th>
-              <Th>Opis</Th>
-              <Th />
-            </Tr>
-          </Thead>
+      {crops?.length ? (
+        <>
+          <Spacer />
+          <CropsStats varietyAreaData={countCropsTypeArea(crops)} />
+          <Spacer />
+          <Center rounded={"lg"} bg={"gray.300"} w={"30vw"} h={"7vh"} mt={10}>
+            <Heading as={"h5"} color={"gray.600"}>
+              Wszystkie uprawy
+            </Heading>
+          </Center>
+          <Center rounded={"lg"} bg={"gray.300"} w={"80%"} mt={5}>
+            <Table variant="striped">
+              <TableCaption>{tableCaption()}</TableCaption>
+              <Thead borderBottom={"2px"}>
+                <Tr>
+                  <Th isNumeric>Lp.</Th>
+                  <Th>Nazwa</Th>
+                  <Th>Rodzaj</Th>
+                  <Th>Odmiana</Th>
+                  <Th isNumeric>
+                    Powierzchnia [m<sup>2</sup>]
+                  </Th>
+                  <Th>Opis</Th>
+                  <Th />
+                </Tr>
+              </Thead>
 
-          <Tbody>
-            <>{tableBodyContent}</>
-          </Tbody>
-        </Table>
-      </Center>
+              <Tbody>
+                <>{tableBodyContent}</>
+              </Tbody>
+            </Table>
+          </Center>
+        </>
+      ) : (
+        <Center w={"100%"} h={"60vh"}>
+          <Box
+            rounded={"lg"}
+            bg={"gray.300"}
+            fontWeight={"bold"}
+            color={"gray.600"}
+            w={"30vw"}
+            h={"20vh"}
+          >
+            <Center h={"50%"} w={"30vw"}>
+              Brak upraw do wyświetlenia
+            </Center>
+            <Center h={"40%"} w={"30vw"}>
+              <AddCropDrawer crops={crops} setCrops={setCrops} />
+            </Center>
+          </Box>
+        </Center>
+      )}
     </>
   );
 };

@@ -173,3 +173,10 @@ export const setWeatherEventsFilters = (
   type: BlueFarmActionType.SET_WEATHER_EVENTS_FILTERS,
   payload: { startTimestamp },
 });
+
+export const setAppStateError = (
+  errorMessage: string
+): Action<{ errorMessage: string }> => ({
+  type: BlueFarmActionType.APP_STATE_ERROR,
+  payload: { errorMessage },
+});

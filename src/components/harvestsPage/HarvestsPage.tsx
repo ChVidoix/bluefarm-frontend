@@ -32,6 +32,7 @@ import {
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { PageHeader } from "../common/PageHeader";
 import {
+  setAppStateError,
   setFilteredHarvests,
   setHarvests,
   setSelectedCrop,
@@ -49,7 +50,7 @@ export const HarvestsPage = () => {
       auth: { token },
       crops: {
         selectedCrop,
-        harvests: { filteredHarvestsEvents },
+        harvests: { filteredHarvestsEvents, harvestsEvents },
       },
     },
     dispatch,
@@ -57,16 +58,20 @@ export const HarvestsPage = () => {
 
   useEffect(() => {
     setIsTableLoading(true);
-    getCrops(token).then((cropsResponse: Array<CropModel>) => {
-      setCrops(cropsResponse);
-      dispatch(setSelectedCrop(cropsResponse[0].id));
-    });
+    getCrops(token)
+      .then((cropsResponse: Array<CropModel>) => {
+        setCrops(cropsResponse);
+        dispatch(setSelectedCrop(cropsResponse[0].id));
+      })
+      .catch(() => {
+        dispatch(setAppStateError("Coś poszło nie tak, spróbuj ponownie"));
+      });
   }, [token]);
 
   useEffect(() => {
     if (selectedCrop !== 0) {
-      getHarvests(token, selectedCrop).then(
-        (harvestsArray: Array<HarvestModel>) => {
+      getHarvests(token, selectedCrop)
+        .then((harvestsArray: Array<HarvestModel>) => {
           dispatch(setHarvests(harvestsArray));
           dispatch(
             setFilteredHarvests(
@@ -78,8 +83,10 @@ export const HarvestsPage = () => {
             )
           );
           setIsTableLoading(false);
-        }
-      );
+        })
+        .catch(() => {
+          dispatch(setAppStateError("Coś poszło nie tak, spróbuj ponownie"));
+        });
     }
   }, [selectedCrop]);
 
@@ -172,31 +179,66 @@ export const HarvestsPage = () => {
               </Center>
               <Box w={"70%"}>
                 <Center>
-                  <PageHeader title={"Harvests"} />
+                  <PageHeader title={"Zbiory"} />
                 </Center>
               </Box>
             </Flex>
           </Center>
-          <HarvestsStats isLoading={isTableLoading} crops={crops} />
-          <Center w={"100%"} mt={5} mb={2}>
-            <Box bg={"gray.300"} rounded={"lg"} w={"95%"}>
-              <Table variant="striped">
-                <TableCaption>{renderTableCaption}</TableCaption>
-                <Thead>
-                  <Tr>
-                    <Th isNumeric>No.</Th>
-                    <Th>Name</Th>
-                    <Th>Start date</Th>
-                    <Th>End date</Th>
-                    <Th isNumeric>Amount [kg]</Th>
-                    <Th>Notes</Th>
-                    <Th />
-                  </Tr>
-                </Thead>
-                <Tbody>{!isTableLoading && renderTableBody()}</Tbody>
-              </Table>
-            </Box>
-          </Center>
+          {isTableLoading ? (
+            <Center w={"100%"} h={"60vh"}>
+              <Spinner
+                thickness="4px"
+                emptyColor="teal.50"
+                color="teal.500"
+                size="xl"
+              />
+            </Center>
+          ) : (
+            <>
+              {harvestsEvents?.length ? (
+                <>
+                  <HarvestsStats isLoading={isTableLoading} crops={crops} />
+                  <Center w={"100%"} mt={5} mb={2}>
+                    <Box bg={"gray.300"} rounded={"lg"} w={"95%"}>
+                      <Table variant="striped">
+                        <TableCaption>{renderTableCaption}</TableCaption>
+                        <Thead>
+                          <Tr>
+                            <Th isNumeric>Lp.</Th>
+                            <Th>Nazwa</Th>
+                            <Th>Rozpoczęcie</Th>
+                            <Th>Zakończenie</Th>
+                            <Th isNumeric>Ilość [kg]</Th>
+                            <Th>Notatki</Th>
+                            <Th />
+                          </Tr>
+                        </Thead>
+                        <Tbody>{!isTableLoading && renderTableBody()}</Tbody>
+                      </Table>
+                    </Box>
+                  </Center>
+                </>
+              ) : (
+                <Center w={"100%"} h={"60vh"}>
+                  <Box
+                    rounded={"lg"}
+                    bg={"gray.300"}
+                    fontWeight={"bold"}
+                    color={"gray.600"}
+                    w={"30vw"}
+                    h={"20vh"}
+                  >
+                    <Center h={"60%"} w={"30vw"}>
+                      Nie masz jeszcze żadnych zbiorów
+                    </Center>
+                    <Center h={"40%"} w={"30vw"}>
+                      <AddHarvestDrawer />
+                    </Center>
+                  </Box>
+                </Center>
+              )}
+            </>
+          )}
         </Flex>
       </Box>
     </Center>

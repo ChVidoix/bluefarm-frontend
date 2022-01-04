@@ -15,21 +15,27 @@ import { AiFillDelete, HiDotsVertical } from "react-icons/all";
 import { CropOptionsProps } from "../common/components.const";
 import { CropModel } from "../../service/BlueFarm.service.const";
 import { EditCropDrawer } from "./EditCropDrawer";
+import { setAppStateError } from "../../actions/BlueFarmActions";
 
 export const CropOptions = ({ crop, crops, setCrops }: CropOptionsProps) => {
   const {
     state: {
       auth: { token },
     },
+    dispatch,
   } = useContext(BlueFarmContext) as BlueFarmContextModel;
   const handleDelete = () => {
-    deleteCrop({ token, id: crop.id }).then(() => {
-      setCrops(
-        crops?.filter(
-          (filteredCrop: CropModel) => filteredCrop.id !== crop.id
-        ) || []
-      );
-    });
+    deleteCrop({ token, id: crop.id })
+      .then(() => {
+        setCrops(
+          crops?.filter(
+            (filteredCrop: CropModel) => filteredCrop.id !== crop.id
+          ) || []
+        );
+      })
+      .catch(() => {
+        dispatch(setAppStateError("Coś poszło nie tak, spróbuj ponownie"));
+      });
   };
 
   return (

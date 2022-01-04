@@ -23,7 +23,9 @@ import {
   authenticateUser,
   authenticateUserFail,
   authenticateUserLoading,
+  setAppStateError,
 } from "../../actions/BlueFarmActions";
+import { ErrorBox } from "../common/ErrorBox";
 
 const LoginPage = () => {
   const {
@@ -54,7 +56,7 @@ const LoginPage = () => {
         dispatch(authenticateUser({ ...res }));
       })
       .catch(() => {
-        dispatch(authenticateUserFail());
+        dispatch(setAppStateError("Logowanie nie powiodo się"));
       });
   };
 
@@ -75,45 +77,45 @@ const LoginPage = () => {
     );
   }
   return (
-    <Flex h="91vh" align={"center"} justify={"center"} bg="gray.200">
-      <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
-        <Stack align={"center"}>
-          <Heading fontSize={"4xl"}>Sign in to your account</Heading>
-        </Stack>
-        <Box rounded={"lg"} boxShadow={"lg"} p={8} bg="white">
-          <Stack spacing={4}>
-            <FormControl id="username">
-              <FormLabel>Username</FormLabel>
-              <Input
-                type="text"
-                value={username}
-                onChange={handleUsernameChange}
-              />
-            </FormControl>
-            <FormControl id="password">
-              <FormLabel>Password</FormLabel>
-              <Input
-                type="password"
-                value={password}
-                onChange={handlePasswordChange}
-              />
-            </FormControl>
-            <Stack spacing={10}>
-              <Stack
-                direction={{ base: "column", sm: "row" }}
-                align={"start"}
-                justify={"space-between"}
-              >
-                <Link color={"teal.600"}>Forgot password?</Link>
-              </Stack>
-              <Button color={"white"} onClick={handleLoginButton}>
-                {isLoading ? <Spinner /> : <>Sign In</>}
-              </Button>
-            </Stack>
+    <>
+      <ErrorBox />
+      <Flex h="91vh" align={"center"} justify={"center"} bg="gray.200">
+        <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
+          <Stack align={"center"}>
+            <Heading fontSize={"4xl"}>Zaloguj się do Bluefarm</Heading>
           </Stack>
-        </Box>
-      </Stack>
-    </Flex>
+          <Box rounded={"lg"} boxShadow={"lg"} p={8} bg="white">
+            <Stack spacing={4}>
+              <FormControl id="username">
+                <FormLabel>Nazwa użytkownika</FormLabel>
+                <Input
+                  type="text"
+                  value={username}
+                  onChange={handleUsernameChange}
+                />
+              </FormControl>
+              <FormControl id="password">
+                <FormLabel>Hasło</FormLabel>
+                <Input
+                  type="password"
+                  value={password}
+                  onChange={handlePasswordChange}
+                />
+              </FormControl>
+              <Stack spacing={10}>
+                <Button
+                  color={"white"}
+                  disabled={!username || !password}
+                  onClick={handleLoginButton}
+                >
+                  {isLoading ? <Spinner /> : <>Zaloguj</>}
+                </Button>
+              </Stack>
+            </Stack>
+          </Box>
+        </Stack>
+      </Flex>
+    </>
   );
 };
 

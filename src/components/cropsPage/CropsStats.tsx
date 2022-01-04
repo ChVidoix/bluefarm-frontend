@@ -16,6 +16,7 @@ import {
 } from "@chakra-ui/react";
 import { Doughnut } from "react-chartjs-2";
 import { ArcElement, Chart as ChartJS, Legend, Tooltip } from "chart.js";
+import React from "react";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -44,7 +45,11 @@ const CropsStats = ({
   };
 
   const tableSummaryContent = (): JSX.Element => {
-    return varietyAreaData ? <>Podsumowanie upraw: rodzaj a powierzchnia</> : <Spinner />;
+    return varietyAreaData ? (
+      <>Podsumowanie upraw: rodzaj a powierzchnia</>
+    ) : (
+      <Spinner />
+    );
   };
 
   const data = {
@@ -68,10 +73,12 @@ const CropsStats = ({
     <Flex w={"80%"} mt={10} mb={10}>
       <Box w={"50%"}>
         <Flex direction={"column"} h={"100%"}>
-          <Center w={"30vw"} h={"7vh"} rounded={"lg"} bg={"gray.300"} mb={5}>
-            <Heading as={"h5"} color={"gray.600"}>
-              Rodzaje:
-            </Heading>
+          <Center w={"100%"} h={"7vh"}>
+            <Box h={"2.5em"} w={"15vw"} bg={"gray.300"} rounded={"lg"}>
+              <Center h={"100%"} color={"gray.600"} fontWeight={"bold"}>
+                Rodzaje:
+              </Center>
+            </Box>
           </Center>
           <Center mt={3}>
             <Box>
@@ -83,10 +90,12 @@ const CropsStats = ({
 
       <Box w={"50%"} pl={5}>
         <Flex direction={"column"} h={"100%"}>
-          <Center w={"30vw"} h={"7vh"} rounded={"lg"} bg={"gray.300"} mb={5}>
-            <Heading as={"h5"} color={"gray.600"}>
-              Szczegóły:
-            </Heading>
+          <Center w={"100%"} h={"7vh"}>
+            <Box h={"2.5em"} w={"15vw"} bg={"gray.300"} rounded={"lg"}>
+              <Center h={"100%"} color={"gray.600"} fontWeight={"bold"}>
+                Szczegóły:
+              </Center>
+            </Box>
           </Center>
           <Spacer />
           <Box bg={"gray.300"} rounded={"lg"}>
@@ -95,7 +104,9 @@ const CropsStats = ({
               <Thead borderBottom={"2px"}>
                 <Tr>
                   <Th>Rodzaj</Th>
-                  <Th isNumeric>Powierzchnia</Th>
+                  <Th isNumeric>
+                    Powierzchnia [m<sup>2</sup>]
+                  </Th>
                 </Tr>
               </Thead>
               <Tbody>{detailsTableRows()}</Tbody>
