@@ -21,7 +21,6 @@ import { loginUser } from "../../service/BlueFarmService";
 import { LoginResponseModel } from "../../service/BlueFarm.service.const";
 import {
   authenticateUser,
-  authenticateUserFail,
   authenticateUserLoading,
   setAppStateError,
 } from "../../actions/BlueFarmActions";

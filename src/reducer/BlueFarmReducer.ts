@@ -45,7 +45,7 @@ export const reducer = (
           isLoading: false,
         },
         appState: {
-          errorMessage: "Coś poszło nie tak, spróbuj ponownie później",
+          ...state.appState,
           isLoading: false,
         },
       };
